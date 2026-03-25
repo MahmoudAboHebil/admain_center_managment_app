@@ -1,0 +1,44 @@
+import 'package:dart_either/dart_either.dart';
+
+import '../../../core/enums/DB_Table.dart';
+import '../../../core/error/failure.dart';
+import '../../../core/error/netwrok_response.dart';
+import '../entities/operation.dart';
+import '../entities/standard_table_record.dart';
+
+abstract class TableRepository {
+  Future<Either<Failure, Map<DBTable, List<String>>>>
+  deleteEntityCascadeNotNull(
+    DBTable table,
+    String entityId, {
+    bool test = false,
+  });
+
+  Future<Either<Failure, Map<DBTable, List<String>>>>
+  getForwardRecursiveRelationsIds(DBTable startTable, String entityId);
+
+  Future<Either<Failure, void>> replaceEntityLocalWithServer(
+    DBTable table,
+    Map<String, dynamic> json,
+  );
+  Future<Either<Failure, List<Map<String, dynamic>>>> getUpdatedServerEntities(
+    DBTable table,
+    String deviceId,
+    DateTime lastTimeSync,
+    String centerId,
+  );
+  Future<Either<Failure, NetworkResponse>> sendOperationToServer(
+    Operation operation,
+    String deviceId,
+  );
+  Future<Either<Failure, Map<String, dynamic>?>> getEntityFromTable(
+    DBTable table,
+    String entityId,
+  );
+
+  Future<Either<Failure, void>> insertEntityToTable(
+    DBTable table,
+    Map<String, dynamic>? jsonEntity,
+    StandardTableRecord? entity,
+  );
+}

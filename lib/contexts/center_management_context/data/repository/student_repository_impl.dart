@@ -1,20 +1,22 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/data/data_sources/local/local_student_datasource.dart';
-import 'package:admain_center_managment_app/contexts/center_management_context/data/models/student_model.dart';
-import 'package:admain_center_managment_app/contexts/center_management_context/domain/entities/student_entity.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/student_repository.dart';
 import 'package:admain_center_managment_app/core/error/failure.dart';
+import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/student_collection.dart';
 import 'package:dart_either/src/dart_either.dart';
+
+import '../../../../core/error/sync_response.dart';
+import '../../../../sync_engine/domain/entities/student_entity.dart';
 
 class StudentRepositoryImpl implements StudentRepository {
   final LocalStudentDatasource _datasource;
   const StudentRepositoryImpl(this._datasource);
   @override
-  Future<Either<Failure, void>> createStudent(StudentEntity entity) async {
+  Future<Either<Failure, SyncResponse?>> createStudent(
+    StudentEntity entity,
+  ) async {
     try {
-      final result = await _datasource.insertToLocalDB(
-        StudentModel.fromEntity(entity),
-      );
-      return Right(result);
+      final result = await _datasource.create(entity);
+      return result;
     } catch (e) {
       return Left(
         ProcessingFailure(
@@ -25,15 +27,28 @@ class StudentRepositoryImpl implements StudentRepository {
   }
 
   @override
-  Future<Either<Failure, List<StudentEntity>>> getAllStudents() async {
+  Either<Failure, Stream<List<StudentCollection>>> getAllStudentsStream() {
     try {
-      final result = await _datasource.getAllFromLocalDB();
-
-      return Right(result.map((mode) => mode.toEntity()).toList());
+      final result = _datasource.getCollectionsStream();
+      return result;
     } catch (e) {
       return Left(
         ProcessingFailure(
-          message: "getting students has failed =>${e.toString()}",
+          message: "getting students Stream has failed =>${e.toString()}",
+        ),
+      );
+    }
+  }
+
+  @override
+  Either<Failure, Stream<int>> watchStudentsCount() {
+    try {
+      final result = _datasource.watchStudentsCount();
+      return result;
+    } catch (e) {
+      return Left(
+        ProcessingFailure(
+          message: "getting students Stream count has failed =>${e.toString()}",
         ),
       );
     }
@@ -42,9 +57,8 @@ class StudentRepositoryImpl implements StudentRepository {
   @override
   Future<Either<Failure, StudentEntity?>> getStudent(String entityId) async {
     try {
-      final result = await _datasource.getItemFromLocalDB(entityId);
-      if (result == null) return Right(null);
-      return Right(result.toEntity());
+      final result = await _datasource.getEntity(entityId);
+      return result;
     } catch (e) {
       return Left(
         ProcessingFailure(
@@ -55,32 +69,29 @@ class StudentRepositoryImpl implements StudentRepository {
   }
 
   @override
-  Future<Either<Failure, void>> hardDeleteStudent(String entityId) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, void>> softDeleteStudent(String entityId) async {
+  Future<Either<Failure, SyncResponse?>> softDeleteStudent(
+    StudentEntity entity,
+  ) async {
     try {
-      final result = await _datasource.softDeleteFromLocalDB(entityId);
-      return Right(null);
+      final result = await _datasource.softDelete(entity);
+      return result;
     } catch (e) {
       return Left(
         ProcessingFailure(
           message:
-              "failed to soft delete this student $entityId =>${e.toString()}",
+              "failed to soft delete this student ${entity.entityId} =>${e.toString()}",
         ),
       );
     }
   }
 
   @override
-  Future<Either<Failure, void>> updateStudent(StudentEntity newEntity) async {
+  Future<Either<Failure, SyncResponse?>> updateStudent(
+    StudentEntity newEntity,
+  ) async {
     try {
-      final result = await _datasource.updateWithinLocalDB(
-        StudentModel.fromEntity(newEntity),
-      );
-      return Right(null);
+      final result = await _datasource.update(newEntity);
+      return result;
     } catch (e) {
       return Left(
         ProcessingFailure(
@@ -88,6 +99,16 @@ class StudentRepositoryImpl implements StudentRepository {
               "failed to updated this student ${newEntity.entityId} =>${e.toString()}",
         ),
       );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<StudentEntity>>> getAllItemsNotArchived() async {
+    try {
+      final result = await _datasource.getAllItemsNotArchived();
+      return result;
+    } catch (e) {
+      return Left(ProcessingFailure(message: "failed to get Students"));
     }
   }
 }

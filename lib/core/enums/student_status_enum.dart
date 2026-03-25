@@ -1,7 +1,11 @@
 enum StudentStatus {
-  active,
-  inactive,
-  stopped;
+  active('نشط'),
+  inactive('غير نشط'),
+  latePayment('متاخر فى الدفع');
+
+  final String description;
+
+  const StudentStatus(this.description);
 
   static StudentStatus getStudentStatusEnumFromString(
     String studentStatusString,

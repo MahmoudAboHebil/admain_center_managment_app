@@ -10,6 +10,16 @@ class StudentGuardianCollection {
   @Index()
   late String studentId;
   @Index()
+  late String centerId;
+  @Index()
   late String guardianId;
   late DateTime createdAt;
+
+  late String byUser;
+  late String byDevice;
+  @Index()
+  late bool isDeleted;
+  @Index()
+  late int version;
+  late DateTime updatedAt;
 }

@@ -1,10 +1,15 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/entities/center_entity.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/entities/study_level_entity.dart';
 import 'package:admain_center_managment_app/core/enums/education_system_enum.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../enums/user_role.dart';
 
 const String SUPABASE_ANON_KEY =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpZWFob29tY3pzdG5ja2J0bmpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2Mzg5OTEsImV4cCI6MjA4NDIxNDk5MX0.JVHmwGgHA4HjhEhT2f-Sn9RALX9s-Xvyo9hg5-LhI9o';
-const String SUPABASE_URL = 'https://yieahoomczstnckbtnjp.supabase.co';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmc2FwZW5lcmhmc2FiaWtmcXBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NjkxNDksImV4cCI6MjA4OTU0NTE0OX0.01XycGB2Wf2WdZKbC24EQlYtV6jdxHyACeScvLfN7zg';
+const String SUPABASE_URL = 'https://bfsapenerhfsabikfqpf.supabase.co';
+final supabase = Supabase.instance.client;
+const UserRole currentUserRole = UserRole.admin;
 
 final currentCenter = CenterEntity(
   entityId: "a4f213c7-2cbe-418d-8682-57f3fcebad21",
@@ -138,4 +143,16 @@ final List<StudyLevelEntity> studyLevels = [
     order: 14,
     createdAt: DateTime(2024, 1, 1),
   ),
+];
+
+final List<StudyLevelEntity> studyLevelsWithAll = [
+  StudyLevelEntity(
+    entityId: "all",
+    arabicName: "الكل",
+    englishName: "All",
+    educationSystem: EducationSystem.General,
+    order: 0,
+    createdAt: DateTime.now(),
+  ),
+  ...studyLevels,
 ];

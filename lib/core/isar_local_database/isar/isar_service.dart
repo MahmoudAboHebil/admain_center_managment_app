@@ -1,5 +1,7 @@
 import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/center_collection.dart';
+import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/configration_collection.dart';
 import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/guardian_collection.dart';
+import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/operation_collection.dart';
 import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/student_collection.dart';
 import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/student_guardian_collection.dart';
 import 'package:isar/isar.dart';
@@ -15,6 +17,8 @@ class IsarService {
 
     _instance = await Isar.open(
       [
+        OperationCollectionSchema,
+        ConfigrationCollectionSchema,
         CenterCollectionSchema,
         GuardianCollectionSchema,
         StudentCollectionSchema,

@@ -13,9 +13,7 @@
 
 enum DBTable {
   Center,
-  Guardian,
-  Student,
-  StudentGuardian,
+  students,
   StudentLevel;
 
   static DBTable getDBTableFromString(String table) {
@@ -35,14 +33,6 @@ enum DBTable {
 const Map<DBTable, Map<String, List<DBTable>>> tabelRelationsNotNull = {
   DBTable.Center: {"forward": [], "backword": []},
   DBTable.StudentLevel: {"forward": [], "backword": []},
-  DBTable.StudentGuardian: {"forward": [], "backword": []},
-  DBTable.Student: {
-    "forward": [DBTable.StudentGuardian, DBTable.Guardian],
-    "backword": [],
-  },
-
-  DBTable.Guardian: {
-    "forward": [DBTable.StudentGuardian],
-    "backword": [],
-  },
+  DBTable.students: {"forward": [], "backword": []},
 };
+const List<DBTable> arrangedSyncTables = [DBTable.students];

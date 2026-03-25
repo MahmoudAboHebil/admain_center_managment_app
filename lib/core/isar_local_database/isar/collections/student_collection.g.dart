@@ -17,95 +17,135 @@ const StudentCollectionSchema = CollectionSchema(
   name: r'StudentCollection',
   id: 6167676798204934637,
   properties: {
-    r'birthDate': PropertySchema(
+    r'address': PropertySchema(
       id: 0,
+      name: r'address',
+      type: IsarType.string,
+    ),
+    r'birthDate': PropertySchema(
+      id: 1,
       name: r'birthDate',
       type: IsarType.dateTime,
     ),
+    r'bookingDeposit': PropertySchema(
+      id: 2,
+      name: r'bookingDeposit',
+      type: IsarType.double,
+    ),
     r'byDevice': PropertySchema(
-      id: 1,
+      id: 3,
       name: r'byDevice',
       type: IsarType.string,
     ),
     r'byUser': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'byUser',
       type: IsarType.string,
     ),
     r'centerId': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'centerId',
       type: IsarType.string,
     ),
     r'createdAt': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
+    r'divisionEnum': PropertySchema(
+      id: 7,
+      name: r'divisionEnum',
+      type: IsarType.string,
+    ),
+    r'email': PropertySchema(
+      id: 8,
+      name: r'email',
+      type: IsarType.string,
+    ),
     r'entityId': PropertySchema(
-      id: 5,
+      id: 9,
       name: r'entityId',
       type: IsarType.string,
     ),
     r'gender': PropertySchema(
-      id: 6,
+      id: 10,
       name: r'gender',
       type: IsarType.string,
     ),
     r'homePhone': PropertySchema(
-      id: 7,
+      id: 11,
       name: r'homePhone',
       type: IsarType.string,
     ),
     r'isDeleted': PropertySchema(
-      id: 8,
+      id: 12,
       name: r'isDeleted',
       type: IsarType.bool,
     ),
-    r'joinDate': PropertySchema(
-      id: 9,
-      name: r'joinDate',
-      type: IsarType.dateTime,
-    ),
     r'name': PropertySchema(
-      id: 10,
+      id: 13,
       name: r'name',
       type: IsarType.string,
     ),
+    r'notes': PropertySchema(
+      id: 14,
+      name: r'notes',
+      type: IsarType.stringList,
+    ),
+    r'parentJob': PropertySchema(
+      id: 15,
+      name: r'parentJob',
+      type: IsarType.string,
+    ),
+    r'parentPhone': PropertySchema(
+      id: 16,
+      name: r'parentPhone',
+      type: IsarType.string,
+    ),
+    r'paymentTypeEnum': PropertySchema(
+      id: 17,
+      name: r'paymentTypeEnum',
+      type: IsarType.string,
+    ),
     r'phone': PropertySchema(
-      id: 11,
+      id: 18,
       name: r'phone',
       type: IsarType.string,
     ),
     r'schoolName': PropertySchema(
-      id: 12,
+      id: 19,
       name: r'schoolName',
       type: IsarType.string,
     ),
+    r'studentClasses': PropertySchema(
+      id: 20,
+      name: r'studentClasses',
+      type: IsarType.stringList,
+    ),
+    r'studentCode': PropertySchema(
+      id: 21,
+      name: r'studentCode',
+      type: IsarType.string,
+    ),
     r'studentStatus': PropertySchema(
-      id: 13,
+      id: 22,
       name: r'studentStatus',
       type: IsarType.string,
     ),
     r'studyLevelId': PropertySchema(
-      id: 14,
+      id: 23,
       name: r'studyLevelId',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 15,
+      id: 24,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
     r'version': PropertySchema(
-      id: 16,
+      id: 25,
       name: r'version',
       type: IsarType.long,
-    ),
-    r'whatsAppPhone': PropertySchema(
-      id: 17,
-      name: r'whatsAppPhone',
-      type: IsarType.string,
     )
   },
   estimateSize: _studentCollectionEstimateSize,
@@ -165,110 +205,6 @@ const StudentCollectionSchema = CollectionSchema(
           caseSensitive: false,
         )
       ],
-    ),
-    r'studyLevelId': IndexSchema(
-      id: 802936186870061260,
-      name: r'studyLevelId',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'studyLevelId',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    ),
-    r'name': IndexSchema(
-      id: 879695947855722453,
-      name: r'name',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'name',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    ),
-    r'phone': IndexSchema(
-      id: -6308098324157559207,
-      name: r'phone',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'phone',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    ),
-    r'homePhone': IndexSchema(
-      id: 8667961718387776150,
-      name: r'homePhone',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'homePhone',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    ),
-    r'whatsAppPhone': IndexSchema(
-      id: 7927566369374682773,
-      name: r'whatsAppPhone',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'whatsAppPhone',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    ),
-    r'schoolName': IndexSchema(
-      id: -1815138817094835918,
-      name: r'schoolName',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'schoolName',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    ),
-    r'joinDate': IndexSchema(
-      id: -6621715319955650643,
-      name: r'joinDate',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'joinDate',
-          type: IndexType.value,
-          caseSensitive: false,
-        )
-      ],
-    ),
-    r'studentStatus': IndexSchema(
-      id: 3076932318372651913,
-      name: r'studentStatus',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'studentStatus',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
     )
   },
   links: {},
@@ -285,9 +221,27 @@ int _studentCollectionEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.address;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.byDevice.length * 3;
   bytesCount += 3 + object.byUser.length * 3;
   bytesCount += 3 + object.centerId.length * 3;
+  {
+    final value = object.divisionEnum;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.email;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.entityId.length * 3;
   bytesCount += 3 + object.gender.length * 3;
   {
@@ -298,20 +252,62 @@ int _studentCollectionEstimateSize(
   }
   bytesCount += 3 + object.name.length * 3;
   {
+    final list = object.notes;
+    if (list != null) {
+      bytesCount += 3 + list.length * 3;
+      {
+        for (var i = 0; i < list.length; i++) {
+          final value = list[i];
+          bytesCount += value.length * 3;
+        }
+      }
+    }
+  }
+  {
+    final value = object.parentJob;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.parentPhone;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.paymentTypeEnum;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.phone;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.schoolName.length * 3;
-  bytesCount += 3 + object.studentStatus.length * 3;
-  bytesCount += 3 + object.studyLevelId.length * 3;
   {
-    final value = object.whatsAppPhone;
+    final value = object.schoolName;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final list = object.studentClasses;
+    if (list != null) {
+      bytesCount += 3 + list.length * 3;
+      {
+        for (var i = 0; i < list.length; i++) {
+          final value = list[i];
+          bytesCount += value.length * 3;
+        }
+      }
+    }
+  }
+  bytesCount += 3 + object.studentCode.length * 3;
+  bytesCount += 3 + object.studentStatus.length * 3;
+  bytesCount += 3 + object.studyLevelId.length * 3;
   return bytesCount;
 }
 
@@ -321,24 +317,32 @@ void _studentCollectionSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.birthDate);
-  writer.writeString(offsets[1], object.byDevice);
-  writer.writeString(offsets[2], object.byUser);
-  writer.writeString(offsets[3], object.centerId);
-  writer.writeDateTime(offsets[4], object.createdAt);
-  writer.writeString(offsets[5], object.entityId);
-  writer.writeString(offsets[6], object.gender);
-  writer.writeString(offsets[7], object.homePhone);
-  writer.writeBool(offsets[8], object.isDeleted);
-  writer.writeDateTime(offsets[9], object.joinDate);
-  writer.writeString(offsets[10], object.name);
-  writer.writeString(offsets[11], object.phone);
-  writer.writeString(offsets[12], object.schoolName);
-  writer.writeString(offsets[13], object.studentStatus);
-  writer.writeString(offsets[14], object.studyLevelId);
-  writer.writeDateTime(offsets[15], object.updatedAt);
-  writer.writeLong(offsets[16], object.version);
-  writer.writeString(offsets[17], object.whatsAppPhone);
+  writer.writeString(offsets[0], object.address);
+  writer.writeDateTime(offsets[1], object.birthDate);
+  writer.writeDouble(offsets[2], object.bookingDeposit);
+  writer.writeString(offsets[3], object.byDevice);
+  writer.writeString(offsets[4], object.byUser);
+  writer.writeString(offsets[5], object.centerId);
+  writer.writeDateTime(offsets[6], object.createdAt);
+  writer.writeString(offsets[7], object.divisionEnum);
+  writer.writeString(offsets[8], object.email);
+  writer.writeString(offsets[9], object.entityId);
+  writer.writeString(offsets[10], object.gender);
+  writer.writeString(offsets[11], object.homePhone);
+  writer.writeBool(offsets[12], object.isDeleted);
+  writer.writeString(offsets[13], object.name);
+  writer.writeStringList(offsets[14], object.notes);
+  writer.writeString(offsets[15], object.parentJob);
+  writer.writeString(offsets[16], object.parentPhone);
+  writer.writeString(offsets[17], object.paymentTypeEnum);
+  writer.writeString(offsets[18], object.phone);
+  writer.writeString(offsets[19], object.schoolName);
+  writer.writeStringList(offsets[20], object.studentClasses);
+  writer.writeString(offsets[21], object.studentCode);
+  writer.writeString(offsets[22], object.studentStatus);
+  writer.writeString(offsets[23], object.studyLevelId);
+  writer.writeDateTime(offsets[24], object.updatedAt);
+  writer.writeLong(offsets[25], object.version);
 }
 
 StudentCollection _studentCollectionDeserialize(
@@ -348,25 +352,33 @@ StudentCollection _studentCollectionDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StudentCollection();
-  object.birthDate = reader.readDateTime(offsets[0]);
-  object.byDevice = reader.readString(offsets[1]);
-  object.byUser = reader.readString(offsets[2]);
-  object.centerId = reader.readString(offsets[3]);
-  object.createdAt = reader.readDateTime(offsets[4]);
-  object.entityId = reader.readString(offsets[5]);
-  object.gender = reader.readString(offsets[6]);
-  object.homePhone = reader.readStringOrNull(offsets[7]);
+  object.address = reader.readStringOrNull(offsets[0]);
+  object.birthDate = reader.readDateTimeOrNull(offsets[1]);
+  object.bookingDeposit = reader.readDoubleOrNull(offsets[2]);
+  object.byDevice = reader.readString(offsets[3]);
+  object.byUser = reader.readString(offsets[4]);
+  object.centerId = reader.readString(offsets[5]);
+  object.createdAt = reader.readDateTime(offsets[6]);
+  object.divisionEnum = reader.readStringOrNull(offsets[7]);
+  object.email = reader.readStringOrNull(offsets[8]);
+  object.entityId = reader.readString(offsets[9]);
+  object.gender = reader.readString(offsets[10]);
+  object.homePhone = reader.readStringOrNull(offsets[11]);
   object.id = id;
-  object.isDeleted = reader.readBool(offsets[8]);
-  object.joinDate = reader.readDateTime(offsets[9]);
-  object.name = reader.readString(offsets[10]);
-  object.phone = reader.readStringOrNull(offsets[11]);
-  object.schoolName = reader.readString(offsets[12]);
-  object.studentStatus = reader.readString(offsets[13]);
-  object.studyLevelId = reader.readString(offsets[14]);
-  object.updatedAt = reader.readDateTime(offsets[15]);
-  object.version = reader.readLong(offsets[16]);
-  object.whatsAppPhone = reader.readStringOrNull(offsets[17]);
+  object.isDeleted = reader.readBool(offsets[12]);
+  object.name = reader.readString(offsets[13]);
+  object.notes = reader.readStringList(offsets[14]);
+  object.parentJob = reader.readStringOrNull(offsets[15]);
+  object.parentPhone = reader.readStringOrNull(offsets[16]);
+  object.paymentTypeEnum = reader.readStringOrNull(offsets[17]);
+  object.phone = reader.readStringOrNull(offsets[18]);
+  object.schoolName = reader.readStringOrNull(offsets[19]);
+  object.studentClasses = reader.readStringList(offsets[20]);
+  object.studentCode = reader.readString(offsets[21]);
+  object.studentStatus = reader.readString(offsets[22]);
+  object.studyLevelId = reader.readString(offsets[23]);
+  object.updatedAt = reader.readDateTime(offsets[24]);
+  object.version = reader.readLong(offsets[25]);
   return object;
 }
 
@@ -378,41 +390,57 @@ P _studentCollectionDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 10:
       return (reader.readString(offset)) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 13:
       return (reader.readString(offset)) as P;
     case 14:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringList(offset)) as P;
     case 15:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 16:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 17:
       return (reader.readStringOrNull(offset)) as P;
+    case 18:
+      return (reader.readStringOrNull(offset)) as P;
+    case 19:
+      return (reader.readStringOrNull(offset)) as P;
+    case 20:
+      return (reader.readStringList(offset)) as P;
+    case 21:
+      return (reader.readString(offset)) as P;
+    case 22:
+      return (reader.readString(offset)) as P;
+    case 23:
+      return (reader.readString(offset)) as P;
+    case 24:
+      return (reader.readDateTime(offset)) as P;
+    case 25:
+      return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -509,15 +537,6 @@ extension StudentCollectionQueryWhereSort
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'version'),
-      );
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhere>
-      anyJoinDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        const IndexWhereClause.any(indexName: r'joinDate'),
       );
     });
   }
@@ -820,486 +839,184 @@ extension StudentCollectionQueryWhere
       ));
     });
   }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      studyLevelIdEqualTo(String studyLevelId) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'studyLevelId',
-        value: [studyLevelId],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      studyLevelIdNotEqualTo(String studyLevelId) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'studyLevelId',
-              lower: [],
-              upper: [studyLevelId],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'studyLevelId',
-              lower: [studyLevelId],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'studyLevelId',
-              lower: [studyLevelId],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'studyLevelId',
-              lower: [],
-              upper: [studyLevelId],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      nameEqualTo(String name) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'name',
-        value: [name],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      nameNotEqualTo(String name) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'name',
-              lower: [],
-              upper: [name],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'name',
-              lower: [name],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'name',
-              lower: [name],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'name',
-              lower: [],
-              upper: [name],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      phoneIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'phone',
-        value: [null],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      phoneIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'phone',
-        lower: [null],
-        includeLower: false,
-        upper: [],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      phoneEqualTo(String? phone) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'phone',
-        value: [phone],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      phoneNotEqualTo(String? phone) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'phone',
-              lower: [],
-              upper: [phone],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'phone',
-              lower: [phone],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'phone',
-              lower: [phone],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'phone',
-              lower: [],
-              upper: [phone],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      homePhoneIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'homePhone',
-        value: [null],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      homePhoneIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'homePhone',
-        lower: [null],
-        includeLower: false,
-        upper: [],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      homePhoneEqualTo(String? homePhone) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'homePhone',
-        value: [homePhone],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      homePhoneNotEqualTo(String? homePhone) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'homePhone',
-              lower: [],
-              upper: [homePhone],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'homePhone',
-              lower: [homePhone],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'homePhone',
-              lower: [homePhone],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'homePhone',
-              lower: [],
-              upper: [homePhone],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      whatsAppPhoneIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'whatsAppPhone',
-        value: [null],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      whatsAppPhoneIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'whatsAppPhone',
-        lower: [null],
-        includeLower: false,
-        upper: [],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      whatsAppPhoneEqualTo(String? whatsAppPhone) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'whatsAppPhone',
-        value: [whatsAppPhone],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      whatsAppPhoneNotEqualTo(String? whatsAppPhone) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'whatsAppPhone',
-              lower: [],
-              upper: [whatsAppPhone],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'whatsAppPhone',
-              lower: [whatsAppPhone],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'whatsAppPhone',
-              lower: [whatsAppPhone],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'whatsAppPhone',
-              lower: [],
-              upper: [whatsAppPhone],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      schoolNameEqualTo(String schoolName) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'schoolName',
-        value: [schoolName],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      schoolNameNotEqualTo(String schoolName) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'schoolName',
-              lower: [],
-              upper: [schoolName],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'schoolName',
-              lower: [schoolName],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'schoolName',
-              lower: [schoolName],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'schoolName',
-              lower: [],
-              upper: [schoolName],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      joinDateEqualTo(DateTime joinDate) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'joinDate',
-        value: [joinDate],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      joinDateNotEqualTo(DateTime joinDate) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'joinDate',
-              lower: [],
-              upper: [joinDate],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'joinDate',
-              lower: [joinDate],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'joinDate',
-              lower: [joinDate],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'joinDate',
-              lower: [],
-              upper: [joinDate],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      joinDateGreaterThan(
-    DateTime joinDate, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'joinDate',
-        lower: [joinDate],
-        includeLower: include,
-        upper: [],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      joinDateLessThan(
-    DateTime joinDate, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'joinDate',
-        lower: [],
-        upper: [joinDate],
-        includeUpper: include,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      joinDateBetween(
-    DateTime lowerJoinDate,
-    DateTime upperJoinDate, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'joinDate',
-        lower: [lowerJoinDate],
-        includeLower: includeLower,
-        upper: [upperJoinDate],
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      studentStatusEqualTo(String studentStatus) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'studentStatus',
-        value: [studentStatus],
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterWhereClause>
-      studentStatusNotEqualTo(String studentStatus) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'studentStatus',
-              lower: [],
-              upper: [studentStatus],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'studentStatus',
-              lower: [studentStatus],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'studentStatus',
-              lower: [studentStatus],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'studentStatus',
-              lower: [],
-              upper: [studentStatus],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
 }
 
 extension StudentCollectionQueryFilter
     on QueryBuilder<StudentCollection, StudentCollection, QFilterCondition> {
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      birthDateEqualTo(DateTime value) {
+      addressIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'address',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'address',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      addressIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      birthDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'birthDate',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      birthDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'birthDate',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      birthDateEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'birthDate',
@@ -1310,7 +1027,7 @@ extension StudentCollectionQueryFilter
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
       birthDateGreaterThan(
-    DateTime value, {
+    DateTime? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1324,7 +1041,7 @@ extension StudentCollectionQueryFilter
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
       birthDateLessThan(
-    DateTime value, {
+    DateTime? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1338,8 +1055,8 @@ extension StudentCollectionQueryFilter
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
       birthDateBetween(
-    DateTime lower,
-    DateTime upper, {
+    DateTime? lower,
+    DateTime? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -1350,6 +1067,90 @@ extension StudentCollectionQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      bookingDepositIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'bookingDeposit',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      bookingDepositIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'bookingDeposit',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      bookingDepositEqualTo(
+    double? value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'bookingDeposit',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      bookingDepositGreaterThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'bookingDeposit',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      bookingDepositLessThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'bookingDeposit',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      bookingDepositBetween(
+    double? lower,
+    double? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'bookingDeposit',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
       ));
     });
   }
@@ -1814,6 +1615,314 @@ extension StudentCollectionQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'divisionEnum',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'divisionEnum',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'divisionEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'divisionEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'divisionEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'divisionEnum',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'divisionEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'divisionEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'divisionEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'divisionEnum',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'divisionEnum',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      divisionEnumIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'divisionEnum',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'email',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'email',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'email',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'email',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'email',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'email',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'email',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'email',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'email',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'email',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'email',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      emailIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'email',
+        value: '',
       ));
     });
   }
@@ -2311,62 +2420,6 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      joinDateEqualTo(DateTime value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'joinDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      joinDateGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'joinDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      joinDateLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'joinDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      joinDateBetween(
-    DateTime lower,
-    DateTime upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'joinDate',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
       nameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -2497,6 +2550,711 @@ extension StudentCollectionQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'notes',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'notes',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'notes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'notes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'notes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'notes',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'notes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'notes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'notes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'notes',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'notes',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'notes',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'notes',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'notes',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'notes',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'notes',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'notes',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      notesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'notes',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'parentJob',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'parentJob',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentJob',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'parentJob',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'parentJob',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'parentJob',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'parentJob',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'parentJob',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'parentJob',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'parentJob',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentJob',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentJobIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'parentJob',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'parentPhone',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'parentPhone',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentPhone',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'parentPhone',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'parentPhone',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'parentPhone',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'parentPhone',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'parentPhone',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'parentPhone',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'parentPhone',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentPhone',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      parentPhoneIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'parentPhone',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'paymentTypeEnum',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'paymentTypeEnum',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'paymentTypeEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'paymentTypeEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'paymentTypeEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'paymentTypeEnum',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'paymentTypeEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'paymentTypeEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'paymentTypeEnum',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'paymentTypeEnum',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'paymentTypeEnum',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      paymentTypeEnumIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'paymentTypeEnum',
         value: '',
       ));
     });
@@ -2657,8 +3415,26 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      schoolNameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'schoolName',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      schoolNameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'schoolName',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
       schoolNameEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -2672,7 +3448,7 @@ extension StudentCollectionQueryFilter
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
       schoolNameGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -2688,7 +3464,7 @@ extension StudentCollectionQueryFilter
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
       schoolNameLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -2704,8 +3480,8 @@ extension StudentCollectionQueryFilter
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
       schoolNameBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -2787,6 +3563,386 @@ extension StudentCollectionQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'schoolName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'studentClasses',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'studentClasses',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'studentClasses',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'studentClasses',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'studentClasses',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'studentClasses',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'studentClasses',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'studentClasses',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'studentClasses',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'studentClasses',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'studentClasses',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'studentClasses',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'studentClasses',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'studentClasses',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'studentClasses',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'studentClasses',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'studentClasses',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentClassesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'studentClasses',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'studentCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'studentCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'studentCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'studentCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'studentCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'studentCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'studentCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'studentCode',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'studentCode',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
+      studentCodeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'studentCode',
         value: '',
       ));
     });
@@ -3175,160 +4331,6 @@ extension StudentCollectionQueryFilter
       ));
     });
   }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'whatsAppPhone',
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'whatsAppPhone',
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'whatsAppPhone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'whatsAppPhone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'whatsAppPhone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'whatsAppPhone',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'whatsAppPhone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'whatsAppPhone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'whatsAppPhone',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'whatsAppPhone',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'whatsAppPhone',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      whatsAppPhoneIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'whatsAppPhone',
-        value: '',
-      ));
-    });
-  }
 }
 
 extension StudentCollectionQueryObject
@@ -3340,6 +4342,20 @@ extension StudentCollectionQueryLinks
 extension StudentCollectionQuerySortBy
     on QueryBuilder<StudentCollection, StudentCollection, QSortBy> {
   QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
       sortByBirthDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'birthDate', Sort.asc);
@@ -3350,6 +4366,20 @@ extension StudentCollectionQuerySortBy
       sortByBirthDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'birthDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByBookingDeposit() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bookingDeposit', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByBookingDepositDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bookingDeposit', Sort.desc);
     });
   }
 
@@ -3410,6 +4440,34 @@ extension StudentCollectionQuerySortBy
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByDivisionEnum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'divisionEnum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByDivisionEnumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'divisionEnum', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByEmail() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'email', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByEmailDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'email', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
       sortByEntityId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'entityId', Sort.asc);
@@ -3466,20 +4524,6 @@ extension StudentCollectionQuerySortBy
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
-      sortByJoinDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'joinDate', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
-      sortByJoinDateDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'joinDate', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
       sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -3490,6 +4534,48 @@ extension StudentCollectionQuerySortBy
       sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByParentJob() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentJob', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByParentJobDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentJob', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByParentPhone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentPhone', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByParentPhoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentPhone', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByPaymentTypeEnum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paymentTypeEnum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByPaymentTypeEnumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paymentTypeEnum', Sort.desc);
     });
   }
 
@@ -3518,6 +4604,20 @@ extension StudentCollectionQuerySortBy
       sortBySchoolNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'schoolName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByStudentCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByStudentCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentCode', Sort.desc);
     });
   }
 
@@ -3576,24 +4676,24 @@ extension StudentCollectionQuerySortBy
       return query.addSortBy(r'version', Sort.desc);
     });
   }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
-      sortByWhatsAppPhone() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'whatsAppPhone', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
-      sortByWhatsAppPhoneDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'whatsAppPhone', Sort.desc);
-    });
-  }
 }
 
 extension StudentCollectionQuerySortThenBy
     on QueryBuilder<StudentCollection, StudentCollection, QSortThenBy> {
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
   QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
       thenByBirthDate() {
     return QueryBuilder.apply(this, (query) {
@@ -3605,6 +4705,20 @@ extension StudentCollectionQuerySortThenBy
       thenByBirthDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'birthDate', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByBookingDeposit() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bookingDeposit', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByBookingDepositDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bookingDeposit', Sort.desc);
     });
   }
 
@@ -3661,6 +4775,34 @@ extension StudentCollectionQuerySortThenBy
       thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByDivisionEnum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'divisionEnum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByDivisionEnumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'divisionEnum', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByEmail() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'email', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByEmailDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'email', Sort.desc);
     });
   }
 
@@ -3734,20 +4876,6 @@ extension StudentCollectionQuerySortThenBy
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
-      thenByJoinDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'joinDate', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
-      thenByJoinDateDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'joinDate', Sort.desc);
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
       thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -3758,6 +4886,48 @@ extension StudentCollectionQuerySortThenBy
       thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByParentJob() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentJob', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByParentJobDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentJob', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByParentPhone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentPhone', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByParentPhoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'parentPhone', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByPaymentTypeEnum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paymentTypeEnum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByPaymentTypeEnumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'paymentTypeEnum', Sort.desc);
     });
   }
 
@@ -3786,6 +4956,20 @@ extension StudentCollectionQuerySortThenBy
       thenBySchoolNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'schoolName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByStudentCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByStudentCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'studentCode', Sort.desc);
     });
   }
 
@@ -3844,28 +5028,28 @@ extension StudentCollectionQuerySortThenBy
       return query.addSortBy(r'version', Sort.desc);
     });
   }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
-      thenByWhatsAppPhone() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'whatsAppPhone', Sort.asc);
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
-      thenByWhatsAppPhoneDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'whatsAppPhone', Sort.desc);
-    });
-  }
 }
 
 extension StudentCollectionQueryWhereDistinct
     on QueryBuilder<StudentCollection, StudentCollection, QDistinct> {
   QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByAddress({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'address', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
       distinctByBirthDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'birthDate');
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByBookingDeposit() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'bookingDeposit');
     });
   }
 
@@ -3898,6 +5082,20 @@ extension StudentCollectionQueryWhereDistinct
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByDivisionEnum({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'divisionEnum', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct> distinctByEmail(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'email', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
       distinctByEntityId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'entityId', caseSensitive: caseSensitive);
@@ -3925,17 +5123,39 @@ extension StudentCollectionQueryWhereDistinct
     });
   }
 
-  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
-      distinctByJoinDate() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'joinDate');
-    });
-  }
-
   QueryBuilder<StudentCollection, StudentCollection, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByNotes() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'notes');
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByParentJob({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'parentJob', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByParentPhone({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'parentPhone', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByPaymentTypeEnum({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'paymentTypeEnum',
+          caseSensitive: caseSensitive);
     });
   }
 
@@ -3950,6 +5170,20 @@ extension StudentCollectionQueryWhereDistinct
       distinctBySchoolName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'schoolName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByStudentClasses() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'studentClasses');
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
+      distinctByStudentCode({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'studentCode', caseSensitive: caseSensitive);
     });
   }
 
@@ -3981,14 +5215,6 @@ extension StudentCollectionQueryWhereDistinct
       return query.addDistinctBy(r'version');
     });
   }
-
-  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
-      distinctByWhatsAppPhone({bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'whatsAppPhone',
-          caseSensitive: caseSensitive);
-    });
-  }
 }
 
 extension StudentCollectionQueryProperty
@@ -3999,10 +5225,23 @@ extension StudentCollectionQueryProperty
     });
   }
 
-  QueryBuilder<StudentCollection, DateTime, QQueryOperations>
+  QueryBuilder<StudentCollection, String?, QQueryOperations> addressProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'address');
+    });
+  }
+
+  QueryBuilder<StudentCollection, DateTime?, QQueryOperations>
       birthDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'birthDate');
+    });
+  }
+
+  QueryBuilder<StudentCollection, double?, QQueryOperations>
+      bookingDepositProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'bookingDeposit');
     });
   }
 
@@ -4031,6 +5270,19 @@ extension StudentCollectionQueryProperty
     });
   }
 
+  QueryBuilder<StudentCollection, String?, QQueryOperations>
+      divisionEnumProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'divisionEnum');
+    });
+  }
+
+  QueryBuilder<StudentCollection, String?, QQueryOperations> emailProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'email');
+    });
+  }
+
   QueryBuilder<StudentCollection, String, QQueryOperations> entityIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'entityId');
@@ -4056,16 +5308,37 @@ extension StudentCollectionQueryProperty
     });
   }
 
-  QueryBuilder<StudentCollection, DateTime, QQueryOperations>
-      joinDateProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'joinDate');
-    });
-  }
-
   QueryBuilder<StudentCollection, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<StudentCollection, List<String>?, QQueryOperations>
+      notesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'notes');
+    });
+  }
+
+  QueryBuilder<StudentCollection, String?, QQueryOperations>
+      parentJobProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'parentJob');
+    });
+  }
+
+  QueryBuilder<StudentCollection, String?, QQueryOperations>
+      parentPhoneProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'parentPhone');
+    });
+  }
+
+  QueryBuilder<StudentCollection, String?, QQueryOperations>
+      paymentTypeEnumProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'paymentTypeEnum');
     });
   }
 
@@ -4075,10 +5348,24 @@ extension StudentCollectionQueryProperty
     });
   }
 
-  QueryBuilder<StudentCollection, String, QQueryOperations>
+  QueryBuilder<StudentCollection, String?, QQueryOperations>
       schoolNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'schoolName');
+    });
+  }
+
+  QueryBuilder<StudentCollection, List<String>?, QQueryOperations>
+      studentClassesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'studentClasses');
+    });
+  }
+
+  QueryBuilder<StudentCollection, String, QQueryOperations>
+      studentCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'studentCode');
     });
   }
 
@@ -4106,13 +5393,6 @@ extension StudentCollectionQueryProperty
   QueryBuilder<StudentCollection, int, QQueryOperations> versionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'version');
-    });
-  }
-
-  QueryBuilder<StudentCollection, String?, QQueryOperations>
-      whatsAppPhoneProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'whatsAppPhone');
     });
   }
 }

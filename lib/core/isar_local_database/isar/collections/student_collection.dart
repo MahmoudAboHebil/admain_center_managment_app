@@ -17,22 +17,25 @@ class StudentCollection {
   late int version;
   late DateTime createdAt;
   late DateTime updatedAt;
-  @Index()
-  late String studyLevelId;
-  @Index()
+
   late String name;
-  @Index()
-  late String? phone;
-  @Index()
-  late String? homePhone;
-  @Index()
-  late String? whatsAppPhone;
-  @Index()
-  late String schoolName;
+  late String studyLevelId;
   late String gender;
-  late DateTime birthDate;
-  @Index()
-  late DateTime joinDate;
-  @Index()
+  late String studentCode;
+
+  late String? phone;
+  late String? homePhone;
+  late String? parentPhone;
+  late List<String>? studentClasses;
+  late double? bookingDeposit;
+  late List<String>? notes;
+  late String? paymentTypeEnum;
+
+  late String? address;
+  late String? schoolName;
+  late String? parentJob;
+  late String? divisionEnum;
+  late DateTime? birthDate;
+  late String? email;
   late String studentStatus;
 }
