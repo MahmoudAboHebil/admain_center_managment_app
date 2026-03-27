@@ -81,7 +81,7 @@ class StudentsGrid extends StatelessWidget {
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 24,
             mainAxisSpacing: 24,
-            childAspectRatio: 1.8,
+            childAspectRatio: 2.1,
           ),
           itemBuilder: (context, index) {
             if (index == children.length) {

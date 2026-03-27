@@ -13,6 +13,10 @@ abstract class StudentRepository {
   );
   Either<Failure, Stream<List<StudentCollection>>> getAllStudentsStream();
   Future<Either<Failure, StudentEntity?>> getStudent(String entityId);
+  Future<Either<Failure, List<StudentEntity>>> getEntitiesNameStartWith(
+    String name,
+  );
+
   Either<Failure, Stream<int>> watchStudentsCount();
 
   Future<Either<Failure, List<StudentEntity>>> getAllItemsNotArchived();

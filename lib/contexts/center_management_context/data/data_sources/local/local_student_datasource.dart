@@ -435,4 +435,30 @@ class LocalStudentDatasource implements LocalDbOperations<StudentEntity> {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, List<StudentEntity>>> getEntitiesNameStartWith(
+    String name,
+  ) async {
+    try {
+      final collections = await IsarService.isar.studentCollections
+          .filter()
+          .isDeletedEqualTo(false)
+          .and()
+          .nameStartsWith(name, caseSensitive: false)
+          .findAll();
+
+      final list = collections
+          .map((item) => StudentModel.fromCollection(item).toEntity())
+          .toList();
+
+      return Right(list);
+    } catch (e) {
+      return Left(
+        ProcessingFailure(
+          message: 'failed to get Entities NameStartWith $name student  ',
+        ),
+      );
+    }
+  }
 }

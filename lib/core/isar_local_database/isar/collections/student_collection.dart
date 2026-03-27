@@ -18,6 +18,7 @@ class StudentCollection {
   late DateTime createdAt;
   late DateTime updatedAt;
 
+  @Index(caseSensitive: false)
   late String name;
   late String studyLevelId;
   late String gender;

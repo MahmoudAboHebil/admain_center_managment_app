@@ -111,4 +111,18 @@ class StudentRepositoryImpl implements StudentRepository {
       return Left(ProcessingFailure(message: "failed to get Students"));
     }
   }
+
+  @override
+  Future<Either<Failure, List<StudentEntity>>> getEntitiesNameStartWith(
+    String name,
+  ) async {
+    try {
+      final result = await _datasource.getEntitiesNameStartWith(name);
+      return result;
+    } catch (e) {
+      return Left(
+        ProcessingFailure(message: "failed to  getEntities NameStartWith"),
+      );
+    }
+  }
 }

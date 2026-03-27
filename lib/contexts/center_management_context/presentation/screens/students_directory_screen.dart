@@ -111,11 +111,11 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
           if (isDesktop) const SideMenu(selectedIndex: 1),
           Expanded(
             child: Stack(
+              clipBehavior: Clip.none,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 65),
                   child: SingleChildScrollView(
-                    primary: true,
                     padding: const EdgeInsets.all(32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -308,97 +308,150 @@ class StudentsScreenAppBar extends StatefulWidget {
   State<StudentsScreenAppBar> createState() => _StudentsScreenAppBarState();
 }
 
-class _StudentsScreenAppBarState extends State<StudentsScreenAppBar> {
+class _StudentsScreenAppBarState extends State<StudentsScreenAppBar>
+    with SingleTickerProviderStateMixin {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchFocusNode = FocusNode();
-  final filterDataList = [];
+  List<StudentEntity> filterDataList = [];
+  final layerLink = LayerLink();
+  OverlayEntry? _overlayEntry;
+
+  // animation states
+  double _dropdownHeight = 0;
+  double _dropdownOpacity = 0;
+
   @override
   void initState() {
     super.initState();
+
     searchFocusNode.addListener(() {
-      setState(() {});
+      if (searchFocusNode.hasFocus) {
+        _showOverlay();
+      } else {
+        _hideOverlay();
+      }
     });
   }
 
   @override
   void dispose() {
+    searchController.dispose();
     searchFocusNode.dispose();
+    _removeOverlay();
     super.dispose();
+  }
+
+  void _showOverlay() {
+    if (_overlayEntry != null) return;
+
+    _dropdownHeight = 0;
+    _dropdownOpacity = 0;
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        width: 250,
+        child: CompositedTransformFollower(
+          link: layerLink,
+          showWhenUnlinked: false,
+          offset: const Offset(0, 55),
+          child: Material(
+            color: Colors.transparent,
+            elevation: 0,
+            borderRadius: BorderRadius.circular(8),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: _dropdownOpacity,
+              child: AnimatedSize(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeOut,
+                child: SizedBox(
+                  height: _dropdownHeight,
+                  child: _buildSearchDropdown(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(_overlayEntry!);
+    // start animation
+    Future.delayed(const Duration(milliseconds: 50), () {
+      setState(() {
+        _dropdownHeight = 250; // final height
+        _dropdownOpacity = 1;
+        _overlayEntry?.markNeedsBuild();
+      });
+    });
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  void _hideOverlay() {
+    setState(() {
+      filterDataList = [];
+      _dropdownHeight = 0;
+      _dropdownOpacity = 0;
+      _overlayEntry?.markNeedsBuild();
+    });
+
+    Future.delayed(const Duration(milliseconds: 250), () {
+      _removeOverlay();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Stack(
-        alignment: Alignment.topLeft,
-        clipBehavior: Clip.none,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Column(
         children: [
           TopAppBar(
             isDesktop: widget.isDesktop,
             label: 'الطلاب',
-            searchWidget: SizedBox(
-              width: 250,
-              child: TextField(
-                focusNode: searchFocusNode,
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: 'البحث بالاسم...',
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    size: 20,
-                    color: AppColors.onSurfaceVariant,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 0,
-                    horizontal: 16,
-                  ),
-                  fillColor: searchFocusNode.hasFocus
-                      ? Colors.white
-                      : AppColors.surfaceContainerHigh,
-                  filled: true,
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
-                  disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(100),
-                    borderSide: BorderSide.none,
+            searchWidget: CompositedTransformTarget(
+              link: layerLink,
+              child: SizedBox(
+                width: 250,
+                child: TextField(
+                  controller: searchController,
+                  focusNode: searchFocusNode,
+                  onChanged: (text) async {
+                    setState(() {
+                      filterDataList = [];
+                    });
+                    if (text.isNotEmpty) {
+                      print(text);
+                      final result = await sl<StudentRepository>()
+                          .getEntitiesNameStartWith(text);
+                      result.fold(
+                        ifLeft: (_) {},
+                        ifRight: (data) {
+                          setState(() {
+                            filterDataList = data;
+                            // refresh overlay height
+                            _overlayEntry?.markNeedsBuild();
+                          });
+                        },
+                      );
+                    }
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'البحث بالاسم...',
+                    prefixIcon: const Icon(Icons.search, size: 20),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    fillColor: searchFocusNode.hasFocus
+                        ? Colors.white
+                        : AppColors.surfaceContainerHigh,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.easeOut,
-
-            width: 250,
-            height: searchFocusNode.hasFocus ? 250 : 0,
-            left: 88,
-            top: searchFocusNode.hasFocus ? 70 : 60, // 🔥 حركة بسيطة لفوق
-
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: searchFocusNode.hasFocus ? 1 : 0,
-
-              child: IgnorePointer(
-                ignoring: !searchFocusNode.hasFocus,
-                child: _buildSearchDropdown(),
               ),
             ),
           ),
@@ -411,99 +464,109 @@ class _StudentsScreenAppBarState extends State<StudentsScreenAppBar> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: AppColors.surfaceContainerLowest,
+        color: Colors.transparent,
       ),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: AppColors.surfaceContainerLowest,
-            ),
-            height: 250,
-            width: 250,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 12, top: 12, left: 12),
-                  child: Text(
-                    "نتائج البحث",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
-                  ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 0,
-
-                    itemBuilder: (context, index) {
-                      StudyLevelEntity? level;
-                      for (var item in studyLevels) {
-                        if (item.entityId ==
-                            filterDataList[index].studyLevelId) {
-                          level = item;
-                        }
-                      }
-                      final division = filterDataList[index].divisionEnum;
-
-                      return Padding(
-                        padding: EdgeInsets.only(top: 8, right: 12, left: 12),
-                        child: SearchStudentCard(
-                          name: filterDataList[index].name,
-                          level: division == null
-                              ? level?.arabicName ?? ''
-                              : '${level?.arabicName ?? ''} • ${division.description}',
-                          id: filterDataList[index].studentCode,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppColors.surfaceContainer,
+              ),
+              width: 250,
+              padding: EdgeInsets.only(bottom: 12),
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          right: 12,
+                          top: 12,
+                          left: 12,
                         ),
-                      );
-                    },
+                        child: Text(
+                          "نتائج البحث",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                      ...(filterDataList.length >= 4
+                              ? filterDataList.getRange(0, 4)
+                              : filterDataList)
+                          .map((item) {
+                            StudyLevelEntity? level;
+                            for (var l in studyLevels) {
+                              if (l.entityId == item.studyLevelId) level = l;
+                            }
+                            final division = item.divisionEnum;
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                top: 8,
+                                right: 12,
+                                left: 12,
+                              ),
+                              child: SearchStudentCard(
+                                name: item.name,
+                                level: division == null
+                                    ? level?.arabicName ?? ''
+                                    : '${level?.arabicName ?? ''} • ${division.description}',
+                                id: item.studentCode,
+                              ),
+                            );
+                          })
+                          .toList(),
+                    ],
                   ),
-                ),
-                filterDataList.length > 5
-                    ? TextButton(
-                        style: ButtonStyle(
-                          padding: WidgetStateProperty.all(EdgeInsets.zero),
-                          shape: WidgetStatePropertyAll(
-                            RoundedRectangleBorder(
+                  filterDataList.length >= 4
+                      ? TextButton(
+                          style: ButtonStyle(
+                            padding: WidgetStateProperty.all(EdgeInsets.zero),
+                            shape: WidgetStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadiusGeometry.only(
+                                  bottomLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(8),
+                                  topLeft: Radius.circular(0),
+                                  topRight: Radius.circular(0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          clipBehavior: Clip.none,
+                          onPressed: () {},
+                          child: Container(
+                            height: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadiusGeometry.only(
                                 bottomLeft: Radius.circular(8),
                                 bottomRight: Radius.circular(8),
                                 topLeft: Radius.circular(0),
                                 topRight: Radius.circular(0),
                               ),
-                            ),
-                          ),
-                        ),
-                        clipBehavior: Clip.none,
-                        onPressed: () {},
-                        child: Container(
-                          height: 40,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadiusGeometry.only(
-                              bottomLeft: Radius.circular(8),
-                              bottomRight: Radius.circular(8),
-                              topLeft: Radius.circular(0),
-                              topRight: Radius.circular(0),
-                            ),
-                            color: AppColors.primary.withOpacity(0.05),
-                          ),
-                          child: Text(
-                            'عرض جميع النتائج',
-                            style: TextStyle(
                               color: AppColors.primary,
-                              fontSize: 12,
+                            ),
+                            child: Text(
+                              'عرض جميع النتائج',
+                              style: TextStyle(
+                                color: AppColors.onPrimary,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    : SizedBox(),
-              ],
+                        )
+                      : SizedBox(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
