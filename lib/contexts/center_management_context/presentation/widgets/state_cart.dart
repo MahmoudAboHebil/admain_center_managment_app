@@ -9,25 +9,27 @@ class StatCard extends StatelessWidget {
     required this.label,
     required this.value,
     required this.valueColor,
+    this.isDesktop = true,
   });
   final String label;
   final String value;
   final Color valueColor;
+  final bool isDesktop;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 125,
+      height: 100,
       alignment: Alignment.center,
 
-      padding: const EdgeInsets.all(24),
+      padding: isDesktop ? EdgeInsets.all(24) : EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: AppColors.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.outlineVariant.withOpacity(0.15)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
@@ -38,12 +40,17 @@ class StatCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: isDesktop ? 8 : 5),
           Text(
             value,
-            style: AppTypography.textTheme.headlineLarge?.copyWith(
-              color: valueColor,
-            ),
+            style: isDesktop
+                ? AppTypography.textTheme.headlineMedium?.copyWith(
+                    color: valueColor,
+                  )
+                : AppTypography.textTheme.headlineMedium?.copyWith(
+                    color: valueColor,
+                    fontSize: 20,
+                  ),
           ),
         ],
       ),

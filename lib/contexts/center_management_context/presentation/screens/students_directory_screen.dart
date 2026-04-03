@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/student_repository.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/filter_panel.dart';
+import 'package:admain_center_managment_app/core/helper/helper.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../config/theme/colors.dart';
 import '../../../../config/theme/typography.dart';
@@ -16,6 +20,7 @@ import '../widgets/side_menu.dart';
 import '../widgets/state_cart.dart';
 import '../widgets/students_grid.dart';
 import '../widgets/top_appBar.dart';
+import 'mobile_app_screens/student_filter_screen.dart';
 
 class StudentsDirectoryScreen extends StatefulWidget {
   const StudentsDirectoryScreen({super.key});
@@ -26,10 +31,32 @@ class StudentsDirectoryScreen extends StatefulWidget {
 }
 
 class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
+  late StreamSubscription subscription;
   bool isFilter = false;
   List<StudentEntity> filterDataList = [];
   bool isGettingFilterData = false;
   bool isPressingFilter = false;
+
+  final BehaviorSubject<int> studentCountSubject = BehaviorSubject<int>();
+  @override
+  void dispose() {
+    subscription.cancel();
+    studentCountSubject.close();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final stream = sl<StudentRepository>().watchStudentsCount().getOrElse(
+      () => const Stream.empty(),
+    );
+
+    subscription = stream.listen((value) {
+      studentCountSubject.add(value);
+    });
+  }
+
   Future<void> getFilterData(FilterParams filterKeys) async {
     if (isGettingFilterData) return;
 
@@ -101,14 +128,27 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-    final bool isDesktop = width > 900;
+    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Row(
+      body: getScreen(width),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.onPrimary,
+        child: const Icon(Icons.cloud_download),
+      ),
+    );
+  }
+
+  Widget getScreen(double width) {
+    if (width < 600) {
+      return Container();
+    } else if (width < 1024) {
+      return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (isDesktop) const SideMenu(selectedIndex: 1),
+          width < 695.0 ? SizedBox() : SideMenu(selectedIndex: 1),
           Expanded(
             child: Stack(
               clipBehavior: Clip.none,
@@ -137,7 +177,189 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'إدارة التسجيل',
+                                  'إدارة الطلاب',
+                                  style: AppTypography.textTheme.headlineSmall,
+                                ),
+                              ],
+                            ),
+                            const AddStudentButton(),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
+
+                        // StatsRow==================================
+                        Column(
+                          children: [
+                            StreamBuilder<int>(
+                              stream: studentCountSubject,
+                              builder: (context, snapshot) {
+                                final isLoading =
+                                    snapshot.connectionState ==
+                                    ConnectionState.waiting;
+
+                                final count = snapshot.data ?? 0;
+                                return StatCard(
+                                  isDesktop: false,
+                                  label: 'إجمالي الطلاب',
+                                  value: isLoading
+                                      ? '...'
+                                      : Helper.formatNumber(count),
+                                  valueColor: AppColors.tertiary,
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            StatCard(
+                              isDesktop: false,
+                              label: 'الفصول النشطة',
+                              value: Helper.formatNumber(20000),
+                              valueColor: AppColors.tertiary,
+                            ),
+                            const SizedBox(height: 24),
+                            const StatCard(
+                              isDesktop: false,
+
+                              label: 'متوسط الحضور',
+                              value: '89.9%',
+                              valueColor: AppColors.onSurface,
+                            ),
+                            const SizedBox(height: 24),
+                            FilterCartButton(
+                              isDesktop: false,
+
+                              onChange: () {
+                                setState(() {
+                                  isFilter = !isFilter;
+                                  isPressingFilter = false;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+
+                        // FilterPanel==================================
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AnimatedSlide(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                              offset: isFilter ? Offset(0, 0) : Offset(1, 0),
+                              child: isFilter
+                                  ? Column(
+                                      children: [
+                                        const SizedBox(height: 40),
+                                        FilterPanel(
+                                          onChange: (p0) async {
+                                            isPressingFilter = true;
+                                            await getFilterData(p0);
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox(),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
+                        // count filter data==================================
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.person_search_outlined,
+                              color: AppColors.primary,
+                              size: 20,
+                            ),
+                            Text(
+                              "  تم العثور على ",
+                              style: TextStyle(color: AppColors.outline),
+                            ),
+                            !isPressingFilter
+                                ? StreamBuilder<int>(
+                                    stream: studentCountSubject,
+                                    builder: (context, snapshot) {
+                                      final isLoading =
+                                          snapshot.connectionState ==
+                                          ConnectionState.waiting;
+
+                                      final count = snapshot.data ?? 0;
+                                      return Text(
+                                        "${isLoading ? '?' : Helper.formatNumber(count)} ",
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Text(
+                                    " ${filterDataList.length} ",
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                            Text(
+                              "طلاب",
+                              style: TextStyle(color: AppColors.outline),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        // StudentsGrid==================================
+                        StudentsGrid(
+                          isLoading: isGettingFilterData,
+                          filterDataList: (isFilter && isPressingFilter)
+                              ? filterDataList
+                              : null,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                StudentsScreenAppBar(isDesktop: true),
+              ],
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          width < 695.0 ? SizedBox() : SideMenu(selectedIndex: 1),
+
+          Expanded(
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 65),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // PageHeader==================================
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'دليل الطلاب',
+                                  style: AppTypography.textTheme.bodyMedium
+                                      ?.copyWith(
+                                        color: AppColors.onSurfaceVariant,
+                                      ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'إدارة الطلاب',
                                   style: AppTypography.textTheme.headlineLarge,
                                 ),
                               ],
@@ -152,9 +374,7 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
                           children: [
                             Expanded(
                               child: StreamBuilder<int>(
-                                stream: sl<StudentRepository>()
-                                    .watchStudentsCount()
-                                    .getOrElse(() => const Stream.empty()),
+                                stream: studentCountSubject,
                                 builder: (context, snapshot) {
                                   final isLoading =
                                       snapshot.connectionState ==
@@ -164,7 +384,9 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
 
                                   return StatCard(
                                     label: 'إجمالي الطلاب',
-                                    value: isLoading ? '...' : '$count',
+                                    value: isLoading
+                                        ? '...'
+                                        : Helper.formatNumber(count),
                                     valueColor: AppColors.tertiary,
                                   );
                                 },
@@ -172,9 +394,9 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
                             ),
                             const SizedBox(width: 24),
                             Expanded(
-                              child: const StatCard(
+                              child: StatCard(
                                 label: 'الفصول النشطة',
-                                value: 'XXXX',
+                                value: Helper.formatNumber(20000),
                                 valueColor: AppColors.tertiary,
                               ),
                             ),
@@ -182,7 +404,7 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
                             Expanded(
                               child: const StatCard(
                                 label: 'متوسط الحضور',
-                                value: 'XXXX%',
+                                value: '89.9%',
                                 valueColor: AppColors.onSurface,
                               ),
                             ),
@@ -240,9 +462,7 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
                             ),
                             !isPressingFilter
                                 ? StreamBuilder<int>(
-                                    stream: sl<StudentRepository>()
-                                        .watchStudentsCount()
-                                        .getOrElse(() => const Stream.empty()),
+                                    stream: studentCountSubject,
                                     builder: (context, snapshot) {
                                       final isLoading =
                                           snapshot.connectionState ==
@@ -250,7 +470,7 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
 
                                       final count = snapshot.data ?? 0;
                                       return Text(
-                                        "${isLoading ? '?' : count} ",
+                                        "${isLoading ? '?' : Helper.formatNumber(count)} ",
                                         style: TextStyle(
                                           color: AppColors.primary,
                                           fontWeight: FontWeight.bold,
@@ -284,19 +504,13 @@ class _StudentsDirectoryScreenState extends State<StudentsDirectoryScreen> {
                     ),
                   ),
                 ),
-                StudentsScreenAppBar(isDesktop: isDesktop),
+                StudentsScreenAppBar(isDesktop: true),
               ],
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.onPrimary,
-        child: const Icon(Icons.cloud_download),
-      ),
-    );
+      );
+    }
   }
 }
 

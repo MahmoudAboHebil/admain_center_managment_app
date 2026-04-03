@@ -4,7 +4,8 @@ import '../../../../config/theme/colors.dart';
 import '../screens/add_student_screen.dart';
 
 class AddStudentCartButton extends StatelessWidget {
-  const AddStudentCartButton({super.key});
+  const AddStudentCartButton({super.key, required this.isDesktop});
+  final bool isDesktop;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,8 @@ class AddStudentCartButton extends StatelessWidget {
         );
       },
       child: Container(
+        height: 140,
+
         decoration: BoxDecoration(
           color: AppColors.surfaceContainerLow.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),

@@ -1,6 +1,8 @@
+import 'package:admain_center_managment_app/config/theme/colors.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/entities/study_level_entity.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/loading/student_grid_skeleton.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/student_card.dart';
+import 'package:admain_center_managment_app/sync_engine/data/models/student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
@@ -13,30 +15,44 @@ import '../../../../core/isar_local_database/isar/isar_service.dart';
 import '../../../../sync_engine/domain/entities/student_entity.dart';
 import 'add_student_cart_button.dart';
 
-class StudentsGrid extends StatelessWidget {
+class StudentsGrid extends StatefulWidget {
   const StudentsGrid({super.key, this.filterDataList, required this.isLoading});
 
   final List<StudentEntity>? filterDataList;
   final bool isLoading;
 
   @override
+  State<StudentsGrid> createState() => _StudentsGridState();
+}
+
+class _StudentsGridState extends State<StudentsGrid> {
+  late Stream<List<StudentCollection>> studentStream;
+  @override
+  void initState() {
+    super.initState();
+    studentStream = IsarService.isar.studentCollections
+        .filter()
+        .isDeletedEqualTo(false)
+        .sortByCreatedAtDesc()
+        .watch(fireImmediately: true)
+        .asBroadcastStream();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (isLoading) {
+    /// todo: you need handle this
+    if (widget.isLoading) {
       return const StudentGridSkeleton();
     }
 
     // Case 1: Filtered data
-    if (filterDataList != null) {
-      return _buildGrid(_mapStudents(filterDataList!));
+    if (widget.filterDataList != null) {
+      return _buildGrid(_mapStudents(widget.filterDataList!));
     }
 
     // Case 2: Stream data
     return StreamBuilder<List<StudentCollection>>(
-      stream: IsarService.isar.studentCollections
-          .filter()
-          .isDeletedEqualTo(false)
-          .sortByCreatedAtDesc()
-          .watch(fireImmediately: true),
+      stream: studentStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const StudentGridSkeleton();
@@ -67,10 +83,16 @@ class StudentsGrid extends StatelessWidget {
       builder: (context, constraints) {
         int crossAxisCount = 1;
 
-        if (constraints.maxWidth > 1200) {
+        if (constraints.maxWidth >= 1400) {
+          crossAxisCount = 5;
+        } else if (constraints.maxWidth >= 1200) {
           crossAxisCount = 4;
-        } else if (constraints.maxWidth > 800) {
+        } else if (constraints.maxWidth >= 900) {
           crossAxisCount = 3;
+        } else if (constraints.maxWidth >= 600) {
+          crossAxisCount = 2;
+        } else {
+          crossAxisCount = 1;
         }
 
         return GridView.builder(
@@ -81,11 +103,14 @@ class StudentsGrid extends StatelessWidget {
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 24,
             mainAxisSpacing: 24,
-            childAspectRatio: 2.1,
+            childAspectRatio: 1.6,
+            mainAxisExtent: 140,
           ),
           itemBuilder: (context, index) {
             if (index == children.length) {
-              return const AddStudentCartButton();
+              return AddStudentCartButton(
+                isDesktop: constraints.maxWidth >= 1024,
+              );
             }
             return children[index];
           },
@@ -99,7 +124,9 @@ class StudentsGrid extends StatelessWidget {
   /// ----------------------------
 
   List<Widget> _mapStudents(List<StudentEntity> list) {
-    return list.map((e) {
+    List<Widget> myWidgetsList = [];
+    for (var item in list.indexed) {
+      var e = item.$2;
       StudyLevelEntity? level;
       for (var item in studyLevels) {
         if (item.entityId == e.studyLevelId) {
@@ -108,12 +135,12 @@ class StudentsGrid extends StatelessWidget {
       }
       final division = e.divisionEnum;
 
-      return _buildStudentCard(
-        name: e.name,
+      var widget = _buildStudentCard(
+        student: e,
+        sideColor: item.$1 % 2 == 0 ? AppColors.primary : AppColors.secondary,
         level: division == null
             ? level?.arabicName ?? ''
             : '${level?.arabicName ?? ''} • ${division.description}',
-        id: e.studentCode,
         status: e.studentStatus.description,
         isStatusGreen: e.studentStatus == StudentStatus.active,
         subStatus:
@@ -121,11 +148,15 @@ class StudentsGrid extends StatelessWidget {
             PaymentTypeEnum.byMonth.description,
         isStatusRed: e.studentStatus == StudentStatus.latePayment,
       );
-    }).toList();
+      myWidgetsList.add(widget);
+    }
+    return myWidgetsList;
   }
 
   List<Widget> _mapCollections(List<StudentCollection> list) {
-    return list.map((e) {
+    List<Widget> myWidgetsList = [];
+    for (var item in list.indexed) {
+      var e = item.$2;
       StudyLevelEntity? level;
       for (var item in studyLevels) {
         if (item.entityId == e.studyLevelId) {
@@ -145,18 +176,20 @@ class StudentsGrid extends StatelessWidget {
         e.studentStatus,
       );
 
-      return _buildStudentCard(
-        name: e.name,
+      Widget myWidget = _buildStudentCard(
+        student: StudentModel.fromCollection(e).toEntity(),
+        sideColor: item.$1 % 2 == 0 ? AppColors.primary : AppColors.secondary,
         level: division == null
             ? level?.arabicName ?? ''
             : '${level?.arabicName ?? ''} • ${division.description}',
-        id: e.studentCode,
         status: statusEnum.description,
         isStatusGreen: e.studentStatus == StudentStatus.active.name,
         subStatus: payment.description,
         isStatusRed: e.studentStatus == StudentStatus.latePayment.name,
       );
-    }).toList();
+      myWidgetsList.add(myWidget);
+    }
+    return myWidgetsList;
   }
 
   /// ----------------------------
@@ -164,18 +197,18 @@ class StudentsGrid extends StatelessWidget {
   /// ----------------------------
 
   Widget _buildStudentCard({
-    required String name,
+    required StudentEntity student,
     required String level,
-    required String id,
+    required Color sideColor,
     required String status,
     required bool isStatusGreen,
     required bool isStatusRed,
     required String subStatus,
   }) {
     return StudentCard(
-      name: name,
+      student: student,
+      sideColor: sideColor,
       level: level,
-      id: id,
       status: status,
       isStatusGreen: isStatusGreen,
       subStatus: subStatus,

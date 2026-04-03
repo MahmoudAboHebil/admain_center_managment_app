@@ -1,11 +1,13 @@
+import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../config/theme/colors.dart';
+import '../screens/mobile_app_screens/student_profile_screen.dart';
 
 class StudentCard extends StatefulWidget {
-  final String name;
+  final StudentEntity student;
   final String level;
-  final String id;
+  final Color sideColor;
   final String status;
   final String subStatus;
   final bool isStatusGreen;
@@ -13,13 +15,13 @@ class StudentCard extends StatefulWidget {
 
   const StudentCard({
     super.key,
-    required this.name,
     required this.level,
-    required this.id,
     required this.status,
     required this.subStatus,
     this.isStatusGreen = false,
     this.isStatusRed = false,
+    required this.sideColor,
+    required this.student,
   });
 
   @override
@@ -51,161 +53,193 @@ class _StudentCardState extends State<StudentCard> {
       onExit: (_) {
         setState(() => isHover = false);
       },
-      child: Container(
-        padding: const EdgeInsets.only(
-          top: 20,
-          right: 20,
-          left: 20,
-          bottom: 12,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceContainerLowest,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isHover
-                ? AppColors.outlineVariant.withOpacity(0.3)
-                : const Color(0xFFAFB1BC).withOpacity(0.15),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  StudentProfileScreen(student: widget.student),
+            ),
+          );
+        },
+        child: Stack(
           children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              width: 20,
+              decoration: BoxDecoration(
+                color: widget.sideColor,
+                borderRadius: BorderRadius.circular(300),
+              ),
+            ),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                SizedBox(width: 5),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2F323A),
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.level,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF495F8B), // primary
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.id,
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: Color(0xFF5C5F68),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                CompositedTransformTarget(
-                  link: _layerLink,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    icon: const Icon(
-                      Icons.more_vert,
-                      color: Color(0xFF5C5F68),
-                      size: 20,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      right: 20,
+                      left: 20,
+                      bottom: 12,
                     ),
-                    onPressed: _toggleMenu,
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceContainerLowest,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: isHover
+                            ? AppColors.outlineVariant.withOpacity(0.3)
+                            : const Color(0xFFAFB1BC).withOpacity(0.15),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.student.name,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF2F323A),
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    widget.level,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF495F8B), // primary
+                                    ),
+                                  ),
+                                  // const SizedBox(height: 4),
+                                  // Text(
+                                  //   widget.id,
+                                  //   style: const TextStyle(
+                                  //     fontSize: 10,
+                                  //     color: Color(0xFF5C5F68),
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                            ),
+                            CompositedTransformTarget(
+                              link: _layerLink,
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: Color(0xFF5C5F68),
+                                  size: 20,
+                                ),
+                                onPressed: _toggleMenu,
 
-                    splashRadius: 20,
+                                splashRadius: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.only(top: 12),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: const Color(0xFFAFB1BC).withOpacity(0.1),
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: statusBgColor,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      widget.status,
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: statusTextColor,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: const Color(
+                                        0xFFE7E8F1,
+                                      ), // surface-container-high
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      widget.subStatus,
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF5C5F68),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                style: TextButton.styleFrom(
+                                  foregroundColor: const Color(0xFF495F8B),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: BorderSide(
+                                      color: const Color(
+                                        0xFF495F8B,
+                                      ).withOpacity(0.2),
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'تعديل',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
-            ),
-            SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.only(top: 12),
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: const Color(0xFFAFB1BC).withOpacity(0.1),
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: statusBgColor,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          widget.status,
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: statusTextColor,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(
-                            0xFFE7E8F1,
-                          ), // surface-container-high
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          widget.subStatus,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF5C5F68),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      foregroundColor: const Color(0xFF495F8B),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(
-                          color: const Color(0xFF495F8B).withOpacity(0.2),
-                        ),
-                      ),
-                    ),
-                    child: const Text(
-                      'تعديل',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),

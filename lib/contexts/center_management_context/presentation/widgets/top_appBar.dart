@@ -17,10 +17,10 @@ class TopAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      height: 60,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.8),
+        color: AppColors.surface.withOpacity(0.9),
         border: Border(
           bottom: BorderSide(color: AppColors.outlineVariant.withOpacity(0.1)),
         ),
@@ -30,10 +30,6 @@ class TopAppBar extends StatelessWidget {
         children: [
           Row(
             children: [
-              if (!isDesktop) ...[
-                const Icon(Icons.menu),
-                const SizedBox(width: 16),
-              ],
               Text(
                 label,
                 style: AppTypography.textTheme.titleLarge?.copyWith(
@@ -45,7 +41,6 @@ class TopAppBar extends StatelessWidget {
           ),
           Row(
             children: [
-              searchWidget ?? SizedBox(),
               const SizedBox(width: 16),
               Container(
                 decoration: const BoxDecoration(

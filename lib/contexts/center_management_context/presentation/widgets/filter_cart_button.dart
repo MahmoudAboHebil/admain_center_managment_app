@@ -3,12 +3,19 @@ import 'package:flutter/material.dart';
 import '../../../../config/theme/colors.dart';
 
 class FilterCartButton extends StatelessWidget {
-  const FilterCartButton({super.key, required this.onChange});
+  const FilterCartButton({
+    super.key,
+    required this.onChange,
+    this.isDesktop = true,
+  });
+  final bool isDesktop;
   final VoidCallback onChange;
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 125,
+      height: isDesktop ? 125 : null,
+      padding: isDesktop ? null : EdgeInsets.all(18),
+
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: AppColors.primary.withOpacity(0.05),

@@ -11,10 +11,18 @@ class StudentGridSkeleton extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         int crossAxisCount = 1;
-        if (constraints.maxWidth > 1200)
+
+        if (constraints.maxWidth >= 1400) {
+          crossAxisCount = 5;
+        } else if (constraints.maxWidth >= 1200) {
           crossAxisCount = 4;
-        else if (constraints.maxWidth > 800)
+        } else if (constraints.maxWidth >= 900) {
           crossAxisCount = 3;
+        } else if (constraints.maxWidth >= 600) {
+          crossAxisCount = 2;
+        } else {
+          crossAxisCount = 1;
+        }
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -22,7 +30,8 @@ class StudentGridSkeleton extends StatelessWidget {
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 24,
             mainAxisSpacing: 24,
-            childAspectRatio: 1.8,
+            childAspectRatio: 1.6,
+            mainAxisExtent: 160,
           ),
           itemCount: 6,
           itemBuilder: (context, index) {
@@ -67,10 +76,6 @@ class StudentGridSkeleton extends StatelessWidget {
                       child: const _SkeletonBlock(height: 12),
                     ),
                     const SizedBox(height: 8),
-                    FractionallySizedBox(
-                      widthFactor: wMultiplier * 0.5,
-                      child: const _SkeletonBlock(height: 8),
-                    ),
                   ],
                 ),
               ),

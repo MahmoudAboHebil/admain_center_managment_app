@@ -1,233 +1,137 @@
+import 'package:admain_center_managment_app/config/theme/colors.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../sync_engine/domain/entities/standard_table_record.dart';
 import '../enums/DB_Table.dart';
 import '../error/netwrok_response.dart';
 
+class ParsedPhone {
+  String countryCode;
+  String phone;
+
+  ParsedPhone({required this.countryCode, required this.phone});
+}
+
 class Helper {
-  /*
-  static Future<StudentEntity?> showAddStudentDialog(
+  static Future<String?> showPhoneDialog(
     BuildContext context,
-    List<StudyLevelEntity> studyLevels,
+    String? fullPhone,
+    String label,
   ) async {
-    final formKey = GlobalKey<FormState>();
-
-    String? studyLevelId;
-    String name = '';
-    String? phone;
-    String? homePhone;
-    String? whatsAppPhone;
-    String schoolName = '';
-    Gender? gender;
-    DateTime? birthDate;
-
-    final result = await showDialog<StudentEntity?>(
+    TextEditingController phoneController = TextEditingController();
+    String? countryCode;
+    String? outPut;
+    if (fullPhone != null && fullPhone.isNotEmpty) {
+      final parsed = parsePhone(fullPhone);
+      phoneController = TextEditingController(text: parsed.phone);
+      countryCode = parsed.countryCode;
+    }
+    outPut = await showDialog<String?>(
       context: context,
       builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text("إضافة طالب"),
-              content: SizedBox(
-                width: 400,
-                child: Form(
-                  key: formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        /// المرحلة التعليمية
-                        DropdownButtonFormField<StudyLevelEntity>(
-                          decoration: const InputDecoration(
-                            labelText: "المرحلة التعليمية",
-                          ),
-                          items: studyLevels
-                              .map(
-                                (level) => DropdownMenuItem(
-                                  value: level,
-                                  child: Text(level.arabicName),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (value) {
-                            studyLevelId = value?.entityId;
-                          },
-                          validator: (value) =>
-                              value == null ? "اختر المرحلة التعليمية" : null,
-                        ),
-
-                        /// الاسم
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "اسم الطالب",
-                          ),
-                          validator: (value) => value == null || value.isEmpty
-                              ? "ادخل الاسم"
-                              : null,
-                          onSaved: (value) => name = value!,
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        /// تاريخ الميلاد
-                        TextFormField(
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: "تاريخ الميلاد",
-                            suffixIcon: const Icon(Icons.calendar_today),
-                          ),
-                          controller: TextEditingController(
-                            text: birthDate == null
-                                ? ""
-                                : "${birthDate!.day}/${birthDate!.month}/${birthDate!.year}",
-                          ),
-                          validator: (_) =>
-                              birthDate == null ? "اختر تاريخ الميلاد" : null,
-                          onTap: () async {
-                            final picked = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime(2015),
-                              firstDate: DateTime(1990),
-                              lastDate: DateTime.now(),
-                            );
-
-                            if (picked != null) {
-                              setState(() {
-                                birthDate = picked;
-                              });
-                            }
-                          },
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        /// رقم الموبايل
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "رقم الموبايل",
-                          ),
-                          keyboardType: TextInputType.phone,
-                          onSaved: (value) => phone = value,
-                        ),
-
-                        /// رقم المنزل
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "رقم المنزل",
-                          ),
-                          keyboardType: TextInputType.phone,
-                          onSaved: (value) => homePhone = value,
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        /// واتساب
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "رقم واتساب",
-                          ),
-                          keyboardType: TextInputType.phone,
-                          onSaved: (value) => whatsAppPhone = value,
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        /// اسم المدرسة
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "اسم المدرسة",
-                          ),
-                          validator: (value) => value == null || value.isEmpty
-                              ? "ادخل اسم المدرسة"
-                              : null,
-                          onSaved: (value) => schoolName = value!,
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        /// النوع
-                        DropdownButtonFormField<Gender>(
-                          decoration: const InputDecoration(labelText: "النوع"),
-                          items: const [
-                            DropdownMenuItem(
-                              value: Gender.male,
-                              child: Text("ذكر"),
-                            ),
-                            DropdownMenuItem(
-                              value: Gender.female,
-                              child: Text("أنثى"),
-                            ),
-                          ],
-                          onChanged: (value) => gender = value,
-                          validator: (value) =>
-                              value == null ? "اختر النوع" : null,
-                        ),
-                      ],
-                    ),
+        return Dialog(
+          child: Container(
+            width: 350,
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("إلغاء"),
+
+                SizedBox(height: 20),
+
+                Row(
+                  children: [
+                    CountryCodePicker(
+                      initialSelection: countryCode, // 👈 مهم
+                      onChanged: (code) {
+                        countryCode = code.dialCode!;
+                      },
+                    ),
+
+                    Expanded(
+                      child: TextField(
+                        controller: phoneController,
+                        keyboardType: TextInputType.phone,
+                      ),
+                    ),
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
 
-                      final student = {
-                        "studyLevelId": studyLevelId,
-                        "name": name,
-                        "birthDate": birthDate,
-                        "phone": phone,
-                        "schoolName": schoolName,
-                        "gender": gender,
-                      };
-                      final uuid = Uuid();
-                      final newStudent = StudentEntity(
-                        entityId: uuid.v4(),
-                        centerId: currentCenter.entityId,
-                        byUser: currentUserId,
-                        byDevice: currentDevice,
-                        isDeleted: false,
-                        version: 1,
-                        createdAt: DateTime.now().toUtc(),
-                        updatedAt: DateTime.now().toUtc(),
-                        studyLevelId: studyLevelId!,
-                        name: name,
-                        schoolName: schoolName,
-                        gender: gender!,
-                        birthDate: birthDate!.toUtc(),
-                        joinDate: DateTime.now().toUtc(),
-                        studentStatus: StudentStatus.inactive,
-                        whatsAppPhone: whatsAppPhone,
-                        phone: phone,
-                        homePhone: homePhone,
-                      );
+                SizedBox(height: 20),
 
-                      print(student);
-
-                      Navigator.pop(context, newStudent);
-                    }
-                  },
-                  child: const Text("حفظ"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        String finalPhone =
+                            "$countryCode${phoneController.text}";
+                        print(finalPhone);
+                        Navigator.pop(context);
+                      },
+                      child: Text("الغاء"),
+                    ),
+                    SizedBox(width: 12),
+                    ElevatedButton(
+                      onPressed: () {
+                        String finalPhone =
+                            "$countryCode ${phoneController.text}";
+                        Navigator.pop(context, finalPhone);
+                      },
+                      child: Text("تأكيد"),
+                    ),
+                  ],
                 ),
               ],
-            );
-          },
+            ),
+          ),
         );
       },
     );
-    return result;
+    return outPut;
   }
 
+  static ParsedPhone parsePhone(String fullPhone) {
+    String countryCode = "+20"; // default
+    String phone = fullPhone;
 
-   */
+    if (fullPhone.contains(" ")) {
+      // 👈 لو فيه space
+      List parts = fullPhone.split(" ");
+      countryCode = parts.first;
+      phone = parts.sublist(1).join("");
+    } else if (fullPhone.startsWith("+")) {
+      // 👈 لو مفيش space
+      // نفترض كود الدولة أول 3 أرقام (زي +20)
+      countryCode = fullPhone.substring(0, 3);
+      phone = fullPhone.substring(3);
+    }
+
+    return ParsedPhone(countryCode: countryCode, phone: phone);
+  }
+
   static Iterable<List<T>> chunk<T>(List<T> list, int size) sync* {
     for (int i = 0; i < list.length; i += size) {
       yield list.sublist(i, i + size > list.length ? list.length : i + size);
+    }
+  }
+
+  static String formatNumber(int number) {
+    if (number >= 10000) {
+      return NumberFormat.compact().format(number);
+    } else {
+      return NumberFormat('#,###').format(number);
     }
   }
 
