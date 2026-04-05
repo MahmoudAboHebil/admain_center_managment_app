@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../config/theme/colors.dart';
-import '../screens/add_student_screen.dart';
+import '../screens/mobile_app_screens/add_student_screen.dart';
 
 class AddStudentButton extends StatelessWidget {
   const AddStudentButton({super.key});

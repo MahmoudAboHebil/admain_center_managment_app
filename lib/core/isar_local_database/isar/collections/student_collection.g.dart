@@ -90,7 +90,7 @@ const StudentCollectionSchema = CollectionSchema(
     r'notes': PropertySchema(
       id: 14,
       name: r'notes',
-      type: IsarType.stringList,
+      type: IsarType.string,
     ),
     r'parentJob': PropertySchema(
       id: 15,
@@ -265,15 +265,9 @@ int _studentCollectionEstimateSize(
   }
   bytesCount += 3 + object.name.length * 3;
   {
-    final list = object.notes;
-    if (list != null) {
-      bytesCount += 3 + list.length * 3;
-      {
-        for (var i = 0; i < list.length; i++) {
-          final value = list[i];
-          bytesCount += value.length * 3;
-        }
-      }
+    final value = object.notes;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
     }
   }
   {
@@ -344,7 +338,7 @@ void _studentCollectionSerialize(
   writer.writeString(offsets[11], object.homePhone);
   writer.writeBool(offsets[12], object.isDeleted);
   writer.writeString(offsets[13], object.name);
-  writer.writeStringList(offsets[14], object.notes);
+  writer.writeString(offsets[14], object.notes);
   writer.writeString(offsets[15], object.parentJob);
   writer.writeString(offsets[16], object.parentPhone);
   writer.writeString(offsets[17], object.paymentTypeEnum);
@@ -380,7 +374,7 @@ StudentCollection _studentCollectionDeserialize(
   object.id = id;
   object.isDeleted = reader.readBool(offsets[12]);
   object.name = reader.readString(offsets[13]);
-  object.notes = reader.readStringList(offsets[14]);
+  object.notes = reader.readStringOrNull(offsets[14]);
   object.parentJob = reader.readStringOrNull(offsets[15]);
   object.parentPhone = reader.readStringOrNull(offsets[16]);
   object.paymentTypeEnum = reader.readStringOrNull(offsets[17]);
@@ -431,7 +425,7 @@ P _studentCollectionDeserializeProp<P>(
     case 13:
       return (reader.readString(offset)) as P;
     case 14:
-      return (reader.readStringList(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 15:
       return (reader.readStringOrNull(offset)) as P;
     case 16:
@@ -2632,8 +2626,8 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementEqualTo(
-    String value, {
+      notesEqualTo(
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -2646,8 +2640,8 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementGreaterThan(
-    String value, {
+      notesGreaterThan(
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -2662,8 +2656,8 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementLessThan(
-    String value, {
+      notesLessThan(
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -2678,9 +2672,9 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementBetween(
-    String lower,
-    String upper, {
+      notesBetween(
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -2698,7 +2692,7 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementStartsWith(
+      notesStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2712,7 +2706,7 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementEndsWith(
+      notesEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -2726,7 +2720,7 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementContains(String value, {bool caseSensitive = true}) {
+      notesContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'notes',
@@ -2737,7 +2731,7 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementMatches(String pattern, {bool caseSensitive = true}) {
+      notesMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'notes',
@@ -2748,7 +2742,7 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementIsEmpty() {
+      notesIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'notes',
@@ -2758,101 +2752,12 @@ extension StudentCollectionQueryFilter
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesElementIsNotEmpty() {
+      notesIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'notes',
         value: '',
       ));
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notes',
-        length,
-        true,
-        length,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notes',
-        0,
-        true,
-        0,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notes',
-        0,
-        false,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notes',
-        0,
-        true,
-        length,
-        include,
-      );
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notes',
-        length,
-        include,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<StudentCollection, StudentCollection, QAfterFilterCondition>
-      notesLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'notes',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
-      );
     });
   }
 
@@ -4596,6 +4501,20 @@ extension StudentCollectionQuerySortBy
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByNotes() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'notes', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      sortByNotesDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'notes', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
       sortByParentJob() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'parentJob', Sort.asc);
@@ -4948,6 +4867,20 @@ extension StudentCollectionQuerySortThenBy
   }
 
   QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByNotes() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'notes', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
+      thenByNotesDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'notes', Sort.desc);
+    });
+  }
+
+  QueryBuilder<StudentCollection, StudentCollection, QAfterSortBy>
       thenByParentJob() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'parentJob', Sort.asc);
@@ -5188,10 +5121,10 @@ extension StudentCollectionQueryWhereDistinct
     });
   }
 
-  QueryBuilder<StudentCollection, StudentCollection, QDistinct>
-      distinctByNotes() {
+  QueryBuilder<StudentCollection, StudentCollection, QDistinct> distinctByNotes(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'notes');
+      return query.addDistinctBy(r'notes', caseSensitive: caseSensitive);
     });
   }
 
@@ -5372,8 +5305,7 @@ extension StudentCollectionQueryProperty
     });
   }
 
-  QueryBuilder<StudentCollection, List<String>?, QQueryOperations>
-      notesProperty() {
+  QueryBuilder<StudentCollection, String?, QQueryOperations> notesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notes');
     });

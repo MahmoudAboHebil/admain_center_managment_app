@@ -548,45 +548,50 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                     child: ListView(
                       primary: false,
                       shrinkWrap: true,
-                      children: DivisionEnum.values.map((item) {
-                        return TextButton(
-                          style: ButtonStyle(
-                            shape: WidgetStatePropertyAll(
-                              RoundedRectangleBorder(),
-                            ),
-                          ),
-                          onPressed: () {
-                            selectDivision(item);
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                height: 1,
-                                color: AppColors.outlineVariant.withOpacity(
-                                  0.2,
+                      children: DivisionEnum.values
+                          .where((element) => element != DivisionEnum.Division)
+                          .map((item) {
+                            return TextButton(
+                              style: ButtonStyle(
+                                shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(),
                                 ),
                               ),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 12,
-                                ),
-
-                                child: Text(
-                                  item.description,
-                                  style: TextStyle(
-                                    color: AppColors.onSurface.withOpacity(0.7),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.normal,
+                              onPressed: () {
+                                selectDivision(item);
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height: 1,
+                                    color: AppColors.outlineVariant.withOpacity(
+                                      0.2,
+                                    ),
                                   ),
-                                ),
+                                  Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 12,
+                                    ),
+
+                                    child: Text(
+                                      item.description,
+                                      style: TextStyle(
+                                        color: AppColors.onSurface.withOpacity(
+                                          0.7,
+                                        ),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          })
+                          .toList(),
                     ),
                   ),
                 ),

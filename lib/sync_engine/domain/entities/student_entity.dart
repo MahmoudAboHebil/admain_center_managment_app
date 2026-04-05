@@ -46,7 +46,7 @@ class StudentEntity extends StandardTableRecord with EquatableMixin {
   final String? parentPhone;
   final List<String>? studentClasses;
   final double? bookingDeposit;
-  final List<String>? notes;
+  final String? notes;
   final PaymentTypeEnum? paymentTypeEnum;
 
   final String? address;
@@ -110,7 +110,7 @@ class StudentEntity extends StandardTableRecord with EquatableMixin {
     String? parentPhone,
     List<String>? studentClasses,
     double? bookingDeposit,
-    List<String>? notes,
+    String? notes,
     PaymentTypeEnum? paymentTypeEnum,
 
     String? address,

@@ -15,6 +15,7 @@ import '../../widgets/state_cart.dart';
 import '../../widgets/student_search_text_field.dart';
 import '../../widgets/students_grid.dart';
 import '../../widgets/top_appBar.dart';
+import 'add_student_screen.dart';
 
 class StudentsListScreen extends StatefulWidget {
   final List<StudentEntity>? filterDataList;
@@ -293,7 +294,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
         padding: const EdgeInsets.only(bottom: 16.0),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/add_edit');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddStudentScreen()),
+            );
           },
           backgroundColor: AppTheme.primary,
           child: const Icon(Icons.person_add),

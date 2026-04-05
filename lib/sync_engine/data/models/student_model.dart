@@ -50,7 +50,7 @@ class StudentModel extends StandardTableRecordModel with EquatableMixin {
   final String? parentPhone;
   final List<String>? studentClasses;
   final double? bookingDeposit;
-  final List<String>? notes;
+  final String? notes;
   final PaymentTypeEnum? paymentTypeEnum;
 
   final String? address;
@@ -139,9 +139,7 @@ class StudentModel extends StandardTableRecordModel with EquatableMixin {
           ?.map((e) => e.toString())
           .toList(),
 
-      notes: (json['notes'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList(),
+      notes: json['notes'],
 
       paymentTypeEnum: json['payment_type_enum'] != null
           ? PaymentTypeEnum.values.firstWhere(

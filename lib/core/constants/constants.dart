@@ -26,6 +26,14 @@ final currentDevice = "aa420cc4-cf21-4030-b857-1b875da20415";
 final List<StudyLevelEntity> studyLevels = [
   // ===== KG =====
   StudyLevelEntity(
+    entityId: "c444a00b-13e3-4b05-9f5e-6b327016ad4a",
+    arabicName: "الصف الدراسية",
+    englishName: "Study Level",
+    educationSystem: EducationSystem.General,
+    order: 0,
+    createdAt: DateTime(2024, 1, 1),
+  ),
+  StudyLevelEntity(
     entityId: "792387f4-432f-4668-98e2-7ebc240b6650",
     arabicName: "رياض أطفال أولى",
     englishName: "KG 1",
@@ -154,5 +162,5 @@ final List<StudyLevelEntity> studyLevelsWithAll = [
     order: 0,
     createdAt: DateTime.now(),
   ),
-  ...studyLevels,
+  ...(studyLevels.where((element) => element.order != 0).toList()),
 ];

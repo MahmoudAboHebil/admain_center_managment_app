@@ -1,11 +1,12 @@
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/add_student_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
-import '../../../../../config/theme/typography.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../domain/repository/student_repository.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/students_grid.dart';
 
 class StudentsSearchScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: StudentsScreenAppBar(),
+      appBar: CustomAppBar(label: 'بحث الطلاب'),
       // extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(
@@ -144,7 +145,10 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
         padding: const EdgeInsets.only(bottom: 16.0),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/add_edit');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddStudentScreen()),
+            );
           },
           backgroundColor: AppTheme.primary,
           child: const Icon(Icons.person_add),
@@ -169,60 +173,6 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
             label: 'الفصول',
           ),
         ],
-      ),
-    );
-  }
-}
-
-class StudentsScreenAppBar extends StatefulWidget
-    implements PreferredSizeWidget {
-  const StudentsScreenAppBar({super.key});
-
-  @override
-  State<StudentsScreenAppBar> createState() => _StudentsScreenAppBarState();
-
-  @override
-  Size get preferredSize => Size.fromHeight(60);
-}
-
-class _StudentsScreenAppBarState extends State<StudentsScreenAppBar> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Container(
-        height: 60,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.9),
-          border: Border(
-            bottom: BorderSide(
-              color: AppColors.outlineVariant.withOpacity(0.1),
-            ),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'بحث الطلاب',
-              style: AppTypography.textTheme.titleLarge?.copyWith(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_forward_outlined,
-                color: AppColors.primary,
-                size: 20,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

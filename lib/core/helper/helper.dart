@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../config/theme/app_theme.dart';
 import '../../sync_engine/domain/entities/standard_table_record.dart';
 import '../enums/DB_Table.dart';
 import '../error/netwrok_response.dart';
@@ -13,16 +14,168 @@ class ParsedPhone {
   String phone;
 
   ParsedPhone({required this.countryCode, required this.phone});
+  @override
+  String toString() {
+    return "$countryCode $phone";
+  }
 }
 
 class Helper {
+  static Future<String?> showCustomDialog(
+    BuildContext context,
+    String? initialValue,
+    String label,
+  ) async {
+    final String? outPut;
+    final TextEditingController controller = TextEditingController(
+      text: initialValue,
+    );
+    final _formKey = GlobalKey<FormState>();
+
+    outPut = await showDialog<String?>(
+      context: context,
+      builder: (context) {
+        return Container(
+          width: 350,
+          padding: EdgeInsets.all(16),
+          child: AlertDialog(
+            title: Align(
+              alignment: Alignment.center,
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            content: Form(
+              key: _formKey,
+              child: TextFormField(
+                controller: controller,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: "الوظيفة",
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: AppTheme.surfaceContainerLowest,
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: () {}, child: Text("الغاء")),
+
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(
+                    context,
+                    controller.text != initialValue
+                        ? controller.text.trim()
+                        : null,
+                  );
+                },
+                child: Text("تأكيد"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    return outPut;
+  }
+
+  static Future<String?> showEmailDialog(
+    BuildContext context,
+    String? initialEmail,
+    String label,
+  ) async {
+    final String? outPut;
+    final TextEditingController emailController = TextEditingController(
+      text: initialEmail,
+    );
+    final _formKey = GlobalKey<FormState>();
+
+    outPut = await showDialog<String?>(
+      context: context,
+      builder: (context) {
+        return Container(
+          width: 350,
+          padding: EdgeInsets.all(16),
+          child: AlertDialog(
+            title: Align(
+              alignment: Alignment.center,
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            content: Form(
+              key: _formKey,
+              child: TextFormField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: "example@email.com",
+                  border: OutlineInputBorder(),
+                  filled: true,
+                  fillColor: AppTheme.surfaceContainerLowest,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Email is required";
+                  }
+
+                  // Regex for email validation
+                  final emailRegex = RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  );
+
+                  if (!emailRegex.hasMatch(value)) {
+                    return "Enter a valid email";
+                  }
+
+                  return null;
+                },
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: () {}, child: Text("الغاء")),
+
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    String email = emailController.text.trim();
+
+                    print("Email: $email");
+
+                    Navigator.pop(
+                      context,
+                      email != initialEmail ? email : null,
+                    );
+                  }
+                },
+                child: Text("تأكيد"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    return outPut;
+  }
+
   static Future<String?> showPhoneDialog(
     BuildContext context,
     String? fullPhone,
     String label,
   ) async {
     TextEditingController phoneController = TextEditingController();
-    String? countryCode;
+    String? countryCode = "+20";
     String? outPut;
     if (fullPhone != null && fullPhone.isNotEmpty) {
       final parsed = parsePhone(fullPhone);
@@ -61,6 +214,10 @@ class Helper {
 
                     Expanded(
                       child: TextField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: AppTheme.surfaceContainerLowest,
+                        ),
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
                       ),
@@ -75,9 +232,6 @@ class Helper {
                   children: [
                     TextButton(
                       onPressed: () {
-                        String finalPhone =
-                            "$countryCode${phoneController.text}";
-                        print(finalPhone);
                         Navigator.pop(context);
                       },
                       child: Text("الغاء"),
@@ -87,7 +241,10 @@ class Helper {
                       onPressed: () {
                         String finalPhone =
                             "$countryCode ${phoneController.text}";
-                        Navigator.pop(context, finalPhone);
+                        Navigator.pop(
+                          context,
+                          phoneController.text.isNotEmpty ? finalPhone : null,
+                        );
                       },
                       child: Text("تأكيد"),
                     ),

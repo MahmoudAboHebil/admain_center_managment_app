@@ -29,7 +29,7 @@ class StudentCollection {
   late String? parentPhone;
   late List<String>? studentClasses;
   late double? bookingDeposit;
-  late List<String>? notes;
+  late String? notes;
   late String? paymentTypeEnum;
 
   late String? address;
