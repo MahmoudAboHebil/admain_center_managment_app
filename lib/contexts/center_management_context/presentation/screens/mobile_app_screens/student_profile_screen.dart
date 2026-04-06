@@ -1,14 +1,18 @@
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
 import 'package:admain_center_managment_app/core/constants/constants.dart';
 import 'package:admain_center_managment_app/core/enums/payment_type_enum.dart';
 import 'package:admain_center_managment_app/core/enums/student_status_enum.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
 import '../../../../../core/enums/division_enum.dart';
+import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../domain/entities/study_level_entity.dart';
+import '../../../domain/repository/student_repository.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_student_screen.dart';
 
@@ -430,7 +434,76 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           isLoading = true;
                         });
                         try {
-                          await Future.delayed(Duration(milliseconds: 400));
+                          final addResult = await sl<StudentRepository>()
+                              .softDeleteStudent(widget.student);
+                          addResult.fold(
+                            ifLeft: (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: AwesomeSnackbarContent(
+                                    inMaterialBanner: true,
+                                    title: "حدث خطأ",
+                                    message:
+                                        "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                    contentType: ContentType.failure,
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                ),
+                              );
+                            },
+                            ifRight: (response) {
+                              if (response == null) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => StudentsListScreen(),
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: AwesomeSnackbarContent(
+                                      inMaterialBanner: true,
+                                      title: "تم بنجاح",
+                                      message: "تم حذف الطالب",
+                                      contentType: ContentType.success,
+                                    ),
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: AwesomeSnackbarContent(
+                                      inMaterialBanner: true,
+                                      title: "حدث خطأ",
+                                      message:
+                                          "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                      contentType: ContentType.failure,
+                                    ),
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                  ),
+                                );
+                              }
+                            },
+                          );
+                          await Future.delayed(Duration(milliseconds: 250));
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                inMaterialBanner: true,
+                                title: "حدث خطأ",
+                                message:
+                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                contentType: ContentType.failure,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
                         } finally {
                           if (mounted) {
                             setState(() => isLoading = false);

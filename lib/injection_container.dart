@@ -1,6 +1,7 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/data/data_sources/local/local_student_datasource.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/data/repository/student_repository_impl.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/student_repository.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/bloc/selection_cubit/selection_cubit.dart';
 import 'package:admain_center_managment_app/sync_engine/data/datasource/local_queue_datasource.dart';
 import 'package:admain_center_managment_app/sync_engine/data/datasource/sync_datasource.dart';
 import 'package:admain_center_managment_app/sync_engine/data/repository/queue_repository_impl.dart';
@@ -114,4 +115,5 @@ Future<void> initializeDependencies() async {
   //Blocs
   sl.registerFactory<SyncBloc>(() => SyncBloc(sl<SyncAllTablesUseCase>()));
   sl.registerFactory<InternetBloc>(() => InternetBloc());
+  sl.registerFactory<SelectionCubit>(() => SelectionCubit());
 }

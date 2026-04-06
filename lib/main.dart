@@ -1,3 +1,4 @@
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/bloc/selection_cubit/selection_cubit.dart';
 import 'package:admain_center_managment_app/core/constants/constants.dart';
 import 'package:admain_center_managment_app/core/isar_local_database/isar/isar_service.dart';
 import 'package:admain_center_managment_app/sync_engine/presentation/blocs/sync_bloc/sync_bloc.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<InternetBloc>(
           create: (BuildContext context) => sl<InternetBloc>(),
+        ),
+        BlocProvider<SelectionCubit>(
+          create: (BuildContext context) => sl<SelectionCubit>(),
         ),
       ],
       child: MaterialApp(
