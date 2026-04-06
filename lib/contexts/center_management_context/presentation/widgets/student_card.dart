@@ -2,6 +2,7 @@ import 'package:admain_center_managment_app/sync_engine/domain/entities/student_
 import 'package:flutter/material.dart';
 
 import '../../../../config/theme/colors.dart';
+import '../screens/mobile_app_screens/edit_student_screen.dart';
 import '../screens/mobile_app_screens/student_profile_screen.dart';
 
 class StudentCard extends StatefulWidget {
@@ -208,7 +209,16 @@ class _StudentCardState extends State<StudentCard> {
                                 ],
                               ),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditStudentScreen(
+                                        studentEntity: widget.student,
+                                      ),
+                                    ),
+                                  );
+                                },
                                 style: TextButton.styleFrom(
                                   foregroundColor: const Color(0xFF495F8B),
                                   padding: const EdgeInsets.symmetric(
@@ -245,23 +255,6 @@ class _StudentCardState extends State<StudentCard> {
         ),
       ),
     );
-  }
-
-  Future<void> showMyMeny() {
-    return showMenu(
-      context: context,
-      position: const RelativeRect.fromLTRB(100, 100, 0, 0),
-      items: [
-        PopupMenuItem(value: 'edit', child: Text('Edit')),
-        PopupMenuItem(value: 'delete', child: Text('Delete')),
-      ],
-    ).then((value) {
-      if (value == 'edit') {
-        // edit
-      } else if (value == 'delete') {
-        // delete
-      }
-    });
   }
 
   void _toggleMenu() {
@@ -312,6 +305,13 @@ class _StudentCardState extends State<StudentCard> {
                     /// Edit
                     MaterialButton(
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                StudentProfileScreen(student: widget.student),
+                          ),
+                        );
                         _overlayEntry?.remove();
                         _overlayEntry = null;
                       },

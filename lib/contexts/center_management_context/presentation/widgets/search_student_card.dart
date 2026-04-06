@@ -1,7 +1,10 @@
 import 'package:admain_center_managment_app/config/theme/colors.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_profile_screen.dart';
+import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:flutter/material.dart';
 
 class SearchStudentCard extends StatelessWidget {
+  final StudentEntity studentEntity;
   final String name;
   final String level;
   final String id;
@@ -11,12 +14,20 @@ class SearchStudentCard extends StatelessWidget {
     required this.name,
     required this.level,
     required this.id,
+    required this.studentEntity,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StudentProfileScreen(student: studentEntity),
+          ),
+        );
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6.0),
         child: Row(

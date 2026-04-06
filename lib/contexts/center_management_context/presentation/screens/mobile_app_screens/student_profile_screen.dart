@@ -6,7 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
+import '../../../../../core/enums/division_enum.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
+import '../../../domain/entities/study_level_entity.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_student_screen.dart';
 
@@ -20,6 +22,15 @@ class StudentProfileScreen extends StatefulWidget {
 
 class _StudentProfileScreenState extends State<StudentProfileScreen> {
   bool isLoading = false;
+  late final StudyLevelEntity level;
+  @override
+  void initState() {
+    super.initState();
+    level = studyLevels.firstWhere(
+      (e) => e.entityId == widget.student.studyLevelId,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,27 +181,23 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     icon: Icons.layers,
                     iconColor: AppTheme.tertiary,
                     title: 'الصف',
-                    value: studyLevels
-                        .firstWhere(
-                          (element) =>
-                              element.entityId == widget.student.studyLevelId,
-                        )
-                        .arabicName,
+                    value: level.order == 0 ? "غير مضاف" : level.arabicName,
                   ),
                 ),
-                widget.student.divisionEnum != null
-                    ? const SizedBox(width: 12)
-                    : SizedBox(),
-                widget.student.divisionEnum != null
-                    ? Expanded(
-                        child: _buildBentoCard(
-                          icon: Icons.science,
-                          iconColor: AppTheme.tertiary,
-                          title: 'الشعبة',
-                          value: widget.student.divisionEnum!.description,
-                        ),
-                      )
-                    : SizedBox(),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildBentoCard(
+                    icon: Icons.science,
+                    iconColor: AppTheme.tertiary,
+                    title: 'الشعبة',
+                    value:
+                        (widget.student.divisionEnum == null ||
+                            widget.student.divisionEnum ==
+                                DivisionEnum.Division)
+                        ? "غير مضاف"
+                        : widget.student.divisionEnum!.description,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -353,7 +360,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                 overflow: TextOverflow.ellipsis,
                               )
                             : Text(
-                                "لا يوجد",
+                                "غير مضاف",
                                 style: GoogleFonts.inter(
                                   fontWeight: FontWeight.bold,
                                   color: AppTheme.error,
@@ -652,7 +659,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       ),
                     )
                   : Text(
-                      "لا يوجد",
+                      "غير مضاف",
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.bold,
                         color: AppTheme.error,

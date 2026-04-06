@@ -1,16 +1,24 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/custom_app_bar.dart';
+import 'package:admain_center_managment_app/core/enums/gender_enum.dart';
+import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
+import 'package:admain_center_managment_app/sync_engine/domain/repository/sync_repository.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:dart_either/dart_either.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../../core/enums/division_enum.dart';
 import '../../../../../core/enums/payment_type_enum.dart';
+import '../../../../../core/enums/student_status_enum.dart';
 import '../../../../../core/helper/helper.dart';
+import '../../../../../injection_container.dart';
 import '../../../domain/entities/study_level_entity.dart';
+import '../../../domain/repository/student_repository.dart';
 
 class AddStudentScreen extends StatefulWidget {
   const AddStudentScreen({super.key});
@@ -283,46 +291,139 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             // Action Buttons
             ElevatedButton(
               onPressed: () async {
-                if (studentName == null || studentName!.trim().isEmpty) {
+                if (isLoading) return;
+                setState(() {
+                  isLoading = true;
+                });
+                try {
+                  if (studentName == null || studentName!.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: AwesomeSnackbarContent(
+                          inMaterialBanner: true,
+                          title: "بيانات غير مكتملة",
+                          message: "اسم الطالب مطلوب",
+                          contentType: ContentType.failure,
+                        ),
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                    );
+                    print('invalide name');
+                  } else if (email != null &&
+                      (email!.trim().isEmpty || !emailRegex.hasMatch(email!))) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: AwesomeSnackbarContent(
+                          inMaterialBanner: true,
+                          title: "بيانات غير صحيحة",
+                          message: "البريد الإلكتروني غير صحيح",
+                          contentType: ContentType.failure,
+                        ),
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                    );
+                  } else {
+                    final uuid = Uuid();
+                    final deviceIdResult = await sl<SyncRepository>()
+                        .getDeviceId();
+                    final deviceId = deviceIdResult.getOrThrow();
+                    final newEntity = StudentEntity(
+                      entityId: uuid.v4(),
+                      centerId: currentCenter.entityId,
+                      byUser: currentUserId,
+                      byDevice: deviceId,
+                      isDeleted: false,
+                      version: 1,
+                      createdAt: DateTime.now().toUtc(),
+                      updatedAt: DateTime.now().toUtc(),
+                      name: studentName!,
+                      studyLevelId: selectedStudyLevel.entityId,
+                      gender: _isMale ? Gender.male : Gender.female,
+                      studentCode: uuid.v4(),
+                      studentStatus: StudentStatus.inactive,
+                      homePhone: homePhone,
+                      phone: studentPhone,
+                      paymentTypeEnum: _paymentMethod == 0
+                          ? PaymentTypeEnum.byMonth
+                          : PaymentTypeEnum.byClass,
+                      parentPhone: parentPhone,
+                      parentJob: parentJob,
+                      notes: studentNotes,
+                      divisionEnum: selectedDivision,
+                      email: email,
+                    );
+                    final addResult = await sl<StudentRepository>()
+                        .createStudent(newEntity);
+                    addResult.fold(
+                      ifLeft: (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: AwesomeSnackbarContent(
+                              inMaterialBanner: true,
+                              title: "حدث خطأ",
+                              message:
+                                  "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                              contentType: ContentType.failure,
+                            ),
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                        );
+                      },
+                      ifRight: (response) {
+                        if (response == null) {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                inMaterialBanner: true,
+                                title: "تم بنجاح",
+                                message: "تم إنشاء الطالب",
+                                contentType: ContentType.success,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                inMaterialBanner: true,
+                                title: "حدث خطأ",
+                                message:
+                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                contentType: ContentType.failure,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  }
+
+                  await Future.delayed(Duration(milliseconds: 250));
+                } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: AwesomeSnackbarContent(
                         inMaterialBanner: true,
-                        title: "بيانات غير مكتملة",
-                        message: "اسم الطالب مطلوب",
+                        title: "حدث خطأ",
+                        message: "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
                         contentType: ContentType.failure,
                       ),
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                     ),
                   );
-                  print('invalide name');
-                } else if (email != null &&
-                    (email!.trim().isEmpty || !emailRegex.hasMatch(email!))) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: AwesomeSnackbarContent(
-                        inMaterialBanner: true,
-                        title: "بيانات غير صحيحة",
-                        message: "البريد الإلكتروني غير صحيح",
-                        contentType: ContentType.failure,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                    ),
-                  );
-                } else {
-                  print("studentName: $studentName");
-                  print("isMale: $_isMale");
-                  print("studentPhone: $studentPhone");
-                  print("parentPhone: $parentPhone");
-                  print("homePhone: $homePhone");
-                  print("eamil: $email");
-                  print("parentJob: $parentJob");
-                  print("Study Level: ${selectedStudyLevel.arabicName}");
-                  print("division: ${selectedDivision.description}");
-                  print("paymentType: $_paymentMethod");
-                  print("studentNote: $studentNotes");
+                } finally {
+                  if (mounted) {
+                    setState(() => isLoading = false);
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -336,18 +437,37 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 elevation: 4,
                 shadowColor: AppTheme.primary.withOpacity(0.4),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
                 children: [
-                  const Icon(Icons.person_add),
-                  const SizedBox(width: 8),
-                  Text(
-                    'إضافة طالب',
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  Opacity(
+                    opacity: isLoading ? 0 : 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.person_add),
+                        const SizedBox(width: 8),
+                        Text(
+                          'إضافة طالب',
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  isLoading
+                      ? SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: AppColors.onPrimary,
+                          ),
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),

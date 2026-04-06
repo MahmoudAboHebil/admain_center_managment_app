@@ -1,3 +1,4 @@
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/custom_app_bar.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -12,7 +13,9 @@ import '../../../../../core/enums/division_enum.dart';
 import '../../../../../core/enums/gender_enum.dart';
 import '../../../../../core/enums/payment_type_enum.dart';
 import '../../../../../core/helper/helper.dart';
+import '../../../../../injection_container.dart';
 import '../../../domain/entities/study_level_entity.dart';
+import '../../../domain/repository/student_repository.dart';
 
 class EditStudentScreen extends StatefulWidget {
   final StudentEntity studentEntity;
@@ -304,46 +307,145 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
             // Action Buttons
             ElevatedButton(
               onPressed: () async {
-                if (studentName == null || studentName!.trim().isEmpty) {
+                if (isLoading) return;
+                setState(() {
+                  isLoading = true;
+                });
+                try {
+                  if (studentName == null || studentName!.trim().isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: AwesomeSnackbarContent(
+                          inMaterialBanner: true,
+                          title: "بيانات غير مكتملة",
+                          message: "اسم الطالب مطلوب",
+                          contentType: ContentType.failure,
+                        ),
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                    );
+                    print('invalide name');
+                  } else if (email != null &&
+                      (email!.trim().isEmpty || !emailRegex.hasMatch(email!))) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: AwesomeSnackbarContent(
+                          inMaterialBanner: true,
+                          title: "بيانات غير صحيحة",
+                          message: "البريد الإلكتروني غير صحيح",
+                          contentType: ContentType.failure,
+                        ),
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                      ),
+                    );
+                  } else {
+                    final newEntity = StudentEntity(
+                      entityId: widget.studentEntity.entityId,
+                      centerId: widget.studentEntity.centerId,
+                      byUser: currentUserId,
+                      byDevice: widget.studentEntity.byDevice,
+                      isDeleted: widget.studentEntity.isDeleted,
+                      version: widget.studentEntity.version,
+                      createdAt: widget.studentEntity.createdAt,
+                      studentCode: widget.studentEntity.studentCode,
+                      studentStatus: widget.studentEntity.studentStatus,
+                      address: widget.studentEntity.address,
+                      birthDate: widget.studentEntity.birthDate,
+                      bookingDeposit: widget.studentEntity.bookingDeposit,
+                      schoolName: widget.studentEntity.schoolName,
+                      studentClasses: widget.studentEntity.studentClasses,
+                      updatedAt: DateTime.now().toUtc(),
+                      name: studentName!,
+                      studyLevelId: selectedStudyLevel.entityId,
+                      gender: _isMale ? Gender.male : Gender.female,
+                      homePhone: homePhone,
+                      phone: studentPhone,
+                      paymentTypeEnum: _paymentMethod == 0
+                          ? PaymentTypeEnum.byMonth
+                          : PaymentTypeEnum.byClass,
+                      parentPhone: parentPhone,
+                      parentJob: parentJob,
+                      notes: studentNotes,
+                      divisionEnum: selectedDivision,
+                      email: email,
+                    );
+
+                    final addResult = await sl<StudentRepository>()
+                        .updateStudent(newEntity);
+                    addResult.fold(
+                      ifLeft: (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: AwesomeSnackbarContent(
+                              inMaterialBanner: true,
+                              title: "حدث خطأ",
+                              message:
+                                  "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                              contentType: ContentType.failure,
+                            ),
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                        );
+                      },
+                      ifRight: (response) {
+                        if (response == null) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StudentsListScreen(),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                inMaterialBanner: true,
+                                title: "تم بنجاح",
+                                message: "تم تعديل الطالب",
+                                contentType: ContentType.success,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: AwesomeSnackbarContent(
+                                inMaterialBanner: true,
+                                title: "حدث خطأ",
+                                message:
+                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                contentType: ContentType.failure,
+                              ),
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  }
+                  await Future.delayed(Duration(milliseconds: 250));
+                } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: AwesomeSnackbarContent(
                         inMaterialBanner: true,
-                        title: "بيانات غير مكتملة",
-                        message: "اسم الطالب مطلوب",
+                        title: "حدث خطأ",
+                        message: "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
                         contentType: ContentType.failure,
                       ),
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                     ),
                   );
-                  print('invalide name');
-                } else if (email != null &&
-                    (email!.trim().isEmpty || !emailRegex.hasMatch(email!))) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: AwesomeSnackbarContent(
-                        inMaterialBanner: true,
-                        title: "بيانات غير صحيحة",
-                        message: "البريد الإلكتروني غير صحيح",
-                        contentType: ContentType.failure,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                    ),
-                  );
-                } else {
-                  print("studentName: $studentName");
-                  print("isMale: $_isMale");
-                  print("studentPhone: $studentPhone");
-                  print("parentPhone: $parentPhone");
-                  print("homePhone: $homePhone");
-                  print("eamil: $email");
-                  print("parentJob: $parentJob");
-                  print("Study Level: ${selectedStudyLevel.arabicName}");
-                  print("division: ${selectedDivision.description}");
-                  print("paymentType: $_paymentMethod");
-                  print("studentNote: $studentNotes");
+                } finally {
+                  if (mounted) {
+                    setState(() => isLoading = false);
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -357,18 +459,35 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                 elevation: 4,
                 shadowColor: AppTheme.primary.withOpacity(0.4),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
                 children: [
-                  const Icon(Icons.person_add),
-                  const SizedBox(width: 8),
-                  Text(
-                    'حفظ',
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  Opacity(
+                    opacity: isLoading ? 0 : 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'حفظ',
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  isLoading
+                      ? SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: AppColors.onPrimary,
+                          ),
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),

@@ -175,13 +175,16 @@ class _StudentsGridState extends State<StudentsGrid> {
       final statusEnum = StudentStatus.getStudentStatusEnumFromString(
         e.studentStatus,
       );
-
+      final div = (division == null || division == DivisionEnum.Division)
+          ? null
+          : division;
+      final lev = (level == null || level.order == 0) ? null : level;
       Widget myWidget = _buildStudentCard(
         student: StudentModel.fromCollection(e).toEntity(),
         sideColor: item.$1 % 2 == 0 ? AppColors.primary : AppColors.secondary,
-        level: division == null
-            ? level?.arabicName ?? ''
-            : '${level?.arabicName ?? ''} • ${division.description}',
+        level: (div == null)
+            ? lev?.arabicName ?? ''
+            : '${lev?.arabicName ?? ''} • ${div.description}',
         status: statusEnum.description,
         isStatusGreen: e.studentStatus == StudentStatus.active.name,
         subStatus: payment.description,
