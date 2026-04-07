@@ -1,6 +1,7 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_search_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/search_student_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/theme/colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -8,6 +9,7 @@ import '../../../../injection_container.dart';
 import '../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../domain/entities/study_level_entity.dart';
 import '../../domain/repository/student_repository.dart';
+import '../bloc/selection_cubit/selection_cubit.dart';
 
 class StudentSearchTextField extends StatefulWidget {
   const StudentSearchTextField({super.key});
@@ -252,6 +254,8 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                 clipBehavior: Clip.none,
                 onPressed: () {
                   if ((filterDataList.length >= 4)) {
+                    context.read<SelectionCubit>().clearSelection();
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -11,6 +11,7 @@ abstract class StudentRepository {
   Future<Either<Failure, SyncResponse?>> softDeleteStudent(
     StudentEntity entity,
   );
+  Future<Either<Failure, SyncResponse?>> softDeleteStudents(Set<String> ids);
   Either<Failure, Stream<List<StudentCollection>>> getAllStudentsStream();
   Future<Either<Failure, StudentEntity?>> getStudent(String entityId);
   Future<Either<Failure, List<StudentEntity>>> getEntitiesNameStartWith(

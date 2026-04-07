@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/theme/colors.dart';
 import '../../../../config/theme/typography.dart';
+import '../bloc/selection_cubit/selection_cubit.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String label;
@@ -49,6 +51,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
                 IconButton(
                   onPressed: () {
+                    context.read<SelectionCubit>().clearSelection();
                     Navigator.pop(context);
                   },
                   icon: Icon(

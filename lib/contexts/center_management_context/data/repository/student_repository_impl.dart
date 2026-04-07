@@ -2,6 +2,7 @@ import 'package:admain_center_managment_app/contexts/center_management_context/d
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/student_repository.dart';
 import 'package:admain_center_managment_app/core/error/failure.dart';
 import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/student_collection.dart';
+import 'package:dart_either/dart_either.dart';
 import 'package:dart_either/src/dart_either.dart';
 
 import '../../../../core/error/sync_response.dart';
@@ -80,6 +81,32 @@ class StudentRepositoryImpl implements StudentRepository {
         ProcessingFailure(
           message:
               "failed to soft delete this student ${entity.entityId} =>${e.toString()}",
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, SyncResponse?>> softDeleteStudents(
+    Set<String> ids,
+  ) async {
+    SyncResponse? lastResponse;
+
+    try {
+      for (var item in ids) {
+        final result = await getStudent(item);
+        final entity = result.getOrElse(() => null);
+        if (entity != null) {
+          final softResult = await _datasource.softDelete(entity);
+          lastResponse = softResult.getOrElse(() => null);
+        }
+      }
+
+      return Right(lastResponse);
+    } catch (e) {
+      return Left(
+        ProcessingFailure(
+          message: "failed to soft delete students => ${e.toString()}",
         ),
       );
     }

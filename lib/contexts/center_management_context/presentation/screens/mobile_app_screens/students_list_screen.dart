@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_filter_screen.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,6 +34,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   late StreamSubscription subscription;
   late List<StudentEntity>? filterDataList;
   bool isFilterLoading = false;
+  bool isLoading = false;
 
   final BehaviorSubject<int> studentCountSubject = BehaviorSubject<int>();
   @override
@@ -58,376 +60,536 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: StudentsScreenAppBar(),
-      // extendBodyBehindAppBar: true,
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(
-              16,
-              16,
-              16,
-              100,
-            ), // Padding for bottom nav & FAB
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    StudentSearchTextField(),
-                    Spacer(),
-                    MaterialButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      color: AppColors.surfaceContainerHigh,
-                      elevation: 0,
-                      focusElevation: 0,
-                      highlightElevation: 0,
-                      disabledElevation: 0,
-                      hoverElevation: 0,
-                      padding: EdgeInsets.zero,
-
-                      onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return StudentFilterScreen();
-                            },
-                          ),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
+    return WillPopScope(
+      onWillPop: () async {
+        final isMode = context.read<SelectionCubit>().state.isSelectionMode;
+        if (isMode) {
+          context.read<SelectionCubit>().clearSelection();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        appBar: StudentsScreenAppBar(),
+        // extendBodyBehindAppBar: true,
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(
+                16,
+                16,
+                16,
+                100,
+              ), // Padding for bottom nav & FAB
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      StudentSearchTextField(),
+                      Spacer(),
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 14,
-                          horizontal: 25,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.filter_list,
-                              color: AppColors.primary,
-                              size: 20,
-                            ),
-                            SizedBox(width: 12),
-                            Text(
-                              'تصفيه',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                // StatsRow==================================
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    StreamBuilder<int>(
-                      stream: studentCountSubject,
-                      builder: (context, snapshot) {
-                        final isLoading =
-                            snapshot.connectionState == ConnectionState.waiting;
+                        color: AppColors.surfaceContainerHigh,
+                        elevation: 0,
+                        focusElevation: 0,
+                        highlightElevation: 0,
+                        disabledElevation: 0,
+                        hoverElevation: 0,
+                        padding: EdgeInsets.zero,
 
-                        final count = snapshot.data ?? 0;
-                        return Expanded(
-                          child: StatCard(
-                            isDesktop: false,
-                            label: 'إجمالي الطلاب',
-                            value: isLoading
-                                ? '...'
-                                : Helper.formatNumber(count),
-                            valueColor: AppColors.tertiary,
+                        onPressed: () async {
+                          context.read<SelectionCubit>().clearSelection();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return StudentFilterScreen();
+                              },
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                        );
-                      },
-                    ),
-                    SizedBox(width: 16),
-
-                    Expanded(
-                      child: StatCard(
-                        isDesktop: false,
-                        label: 'الفصول النشطة',
-                        value: Helper.formatNumber(20000),
-                        valueColor: AppColors.tertiary,
-                      ),
-                    ),
-                    SizedBox(width: 16),
-
-                    Expanded(
-                      child: const StatCard(
-                        isDesktop: false,
-
-                        label: 'متوسط الحضور',
-                        value: '89.9%',
-                        valueColor: AppColors.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                // filter results==================================
-                filterDataList != null
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 14,
+                            horizontal: 25,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.person_search_outlined,
-                                    color: AppColors.primary,
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    "  تم العثور على ",
-                                    style: TextStyle(color: AppColors.outline),
-                                  ),
-                                  Text(
-                                    " ${filterDataList!.length} ",
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    "طلاب",
-                                    style: TextStyle(color: AppColors.outline),
-                                  ),
-                                ],
+                              Icon(
+                                Icons.filter_list,
+                                color: AppColors.primary,
+                                size: 20,
                               ),
-                              TextButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    isFilterLoading = true;
-                                  });
-                                  await Future.delayed(
-                                    Duration(milliseconds: 350),
-                                  );
-                                  setState(() {
-                                    filterDataList = null;
-                                    isFilterLoading = false;
-                                  });
-                                },
-                                child: Text(
-                                  'مسح الكل',
-                                  style: GoogleFonts.inter(
-                                    color: AppTheme.primary,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
+                              SizedBox(width: 12),
+                              Text(
+                                'تصفيه',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
-                          SizedBox(
-                            width: double.infinity,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              clipBehavior: Clip.none,
-                              physics: AlwaysScrollableScrollPhysics(),
-                              child: Row(
-                                children: [
-                                  _buildFilterChip(
-                                    (widget.params?.selectedStudyLevel == null)
-                                        ? "الصف الدراسي الكل "
-                                        : widget
-                                              .params!
-                                              .selectedStudyLevel
-                                              .arabicName,
-                                    AppTheme.primaryContainer,
-                                    AppTheme.onPrimaryContainer,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  _buildFilterChip(
-                                    (widget.params?.selectedDivision == null)
-                                        ? "الشعبة الكل "
-                                        : widget
-                                              .params!
-                                              .selectedDivision
-                                              .description,
-                                    AppTheme.secondaryContainer,
-                                    AppTheme.onSecondaryContainer,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  _buildFilterChip(
-                                    (widget.params?.selectedPaymentType == null)
-                                        ? "نظام الدفع الكل "
-                                        : widget
-                                              .params!
-                                              .selectedPaymentType!
-                                              .description,
-                                    AppTheme.secondaryContainer,
-                                    AppTheme.onSecondaryContainer,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  _buildFilterChip(
-                                    (widget.params?.selectedStudentStates ==
-                                            null)
-                                        ? "حالة الطالب الكل "
-                                        : widget
-                                              .params!
-                                              .selectedStudentStates!
-                                              .description,
-                                    AppTheme.secondaryContainer,
-                                    AppTheme.onSecondaryContainer,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : SizedBox(),
-                const SizedBox(height: 24),
-
-                // List==================================
-                StudentsGrid(
-                  isLoading: isFilterLoading,
-                  filterDataList: filterDataList,
-                ),
-              ],
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              BlocBuilder<SelectionCubit, SelectionState>(
-                builder: (context, state) {
-                  final cubit = context.read<SelectionCubit>();
-                  final isSelectedMode = state.isSelectionMode;
-                  final totalNumber = state.selectedIds.length;
-                  if (isSelectedMode) {
-                    return Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 12,
-                        ),
-                        child: Row(
-                          children: [
-                            MaterialButton(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 13,
-                                horizontal: 3,
-                              ),
-                              color: AppColors.error.withOpacity(1),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              onPressed: () {},
-                              child: Text(
-                                'حذف',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            SizedBox(width: 12),
-                            Text(
-                              ' $totalNumber ',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(
-                              'محدد',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Spacer(),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text('تحديد الكل'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                cubit.clearSelection();
-                              },
-                              child: Text('الغاء'),
-                            ),
-                          ],
                         ),
                       ),
-                    );
-                  } else {
-                    return SizedBox();
-                  }
-                },
-              ),
-              BottomNavigationBar(
-                currentIndex: 1, // "الطلاب" active
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.dashboard_outlined),
-                    activeIcon: Icon(Icons.dashboard),
-                    label: 'لوحة القيادة',
+                    ],
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.group_outlined),
-                    activeIcon: Icon(Icons.group),
-                    label: 'الطلاب',
+                  const SizedBox(height: 16),
+                  // StatsRow==================================
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      StreamBuilder<int>(
+                        stream: studentCountSubject,
+                        builder: (context, snapshot) {
+                          final isLoading =
+                              snapshot.connectionState ==
+                              ConnectionState.waiting;
+
+                          final count = snapshot.data ?? 0;
+                          return Expanded(
+                            child: StatCard(
+                              isDesktop: false,
+                              label: 'إجمالي الطلاب',
+                              value: isLoading
+                                  ? '...'
+                                  : Helper.formatNumber(count),
+                              valueColor: AppColors.tertiary,
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(width: 16),
+
+                      Expanded(
+                        child: StatCard(
+                          isDesktop: false,
+                          label: 'الفصول النشطة',
+                          value: Helper.formatNumber(20000),
+                          valueColor: AppColors.tertiary,
+                        ),
+                      ),
+                      SizedBox(width: 16),
+
+                      Expanded(
+                        child: const StatCard(
+                          isDesktop: false,
+
+                          label: 'متوسط الحضور',
+                          value: '89.9%',
+                          valueColor: AppColors.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.class_outlined),
-                    activeIcon: Icon(Icons.class_),
-                    label: 'الفصول',
+                  const SizedBox(height: 16),
+                  // filter results==================================
+                  filterDataList != null
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.person_search_outlined,
+                                      color: AppColors.primary,
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      "  تم العثور على ",
+                                      style: TextStyle(
+                                        color: AppColors.outline,
+                                      ),
+                                    ),
+                                    Text(
+                                      " ${filterDataList!.length} ",
+                                      style: TextStyle(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      "طلاب",
+                                      style: TextStyle(
+                                        color: AppColors.outline,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    setState(() {
+                                      isFilterLoading = true;
+                                    });
+                                    await Future.delayed(
+                                      Duration(milliseconds: 350),
+                                    );
+                                    setState(() {
+                                      filterDataList = null;
+                                      isFilterLoading = false;
+                                    });
+                                  },
+                                  child: Text(
+                                    'مسح الكل',
+                                    style: GoogleFonts.inter(
+                                      color: AppTheme.primary,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                clipBehavior: Clip.none,
+                                physics: AlwaysScrollableScrollPhysics(),
+                                child: Row(
+                                  children: [
+                                    _buildFilterChip(
+                                      (widget.params?.selectedStudyLevel ==
+                                              null)
+                                          ? "الصف الدراسي الكل "
+                                          : widget
+                                                .params!
+                                                .selectedStudyLevel
+                                                .arabicName,
+                                      AppTheme.primaryContainer,
+                                      AppTheme.onPrimaryContainer,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    _buildFilterChip(
+                                      (widget.params?.selectedDivision == null)
+                                          ? "الشعبة الكل "
+                                          : widget
+                                                .params!
+                                                .selectedDivision
+                                                .description,
+                                      AppTheme.secondaryContainer,
+                                      AppTheme.onSecondaryContainer,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    _buildFilterChip(
+                                      (widget.params?.selectedPaymentType ==
+                                              null)
+                                          ? "نظام الدفع الكل "
+                                          : widget
+                                                .params!
+                                                .selectedPaymentType!
+                                                .description,
+                                      AppTheme.secondaryContainer,
+                                      AppTheme.onSecondaryContainer,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    _buildFilterChip(
+                                      (widget.params?.selectedStudentStates ==
+                                              null)
+                                          ? "حالة الطالب الكل "
+                                          : widget
+                                                .params!
+                                                .selectedStudentStates!
+                                                .description,
+                                      AppTheme.secondaryContainer,
+                                      AppTheme.onSecondaryContainer,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : SizedBox(),
+                  const SizedBox(height: 24),
+
+                  // List==================================
+                  StudentsGrid(
+                    isLoading: isFilterLoading,
+                    filterDataList: filterDataList,
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                BlocBuilder<SelectionCubit, SelectionState>(
+                  builder: (context, state) {
+                    final cubit = context.read<SelectionCubit>();
+                    final isSelectedMode = state.isSelectionMode;
+                    final totalNumber = state.selectedIds.length;
+                    if (isSelectedMode) {
+                      return Container(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
+                          child: Row(
+                            children: [
+                              MaterialButton(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 13,
+                                  horizontal: 3,
+                                ),
+                                color: AppColors.error.withOpacity(1),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                onPressed: () async {
+                                  if (isLoading) return;
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  try {
+                                    final addResult =
+                                        await sl<StudentRepository>()
+                                            .softDeleteStudents(
+                                              state.selectedIds,
+                                            );
 
-          BlocBuilder<SelectionCubit, SelectionState>(
-            builder: (context, state) {
-              final cubit = context.read<SelectionCubit>();
-              final isSelectedMode = state.isSelectionMode;
-              return AnimatedPositioned(
-                duration: Duration(milliseconds: 300),
-                bottom: isSelectedMode ? 100 : 50,
-                left: 20,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddStudentScreen(),
+                                    addResult.fold(
+                                      ifLeft: (e) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: AwesomeSnackbarContent(
+                                              inMaterialBanner: true,
+                                              title: "حدث خطأ",
+                                              message:
+                                                  "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                              contentType: ContentType.failure,
+                                            ),
+                                            backgroundColor: Colors.transparent,
+                                            elevation: 0,
+                                          ),
+                                        );
+                                      },
+                                      ifRight: (response) {
+                                        if (response == null) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: AwesomeSnackbarContent(
+                                                inMaterialBanner: true,
+                                                title: "تم بنجاح",
+                                                message: "تم حذف الطالب",
+                                                contentType:
+                                                    ContentType.success,
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              elevation: 0,
+                                            ),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: AwesomeSnackbarContent(
+                                                inMaterialBanner: true,
+                                                title: "حدث خطأ",
+                                                message:
+                                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                                contentType:
+                                                    ContentType.failure,
+                                              ),
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              elevation: 0,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: AwesomeSnackbarContent(
+                                          inMaterialBanner: true,
+                                          title: "حدث خطأ",
+                                          message:
+                                              "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                          contentType: ContentType.failure,
+                                        ),
+                                        backgroundColor: Colors.transparent,
+                                        elevation: 0,
+                                      ),
+                                    );
+                                  } finally {
+                                    cubit.clearSelection();
+                                    if (mounted) {
+                                      setState(() => isLoading = false);
+                                    }
+                                  }
+                                },
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Opacity(
+                                      opacity: isLoading ? 0 : 1,
+                                      child: Text(
+                                        'حذف',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    isLoading
+                                        ? SizedBox(
+                                            height: 16,
+                                            width: 16,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2.5,
+                                              color: AppColors.onPrimary,
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Text(
+                                ' $totalNumber ',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Text(
+                                'محدد',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Spacer(),
+                              TextButton(
+                                onPressed: () async {
+                                  final result = await sl<StudentRepository>()
+                                      .getAllItemsNotArchived();
+                                  result.fold(
+                                    ifLeft: (e) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: AwesomeSnackbarContent(
+                                            inMaterialBanner: true,
+                                            title: "حدث خطأ",
+                                            message:
+                                                "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                            contentType: ContentType.failure,
+                                          ),
+                                          backgroundColor: Colors.transparent,
+                                          elevation: 0,
+                                        ),
+                                      );
+                                    },
+                                    ifRight: (d) {
+                                      final newSet = d
+                                          .map((e) => e.entityId)
+                                          .toSet();
+                                      cubit.selectAll(newSet.toList());
+                                    },
+                                  );
+                                },
+                                child: Text('تحديد الكل'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  cubit.clearSelection();
+                                },
+                                child: Text('الغاء'),
+                              ),
+                            ],
+                          ),
                         ),
                       );
-                    },
-                    backgroundColor: AppTheme.primary,
-                    child: const Icon(Icons.person_add),
-                  ),
+                    } else {
+                      return SizedBox();
+                    }
+                  },
                 ),
-              );
-            },
-          ),
-        ],
+                BottomNavigationBar(
+                  onTap: (index) {
+                    context.read<SelectionCubit>().clearSelection();
+                  },
+                  currentIndex: 1, // "الطلاب" active
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.dashboard_outlined),
+                      activeIcon: Icon(Icons.dashboard),
+                      label: 'لوحة القيادة',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.group_outlined),
+                      activeIcon: Icon(Icons.group),
+                      label: 'الطلاب',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.class_outlined),
+                      activeIcon: Icon(Icons.class_),
+                      label: 'الفصول',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            BlocBuilder<SelectionCubit, SelectionState>(
+              builder: (context, state) {
+                final cubit = context.read<SelectionCubit>();
+                final isSelectedMode = state.isSelectionMode;
+                return AnimatedPositioned(
+                  duration: Duration(milliseconds: 300),
+                  bottom: isSelectedMode ? 100 : 50,
+                  left: 20,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        context.read<SelectionCubit>().clearSelection();
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddStudentScreen(),
+                          ),
+                        );
+                      },
+                      backgroundColor: AppTheme.primary,
+                      child: const Icon(Icons.person_add),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -435,6 +597,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   Widget _buildFilterChip(String label, Color bgColor, Color textColor) {
     return MaterialButton(
       onPressed: () {
+        context.read<SelectionCubit>().clearSelection();
+
         Navigator.push(
           context,
           MaterialPageRoute(
