@@ -218,8 +218,10 @@ class TableRepositoryImpl implements TableRepository {
         'sync-operation',
         body: payload,
       );
+      print('response $response');
 
       final result = Helper.handleSyncOperationResponse(response.data);
+      print('rrrrrrrr $result');
       return Right(result);
     } on FunctionException catch (e) {
       final result = InternalServerError(details: e.details);

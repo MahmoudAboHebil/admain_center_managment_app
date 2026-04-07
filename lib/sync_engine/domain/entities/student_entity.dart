@@ -169,7 +169,6 @@ class StudentEntity extends StandardTableRecord with EquatableMixin {
       'phone': phone,
       'home_phone': homePhone,
       'parent_phone': parentPhone,
-      'student_classes': studentClasses,
       'booking_deposit': bookingDeposit,
       'notes': notes,
       'payment_type_enum': paymentTypeEnum?.name,

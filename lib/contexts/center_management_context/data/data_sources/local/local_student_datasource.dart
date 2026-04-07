@@ -59,6 +59,7 @@ class LocalStudentDatasource implements LocalDbOperations<StudentEntity> {
     );
 
     final bool hasInternet = await InternetConnection().hasInternetAccess;
+    print('ssssssssssssss$hasInternet');
 
     if (!hasInternet) {
       final addResult = await _addOperationLocalUseCase.call(

@@ -5,6 +5,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../config/theme/app_theme.dart';
@@ -20,6 +21,11 @@ import '../../widgets/student_search_text_field.dart';
 import '../../widgets/students_grid.dart';
 import '../../widgets/top_appBar.dart';
 import 'add_student_screen.dart';
+
+Future<void> testInternet() async {
+  final res = await http.get(Uri.parse("https://google.com"));
+  print('ddddddddd ${res.statusCode}');
+}
 
 class StudentsListScreen extends StatefulWidget {
   final List<StudentEntity>? filterDataList;
@@ -535,7 +541,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                   },
                 ),
                 BottomNavigationBar(
-                  onTap: (index) {
+                  onTap: (index) async {
+                    await testInternet();
                     context.read<SelectionCubit>().clearSelection();
                   },
                   currentIndex: 1, // "الطلاب" active

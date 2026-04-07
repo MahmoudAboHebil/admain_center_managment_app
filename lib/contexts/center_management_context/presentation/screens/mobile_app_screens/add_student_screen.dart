@@ -358,6 +358,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         .createStudent(newEntity);
                     addResult.fold(
                       ifLeft: (e) {
+                        print('1dddddddddsaaaaaa');
+                        print(e);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: AwesomeSnackbarContent(
@@ -388,6 +390,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             ),
                           );
                         } else {
+                          print('2dddddddddsaaaaaa');
+                          print(response);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: AwesomeSnackbarContent(
