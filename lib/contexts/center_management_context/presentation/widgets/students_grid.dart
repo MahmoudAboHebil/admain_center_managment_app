@@ -102,9 +102,9 @@ class _StudentsGridState extends State<StudentsGrid> {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 24,
-            mainAxisSpacing: 24,
+            mainAxisSpacing: 12,
             childAspectRatio: 1.6,
-            mainAxisExtent: 140,
+            mainAxisExtent: 152,
           ),
           itemBuilder: (context, index) {
             if (index == children.length) {
@@ -135,20 +135,26 @@ class _StudentsGridState extends State<StudentsGrid> {
       }
       final division = e.divisionEnum;
 
-      var widget = _buildStudentCard(
+      final payment = e.paymentTypeEnum;
+
+      final statusEnum = e.studentStatus;
+      final div = (division == null || division == DivisionEnum.Division)
+          ? null
+          : division;
+      final lev = (level == null || level.order == 0) ? null : level;
+
+      Widget myWidget = _buildStudentCard(
         student: e,
         sideColor: item.$1 % 2 == 0 ? AppColors.primary : AppColors.secondary,
-        level: division == null
-            ? level?.arabicName ?? ''
-            : '${level?.arabicName ?? ''} • ${division.description}',
-        status: e.studentStatus.description,
+        level: (div == null)
+            ? lev?.arabicName ?? ''
+            : '${lev?.arabicName ?? ''} • ${div.description}',
+        status: statusEnum.description,
         isStatusGreen: e.studentStatus == StudentStatus.active,
-        subStatus:
-            e.paymentTypeEnum?.description ??
-            PaymentTypeEnum.byMonth.description,
+        subStatus: payment.description,
         isStatusRed: e.studentStatus == StudentStatus.latePayment,
       );
-      myWidgetsList.add(widget);
+      myWidgetsList.add(myWidget);
     }
     return myWidgetsList;
   }

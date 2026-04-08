@@ -81,421 +81,441 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.surface,
-      appBar: CustomAppBar(label: 'اضافه طالب'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-        child: Column(
-          children: [
-            // Section: Basic Data
-            _buildSectionHeader('البيانات الأساسية', AppTheme.primary),
-            _buildContainer([
-              _buildLabelAndInput(
-                label: 'الاسم بالكامل',
-                child: _buildTextField(
-                  hint: 'مثال: محمد أحمد علي',
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return "اسم الطالب مطلوب";
-                    }
-
-                    return null;
-                  },
-                  onChange: (value) {
-                    setState(() {
-                      if (value.isEmpty || value.trim().isEmpty) {
-                        studentName = null;
-                      } else {
-                        studentName = value;
-                      }
-                    });
-                    print(studentName);
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildLabelAndInput(label: 'النوع', child: _buildGenderSwitch()),
-              const SizedBox(height: 16),
-            ]),
-            const SizedBox(height: 32),
-
-            // Section: Contact Info
-            _buildSectionHeader('معلومات التواصل', AppTheme.tertiary),
-            _buildContainer([
-              _buildLabelAndInput(
-                label: 'رقم هاتف الطالب',
-                child: TextPhoneWidget(
-                  initialValue: studentPhone,
-                  onChange: (value) {
-                    setState(() {
-                      if (value == null || value.phone.trim().isEmpty) {
-                        studentPhone = null;
-                      } else {
-                        studentPhone = value.toString();
-                      }
-                    });
-                    print(studentPhone);
-                  },
-                  title: 'رقم هاتف الطالب',
-                  hint: '01XXXXXXXXX',
-                  keyboardType: TextInputType.phone,
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildLabelAndInput(
-                label: 'رقم هاتف ولي الأمر',
-                child: TextPhoneWidget(
-                  initialValue: parentPhone,
-                  onChange: (value) {
-                    setState(() {
-                      if (value == null || value.phone.trim().isEmpty) {
-                        parentPhone = null;
-                      } else {
-                        parentPhone = value.toString();
-                      }
-                    });
-                    print(parentPhone);
-                  },
-                  title: "رقم هاتف ولي الأمر",
-                  hint: '01XXXXXXXXX',
-                  keyboardType: TextInputType.phone,
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildLabelAndInput(
-                label: 'رقم هاتف البيت',
-                child: TextPhoneWidget(
-                  initialValue: homePhone,
-                  onChange: (value) {
-                    setState(() {
-                      if (value == null || value.phone.trim().isEmpty) {
-                        homePhone = null;
-                      } else {
-                        homePhone = value.toString();
-                      }
-                    });
-                    print(homePhone);
-                  },
-                  title: 'رقم هاتف البيت',
-                  hint: '01XXXXXXXXX',
-                  keyboardType: TextInputType.phone,
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildLabelAndInput(
-                label: 'البريد الإلكتروني',
-                child: _buildTextField(
-                  onChange: (value) {
-                    setState(() {
-                      if (value.isEmpty) {
-                        email = null;
-                      } else {
-                        email = value;
-                      }
-                    });
-                    print(email);
-                  },
-                  hint: 'example@mail.com',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    // Regex for email validation
-                    if (value == null || value.isEmpty) {
-                      return null;
-                    }
-                    if (!emailRegex.hasMatch(value)) {
-                      return "البريد الإلكتروني غير صحيح";
-                    }
-
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildLabelAndInput(
-                label: 'وظيفة ولي الأمر',
-                child: _buildTextField(
-                  hint: 'المهنة',
-                  onChange: (value) {
-                    setState(() {
-                      if (value.isEmpty || value.trim().isEmpty) {
-                        parentJob = null;
-                      } else {
-                        parentJob = value;
-                      }
-                    });
-                    print(parentJob);
-                  },
-                ),
-              ),
-            ]),
-            const SizedBox(height: 32),
-
-            // Section: Academic Path
-            _buildSectionHeader('المسار الأكاديمي', const Color(0xFFA2B9EA)),
-            _buildContainer([
-              _buildLabelAndInput(
-                label: 'الصف الدراسية',
-                child: StudyLevelDropDown(),
-              ),
-              const SizedBox(height: 16),
-              _buildLabelAndInput(label: 'الشعبة', child: DivisionDropDown()),
-              const SizedBox(height: 16),
-              _buildLabelAndInput(
-                label: 'المجموعة',
-                child: _buildTextField(hint: 'اسم أو كود المجموعة'),
-              ),
-            ]),
-            const SizedBox(height: 32),
-
-            // Section: Payment System
-            _buildSectionHeader('نظام الدفع', const Color(0xFF575F72)),
-            Row(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppTheme.surface,
+          appBar: CustomAppBar(label: 'اضافه طالب'),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 24.0,
+            ),
+            child: Column(
               children: [
-                _buildPaymentOption(
-                  isSelected: _paymentMethod == 0,
-                  label: 'اشتراك شهري',
-                  icon: Icons.payments,
-                  onTap: () => setState(() => _paymentMethod = 0),
-                ),
-                const SizedBox(width: 16),
-                _buildPaymentOption(
-                  isSelected: _paymentMethod == 1,
-                  label: 'بالحصة',
-                  icon: Icons.receipt_long,
-                  onTap: () => setState(() => _paymentMethod = 1),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
+                // Section: Basic Data
+                _buildSectionHeader('البيانات الأساسية', AppTheme.primary),
+                _buildContainer([
+                  _buildLabelAndInput(
+                    label: 'الاسم بالكامل',
+                    child: _buildTextField(
+                      hint: 'مثال: محمد أحمد علي',
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "اسم الطالب مطلوب";
+                        }
 
-            // Section: Additional Notes
-            _buildSectionHeader('ملاحظات إضافية', AppTheme.outline),
-            _buildTextField(
-              onChange: (value) {
-                setState(() {
-                  if (value.trim().isEmpty) {
-                    studentNotes = null;
-                  } else {
-                    studentNotes = value;
-                  }
-                });
-                print(studentNotes);
-              },
-              hint: 'أي تفاصيل أخرى تخص الطالب...',
-              maxLines: 4,
-              fillColor: AppTheme.surfaceContainerLow,
-            ),
-            const SizedBox(height: 48),
+                        return null;
+                      },
+                      onChange: (value) {
+                        setState(() {
+                          if (value.isEmpty || value.trim().isEmpty) {
+                            studentName = null;
+                          } else {
+                            studentName = value;
+                          }
+                        });
+                        print(studentName);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildLabelAndInput(
+                    label: 'النوع',
+                    child: _buildGenderSwitch(),
+                  ),
+                  const SizedBox(height: 16),
+                ]),
+                const SizedBox(height: 32),
 
-            // Action Buttons
-            ElevatedButton(
-              onPressed: () async {
-                if (isLoading) return;
-                setState(() {
-                  isLoading = true;
-                });
-                try {
-                  if (studentName == null || studentName!.trim().isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: AwesomeSnackbarContent(
-                          inMaterialBanner: true,
-                          title: "بيانات غير مكتملة",
-                          message: "اسم الطالب مطلوب",
-                          contentType: ContentType.failure,
-                        ),
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                      ),
-                    );
-                    print('invalide name');
-                  } else if (email != null &&
-                      (email!.trim().isEmpty || !emailRegex.hasMatch(email!))) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: AwesomeSnackbarContent(
-                          inMaterialBanner: true,
-                          title: "بيانات غير صحيحة",
-                          message: "البريد الإلكتروني غير صحيح",
-                          contentType: ContentType.failure,
-                        ),
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                      ),
-                    );
-                  } else {
-                    final uuid = Uuid();
-                    final deviceIdResult = await sl<SyncRepository>()
-                        .getDeviceId();
-                    final deviceId = deviceIdResult.getOrThrow();
-                    final newEntity = StudentEntity(
-                      entityId: uuid.v4(),
-                      centerId: currentCenter.entityId,
-                      byUser: currentUserId,
-                      byDevice: deviceId,
-                      isDeleted: false,
-                      version: 1,
-                      createdAt: DateTime.now().toUtc(),
-                      updatedAt: DateTime.now().toUtc(),
-                      name: studentName!,
-                      studyLevelId: selectedStudyLevel.entityId,
-                      gender: _isMale ? Gender.male : Gender.female,
-                      studentCode: uuid.v4(),
-                      studentStatus: StudentStatus.inactive,
-                      homePhone: homePhone,
-                      phone: studentPhone,
-                      paymentTypeEnum: _paymentMethod == 0
-                          ? PaymentTypeEnum.byMonth
-                          : PaymentTypeEnum.byClass,
-                      parentPhone: parentPhone,
-                      parentJob: parentJob,
-                      notes: studentNotes,
-                      divisionEnum: selectedDivision,
-                      email: email,
-                    );
-                    final addResult = await sl<StudentRepository>()
-                        .createStudent(newEntity);
-                    addResult.fold(
-                      ifLeft: (e) {
-                        print('1dddddddddsaaaaaa');
-                        print(e);
+                // Section: Contact Info
+                _buildSectionHeader('معلومات التواصل', AppTheme.tertiary),
+                _buildContainer([
+                  _buildLabelAndInput(
+                    label: 'رقم هاتف الطالب',
+                    child: TextPhoneWidget(
+                      initialValue: studentPhone,
+                      onChange: (value) {
+                        setState(() {
+                          if (value == null || value.phone.trim().isEmpty) {
+                            studentPhone = null;
+                          } else {
+                            studentPhone = value.toString();
+                          }
+                        });
+                        print(studentPhone);
+                      },
+                      title: 'رقم هاتف الطالب',
+                      hint: '01XXXXXXXXX',
+                      keyboardType: TextInputType.phone,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildLabelAndInput(
+                    label: 'رقم هاتف ولي الأمر',
+                    child: TextPhoneWidget(
+                      initialValue: parentPhone,
+                      onChange: (value) {
+                        setState(() {
+                          if (value == null || value.phone.trim().isEmpty) {
+                            parentPhone = null;
+                          } else {
+                            parentPhone = value.toString();
+                          }
+                        });
+                        print(parentPhone);
+                      },
+                      title: "رقم هاتف ولي الأمر",
+                      hint: '01XXXXXXXXX',
+                      keyboardType: TextInputType.phone,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildLabelAndInput(
+                    label: 'رقم هاتف البيت',
+                    child: TextPhoneWidget(
+                      initialValue: homePhone,
+                      onChange: (value) {
+                        setState(() {
+                          if (value == null || value.phone.trim().isEmpty) {
+                            homePhone = null;
+                          } else {
+                            homePhone = value.toString();
+                          }
+                        });
+                        print(homePhone);
+                      },
+                      title: 'رقم هاتف البيت',
+                      hint: '01XXXXXXXXX',
+                      keyboardType: TextInputType.phone,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildLabelAndInput(
+                    label: 'البريد الإلكتروني',
+                    child: _buildTextField(
+                      onChange: (value) {
+                        setState(() {
+                          if (value.isEmpty) {
+                            email = null;
+                          } else {
+                            email = value;
+                          }
+                        });
+                        print(email);
+                      },
+                      hint: 'example@mail.com',
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        // Regex for email validation
+                        if (value == null || value.isEmpty) {
+                          return null;
+                        }
+                        if (!emailRegex.hasMatch(value)) {
+                          return "البريد الإلكتروني غير صحيح";
+                        }
+
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildLabelAndInput(
+                    label: 'وظيفة ولي الأمر',
+                    child: _buildTextField(
+                      hint: 'المهنة',
+                      onChange: (value) {
+                        setState(() {
+                          if (value.isEmpty || value.trim().isEmpty) {
+                            parentJob = null;
+                          } else {
+                            parentJob = value;
+                          }
+                        });
+                        print(parentJob);
+                      },
+                    ),
+                  ),
+                ]),
+                const SizedBox(height: 32),
+
+                // Section: Academic Path
+                _buildSectionHeader(
+                  'المسار الأكاديمي',
+                  const Color(0xFFA2B9EA),
+                ),
+                _buildContainer([
+                  _buildLabelAndInput(
+                    label: 'الصف الدراسية',
+                    child: StudyLevelDropDown(),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildLabelAndInput(
+                    label: 'الشعبة',
+                    child: DivisionDropDown(),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildLabelAndInput(
+                    label: 'المجموعة',
+                    child: _buildTextField(hint: 'اسم أو كود المجموعة'),
+                  ),
+                ]),
+                const SizedBox(height: 32),
+
+                // Section: Payment System
+                _buildSectionHeader('نظام الدفع', const Color(0xFF575F72)),
+                Row(
+                  children: [
+                    _buildPaymentOption(
+                      isSelected: _paymentMethod == 0,
+                      label: 'اشتراك شهري',
+                      icon: Icons.payments,
+                      onTap: () => setState(() => _paymentMethod = 0),
+                    ),
+                    const SizedBox(width: 16),
+                    _buildPaymentOption(
+                      isSelected: _paymentMethod == 1,
+                      label: 'بالحصة',
+                      icon: Icons.receipt_long,
+                      onTap: () => setState(() => _paymentMethod = 1),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+
+                // Section: Additional Notes
+                _buildSectionHeader('ملاحظات إضافية', AppTheme.outline),
+                _buildTextField(
+                  onChange: (value) {
+                    setState(() {
+                      if (value.trim().isEmpty) {
+                        studentNotes = null;
+                      } else {
+                        studentNotes = value;
+                      }
+                    });
+                    print(studentNotes);
+                  },
+                  hint: 'أي تفاصيل أخرى تخص الطالب...',
+                  maxLines: 4,
+                  fillColor: AppTheme.surfaceContainerLow,
+                ),
+                const SizedBox(height: 48),
+
+                // Action Buttons
+                ElevatedButton(
+                  onPressed: () async {
+                    if (isLoading) return;
+                    setState(() {
+                      isLoading = true;
+                    });
+                    try {
+                      if (studentName == null || studentName!.trim().isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: AwesomeSnackbarContent(
                               inMaterialBanner: true,
-                              title: "حدث خطأ",
-                              message:
-                                  "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                              title: "بيانات غير مكتملة",
+                              message: "اسم الطالب مطلوب",
                               contentType: ContentType.failure,
                             ),
                             backgroundColor: Colors.transparent,
                             elevation: 0,
                           ),
                         );
-                      },
-                      ifRight: (response) {
-                        if (response == null) {
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: AwesomeSnackbarContent(
-                                inMaterialBanner: true,
-                                title: "تم بنجاح",
-                                message: "تم إنشاء الطالب",
-                                contentType: ContentType.success,
-                              ),
-                              backgroundColor: Colors.transparent,
-                              elevation: 0,
+                        print('invalide name');
+                      } else if (email != null &&
+                          (email!.trim().isEmpty ||
+                              !emailRegex.hasMatch(email!))) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: AwesomeSnackbarContent(
+                              inMaterialBanner: true,
+                              title: "بيانات غير صحيحة",
+                              message: "البريد الإلكتروني غير صحيح",
+                              contentType: ContentType.failure,
                             ),
-                          );
-                        } else {
-                          print('2dddddddddsaaaaaa');
-                          print(response);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: AwesomeSnackbarContent(
-                                inMaterialBanner: true,
-                                title: "حدث خطأ",
-                                message:
-                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
-                                contentType: ContentType.failure,
-                              ),
-                              backgroundColor: Colors.transparent,
-                              elevation: 0,
-                            ),
-                          );
-                        }
-                      },
-                    );
-                  }
-
-                  await Future.delayed(Duration(milliseconds: 250));
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: AwesomeSnackbarContent(
-                        inMaterialBanner: true,
-                        title: "حدث خطأ",
-                        message: "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
-                        contentType: ContentType.failure,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                    ),
-                  );
-                } finally {
-                  if (mounted) {
-                    setState(() => isLoading = false);
-                  }
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primary,
-                foregroundColor: AppTheme.onPrimary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                minimumSize: const Size(double.infinity, 56),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 4,
-                shadowColor: AppTheme.primary.withOpacity(0.4),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                clipBehavior: Clip.none,
-                children: [
-                  Opacity(
-                    opacity: isLoading ? 0 : 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.person_add),
-                        const SizedBox(width: 8),
-                        Text(
-                          'إضافة طالب',
-                          style: GoogleFonts.inter(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
                           ),
+                        );
+                      } else {
+                        final uuid = Uuid();
+                        final deviceIdResult = await sl<SyncRepository>()
+                            .getDeviceId();
+                        final deviceId = deviceIdResult.getOrThrow();
+                        final newEntity = StudentEntity(
+                          entityId: uuid.v4(),
+                          centerId: currentCenter.entityId,
+                          byUser: currentUserId,
+                          byDevice: deviceId,
+                          isDeleted: false,
+                          version: 1,
+                          createdAt: DateTime.now().toUtc(),
+                          updatedAt: DateTime.now().toUtc(),
+                          name: studentName!,
+                          studyLevelId: selectedStudyLevel.entityId,
+                          gender: _isMale ? Gender.male : Gender.female,
+                          studentCode: uuid.v4(),
+                          studentStatus: StudentStatus.inactive,
+                          homePhone: homePhone,
+                          phone: studentPhone,
+                          paymentTypeEnum: _paymentMethod == 0
+                              ? PaymentTypeEnum.byMonth
+                              : PaymentTypeEnum.byClass,
+                          parentPhone: parentPhone,
+                          parentJob: parentJob,
+                          notes: studentNotes,
+                          divisionEnum: selectedDivision,
+                          email: email,
+                        );
+                        final addResult = await sl<StudentRepository>()
+                            .createStudent(newEntity);
+                        addResult.fold(
+                          ifLeft: (e) {
+                            print('1dddddddddsaaaaaa');
+                            print(e);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: AwesomeSnackbarContent(
+                                  inMaterialBanner: true,
+                                  title: "حدث خطأ",
+                                  message:
+                                      "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                  contentType: ContentType.failure,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ),
+                            );
+                          },
+                          ifRight: (response) {
+                            if (response == null) {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: AwesomeSnackbarContent(
+                                    inMaterialBanner: true,
+                                    title: "تم بنجاح",
+                                    message: "تم إنشاء الطالب",
+                                    contentType: ContentType.success,
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                ),
+                              );
+                            } else {
+                              print('2dddddddddsaaaaaa');
+                              print(response);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: AwesomeSnackbarContent(
+                                    inMaterialBanner: true,
+                                    title: "حدث خطأ",
+                                    message:
+                                        "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                    contentType: ContentType.failure,
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      }
+
+                      await Future.delayed(Duration(milliseconds: 250));
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: AwesomeSnackbarContent(
+                            inMaterialBanner: true,
+                            title: "حدث خطأ",
+                            message: "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                            contentType: ContentType.failure,
+                          ),
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
                         ),
-                      ],
+                      );
+                    } finally {
+                      if (mounted) {
+                        setState(() => isLoading = false);
+                      }
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primary,
+                    foregroundColor: AppTheme.onPrimary,
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    minimumSize: const Size(double.infinity, 56),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 4,
+                    shadowColor: AppTheme.primary.withOpacity(0.4),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    clipBehavior: Clip.none,
+                    children: [
+                      Opacity(
+                        opacity: isLoading ? 0 : 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.person_add),
+                            const SizedBox(width: 8),
+                            Text(
+                              'إضافة طالب',
+                              style: GoogleFonts.inter(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      isLoading
+                          ? SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                color: AppColors.onPrimary,
+                              ),
+                            )
+                          : SizedBox(),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    foregroundColor: AppTheme.onSurfaceVariant,
+                    minimumSize: const Size(double.infinity, 56),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  isLoading
-                      ? SizedBox(
-                          height: 16,
-                          width: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            color: AppColors.onPrimary,
-                          ),
-                        )
-                      : SizedBox(),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                foregroundColor: AppTheme.onSurfaceVariant,
-                minimumSize: const Size(double.infinity, 56),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  child: Text(
+                    'إلغاء',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
-              child: Text(
-                'إلغاء',
-                style: GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+                const SizedBox(height: 32),
+              ],
             ),
-            const SizedBox(height: 32),
-          ],
+          ),
         ),
       ),
     );
@@ -684,6 +704,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           .map((item) {
                             return TextButton(
                               style: ButtonStyle(
+                                padding: WidgetStatePropertyAll(
+                                  EdgeInsets.zero,
+                                ),
                                 shape: WidgetStatePropertyAll(
                                   RoundedRectangleBorder(),
                                 ),
@@ -980,6 +1003,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       children: studyLevels.map((item) {
                         return TextButton(
                           style: ButtonStyle(
+                            padding: WidgetStatePropertyAll(EdgeInsets.zero),
                             shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(),
                             ),

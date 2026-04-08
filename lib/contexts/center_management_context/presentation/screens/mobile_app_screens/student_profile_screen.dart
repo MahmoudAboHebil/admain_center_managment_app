@@ -37,442 +37,432 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        label: 'ملف الطالب',
-        leadingWidget: MaterialButton(
-          onPressed: () async {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    EditStudentScreen(studentEntity: widget.student),
-              ),
-            );
-          },
-          elevation: 0,
-          hoverElevation: 0,
-          disabledElevation: 0,
-          highlightElevation: 0,
-          focusElevation: 0,
-          padding: EdgeInsets.zero,
-          minWidth: 32,
+    return SafeArea(
+      child: Scaffold(
+        appBar: CustomAppBar(
+          label: 'ملف الطالب',
+          leadingWidget: MaterialButton(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 300),
+                  reverseTransitionDuration: Duration(milliseconds: 300),
 
-          shape: CircleBorder(),
-          child: Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              shape: BoxShape.circle,
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return EditStudentScreen(studentEntity: widget.student);
+                  },
+
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                        final slide = Tween<Offset>(
+                          begin: Offset(1, 0),
+                          end: Offset.zero,
+                        ).animate(animation);
+
+                        final fade = Tween<double>(
+                          begin: 0.0,
+                          end: 1.0,
+                        ).animate(animation);
+
+                        return FadeTransition(
+                          opacity: fade,
+                          child: SlideTransition(position: slide, child: child),
+                        );
+                      },
+                ),
+              );
+            },
+            elevation: 0,
+            hoverElevation: 0,
+            disabledElevation: 0,
+            highlightElevation: 0,
+            focusElevation: 0,
+            padding: EdgeInsets.zero,
+            minWidth: 32,
+
+            shape: CircleBorder(),
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.edit, size: 20, color: AppTheme.primary),
             ),
-            child: const Icon(Icons.edit, size: 20, color: AppTheme.primary),
           ),
         ),
-      ),
 
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Hero Profile Header
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceContainerLowest,
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.topRight,
-                children: [
-                  Positioned(
-                    top: -90,
-                    right: -90,
-                    child: Container(
-                      height: 130,
-                      width: 130,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                widget.student.name * 1,
-                                style: GoogleFonts.manrope(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w800,
-                                  color: AppTheme.onSurface,
-                                ),
-                                maxLines: 2,
-                              ),
-                            ),
-                            SizedBox(width: 12),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: _buildStates(widget.student.studentStatus),
-                            ),
-                          ],
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Hero Profile Header
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.topRight,
+                  children: [
+                    Positioned(
+                      top: -90,
+                      right: -90,
+                      child: Container(
+                        height: 130,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          shape: BoxShape.circle,
                         ),
                       ),
-                      const SizedBox(height: 24),
-                      // Attendance Progress Ribbon
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.calendar_today,
-                                    color: AppTheme.primary,
-                                    size: 20,
+                              Expanded(
+                                child: Text(
+                                  widget.student.name * 1,
+                                  style: GoogleFonts.manrope(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppTheme.onSurface,
                                   ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'نسبة الحضور',
-                                    style: GoogleFonts.manrope(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppTheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                ],
+                                  maxLines: 2,
+                                ),
                               ),
-                              Text(
-                                '92%',
-                                style: GoogleFonts.manrope(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: AppTheme.primary,
+                              SizedBox(width: 12),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: _buildStates(
+                                  widget.student.studentStatus,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(4),
-                            child: const LinearProgressIndicator(
-                              value: 0.92,
-                              backgroundColor: AppTheme.tertiaryContainer,
-                              color: AppTheme.tertiary,
-                              minHeight: 8,
+                        ),
+                        const SizedBox(height: 24),
+                        // Attendance Progress Ribbon
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.calendar_today,
+                                      color: AppTheme.primary,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      'نسبة الحضور',
+                                      style: GoogleFonts.manrope(
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.onSurfaceVariant,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  '92%',
+                                  style: GoogleFonts.manrope(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: AppTheme.primary,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Academic Info Bento
-            Row(
-              children: [
-                Expanded(
-                  child: _buildBentoCard(
-                    icon: Icons.layers,
-                    iconColor: AppTheme.tertiary,
-                    title: 'الصف',
-                    value: level.order == 0 ? "غير مضاف" : level.arabicName,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildBentoCard(
-                    icon: Icons.science,
-                    iconColor: AppTheme.tertiary,
-                    title: 'الشعبة',
-                    value:
-                        (widget.student.divisionEnum == null ||
-                            widget.student.divisionEnum ==
-                                DivisionEnum.Division)
-                        ? "غير مضاف"
-                        : widget.student.divisionEnum!.description,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceContainerLowest,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppTheme.outlineVariant.withOpacity(0.15),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppTheme.secondaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.groups,
-                      color: AppTheme.onSecondaryContainer,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'مواعيد الحصص',
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: AppTheme.onSurfaceVariant,
-                        ),
-                      ),
-                      Text(
-                        'مجموعة A - السبت والأربعاء',
-                        style: GoogleFonts.manrope(
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Contact Information
-            _buildSectionHeader('معلومات التواصل', AppTheme.primary),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: _buildContactRow(
-                context: context,
-
-                icon: Icons.smartphone,
-                title: 'هاتف الطالب',
-                value: widget.student.phone,
-                hasCallAction: true,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: _buildContactRow(
-                context: context,
-
-                icon: Icons.home,
-                title: 'هاتف البيت',
-                value: widget.student.homePhone,
-                hasCallAction: true,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: _buildContactRow(
-                context: context,
-
-                icon: Icons.family_restroom,
-                title: 'هاتف ولي الأمر',
-                value: widget.student.parentPhone,
-                hasCallAction: true,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: _buildContactRow(
-                context: context,
-                icon: Icons.mail,
-                title: 'البريد الإلكتروني',
-                value: widget.student.email,
-                hasCallAction: false,
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Admin Details
-            _buildSectionHeader('تفاصيل إدارية', AppTheme.tertiary),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppTheme.surfaceContainerHigh,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'نظام الدفع',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            color: AppTheme.onSurfaceVariant,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          widget.student.paymentTypeEnum?.description ??
-                              PaymentTypeEnum.byMonth.description,
-                          style: GoogleFonts.manrope(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppTheme.surfaceContainerHigh,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'وظيفة ولي الأمر',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            color: AppTheme.onSurfaceVariant,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        widget.student.parentJob != null
-                            ? Text(
-                                widget.student.parentJob!,
-                                style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppTheme.onSurface,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              )
-                            : Text(
-                                "غير مضاف",
-                                style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppTheme.error,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                            const SizedBox(height: 16),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: const LinearProgressIndicator(
+                                value: 0.92,
+                                backgroundColor: AppTheme.tertiaryContainer,
+                                color: AppTheme.tertiary,
+                                minHeight: 8,
                               ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Notes
-            if (widget.student.notes != null) ...[
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: AppTheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(16),
-                  border: const Border(
-                    right: BorderSide(color: AppTheme.primary, width: 4),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.edit_note, color: AppTheme.primary),
-                        const SizedBox(width: 8),
-                        Text(
-                          'ملاحظات المعلم',
-                          style: GoogleFonts.manrope(
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.primary,
-                          ),
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.student.notes!,
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: AppTheme.onSurfaceVariant,
-                        height: 1.5,
-                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
-            ],
 
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: AppTheme.surface.withOpacity(0.95),
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        if (isLoading) return;
-                        setState(() {
-                          isLoading = true;
-                        });
-                        try {
-                          final addResult = await sl<StudentRepository>()
-                              .softDeleteStudent(widget.student);
-                          addResult.fold(
-                            ifLeft: (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: AwesomeSnackbarContent(
-                                    inMaterialBanner: true,
-                                    title: "حدث خطأ",
-                                    message:
-                                        "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
-                                    contentType: ContentType.failure,
+              const SizedBox(height: 24),
+
+              // Academic Info Bento
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildBentoCard(
+                      icon: Icons.layers,
+                      iconColor: AppTheme.tertiary,
+                      title: 'الصف',
+                      value: level.order == 0 ? "غير مضاف" : level.arabicName,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildBentoCard(
+                      icon: Icons.science,
+                      iconColor: AppTheme.tertiary,
+                      title: 'الشعبة',
+                      value:
+                          (widget.student.divisionEnum == null ||
+                              widget.student.divisionEnum ==
+                                  DivisionEnum.Division)
+                          ? "غير مضاف"
+                          : widget.student.divisionEnum!.description,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppTheme.outlineVariant.withOpacity(0.15),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppTheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.groups,
+                        color: AppTheme.onSecondaryContainer,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'مواعيد الحصص',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.onSurfaceVariant,
+                          ),
+                        ),
+                        Text(
+                          'مجموعة A - السبت والأربعاء',
+                          style: GoogleFonts.manrope(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Contact Information
+              _buildSectionHeader('معلومات التواصل', AppTheme.primary),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: _buildContactRow(
+                  context: context,
+
+                  icon: Icons.smartphone,
+                  title: 'هاتف الطالب',
+                  value: widget.student.phone,
+                  hasCallAction: true,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: _buildContactRow(
+                  context: context,
+
+                  icon: Icons.home,
+                  title: 'هاتف البيت',
+                  value: widget.student.homePhone,
+                  hasCallAction: true,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: _buildContactRow(
+                  context: context,
+
+                  icon: Icons.family_restroom,
+                  title: 'هاتف ولي الأمر',
+                  value: widget.student.parentPhone,
+                  hasCallAction: true,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: _buildContactRow(
+                  context: context,
+                  icon: Icons.mail,
+                  title: 'البريد الإلكتروني',
+                  value: widget.student.email,
+                  hasCallAction: false,
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Admin Details
+              _buildSectionHeader('تفاصيل إدارية', AppTheme.tertiary),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppTheme.surfaceContainerHigh,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'نظام الدفع',
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: AppTheme.onSurfaceVariant,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            widget.student.paymentTypeEnum?.description ??
+                                PaymentTypeEnum.byMonth.description,
+                            style: GoogleFonts.manrope(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppTheme.surfaceContainerHigh,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'وظيفة ولي الأمر',
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: AppTheme.onSurfaceVariant,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          widget.student.parentJob != null
+                              ? Text(
+                                  widget.student.parentJob!,
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.onSurface,
                                   ),
-                                  backgroundColor: Colors.transparent,
-                                  elevation: 0,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              : Text(
+                                  "غير مضاف",
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.error,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              );
-                            },
-                            ifRight: (response) {
-                              if (response == null) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => StudentsListScreen(),
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: AwesomeSnackbarContent(
-                                      inMaterialBanner: true,
-                                      title: "تم بنجاح",
-                                      message: "تم حذف الطالب",
-                                      contentType: ContentType.success,
-                                    ),
-                                    backgroundColor: Colors.transparent,
-                                    elevation: 0,
-                                  ),
-                                );
-                              } else {
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Notes
+              if (widget.student.notes != null) ...[
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(16),
+                    border: const Border(
+                      right: BorderSide(color: AppTheme.primary, width: 4),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.edit_note, color: AppTheme.primary),
+                          const SizedBox(width: 8),
+                          Text(
+                            'ملاحظات المعلم',
+                            style: GoogleFonts.manrope(
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.student.notes!,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: AppTheme.onSurfaceVariant,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 40),
+              ],
+
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      color: AppTheme.surface.withOpacity(0.95),
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          if (isLoading) return;
+                          setState(() {
+                            isLoading = true;
+                          });
+                          try {
+                            final addResult = await sl<StudentRepository>()
+                                .softDeleteStudent(widget.student);
+                            addResult.fold(
+                              ifLeft: (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: AwesomeSnackbarContent(
@@ -486,94 +476,208 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                     elevation: 0,
                                   ),
                                 );
-                              }
-                            },
-                          );
-                          await Future.delayed(Duration(milliseconds: 250));
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: AwesomeSnackbarContent(
-                                inMaterialBanner: true,
-                                title: "حدث خطأ",
-                                message:
-                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
-                                contentType: ContentType.failure,
+                              },
+                              ifRight: (response) {
+                                if (response == null) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(
+                                        milliseconds: 300,
+                                      ),
+                                      reverseTransitionDuration: Duration(
+                                        milliseconds: 300,
+                                      ),
+
+                                      pageBuilder:
+                                          (
+                                            context,
+                                            animation,
+                                            secondaryAnimation,
+                                          ) {
+                                            return StudentsListScreen();
+                                          },
+
+                                      transitionsBuilder:
+                                          (
+                                            context,
+                                            animation,
+                                            secondaryAnimation,
+                                            child,
+                                          ) {
+                                            final slide = Tween<Offset>(
+                                              begin: Offset(1, 0),
+                                              end: Offset.zero,
+                                            ).animate(animation);
+
+                                            final fade = Tween<double>(
+                                              begin: 0.0,
+                                              end: 1.0,
+                                            ).animate(animation);
+
+                                            return FadeTransition(
+                                              opacity: fade,
+                                              child: SlideTransition(
+                                                position: slide,
+                                                child: child,
+                                              ),
+                                            );
+                                          },
+                                    ),
+                                  );
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: AwesomeSnackbarContent(
+                                        inMaterialBanner: true,
+                                        title: "تم بنجاح",
+                                        message: "تم حذف الطالب",
+                                        contentType: ContentType.success,
+                                      ),
+                                      backgroundColor: Colors.transparent,
+                                      elevation: 0,
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: AwesomeSnackbarContent(
+                                        inMaterialBanner: true,
+                                        title: "حدث خطأ",
+                                        message:
+                                            "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                        contentType: ContentType.failure,
+                                      ),
+                                      backgroundColor: Colors.transparent,
+                                      elevation: 0,
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                            await Future.delayed(Duration(milliseconds: 250));
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: AwesomeSnackbarContent(
+                                  inMaterialBanner: true,
+                                  title: "حدث خطأ",
+                                  message:
+                                      "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                  contentType: ContentType.failure,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
                               ),
-                              backgroundColor: Colors.transparent,
-                              elevation: 0,
+                            );
+                          } finally {
+                            if (mounted) {
+                              setState(() => isLoading = false);
+                            }
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: AppColors.error.withOpacity(1),
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        icon: Stack(
+                          alignment: Alignment.center,
+                          clipBehavior: Clip.none,
+                          children: [
+                            Opacity(
+                              opacity: isLoading ? 0 : 1,
+                              child: Text(
+                                'حذف الطالب',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ),
+                            isLoading
+                                ? SizedBox(
+                                    height: 16,
+                                    width: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      color: AppColors.onPrimary,
+                                    ),
+                                  )
+                                : SizedBox(),
+                          ],
+                        ),
+                        label: !isLoading
+                            ? const Icon(Icons.delete_outline, size: 16)
+                            : SizedBox(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: AppTheme.surface.withOpacity(0.95),
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 300),
+                              reverseTransitionDuration: Duration(
+                                milliseconds: 300,
+                              ),
+
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                    return EditStudentScreen(
+                                      studentEntity: widget.student,
+                                    );
+                                  },
+
+                              transitionsBuilder:
+                                  (
+                                    context,
+                                    animation,
+                                    secondaryAnimation,
+                                    child,
+                                  ) {
+                                    final slide = Tween<Offset>(
+                                      begin: Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(animation);
+
+                                    final fade = Tween<double>(
+                                      begin: 0.0,
+                                      end: 1.0,
+                                    ).animate(animation);
+
+                                    return FadeTransition(
+                                      opacity: fade,
+                                      child: SlideTransition(
+                                        position: slide,
+                                        child: child,
+                                      ),
+                                    );
+                                  },
                             ),
                           );
-                        } finally {
-                          if (mounted) {
-                            setState(() => isLoading = false);
-                          }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: AppColors.error.withOpacity(1),
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: AppColors.primaryDim,
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        icon: Text(
+                          "تعديل الطالب",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        label: const Icon(Icons.edit, size: 16),
                       ),
-                      icon: Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        children: [
-                          Opacity(
-                            opacity: isLoading ? 0 : 1,
-                            child: Text(
-                              'حذف الطالب',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ),
-                          isLoading
-                              ? SizedBox(
-                                  height: 16,
-                                  width: 16,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.5,
-                                    color: AppColors.onPrimary,
-                                  ),
-                                )
-                              : SizedBox(),
-                        ],
-                      ),
-                      label: !isLoading
-                          ? const Icon(Icons.delete_outline, size: 16)
-                          : SizedBox(),
                     ),
                   ),
-                ),
-                SizedBox(width: 12),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    color: AppTheme.surface.withOpacity(0.95),
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditStudentScreen(
-                              studentEntity: widget.student,
-                            ),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: AppColors.primaryDim,
-                      ),
-                      icon: Text(
-                        "تعديل الطالب",
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      label: const Icon(Icons.edit, size: 16),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );

@@ -419,8 +419,42 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
 
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => AddStudentScreen(),
+                          PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 300),
+                            reverseTransitionDuration: Duration(
+                              milliseconds: 300,
+                            ),
+
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                                  return AddStudentScreen();
+                                },
+
+                            transitionsBuilder:
+                                (
+                                  context,
+                                  animation,
+                                  secondaryAnimation,
+                                  child,
+                                ) {
+                                  final slide = Tween<Offset>(
+                                    begin: Offset(0, 1),
+                                    end: Offset.zero,
+                                  ).animate(animation);
+
+                                  final fade = Tween<double>(
+                                    begin: 0,
+                                    end: 1,
+                                  ).animate(animation);
+
+                                  return FadeTransition(
+                                    opacity: fade,
+                                    child: SlideTransition(
+                                      position: slide,
+                                      child: child,
+                                    ),
+                                  );
+                                },
                           ),
                         );
                       },

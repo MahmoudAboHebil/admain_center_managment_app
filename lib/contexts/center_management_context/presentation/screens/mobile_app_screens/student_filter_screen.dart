@@ -70,138 +70,94 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: StudentsFilterAppBar(
-        onClickingReset: () {
-          setState(() {
-            selectedPaymentType = null;
-            selectedStudyLevel = studyLevelsWithAll.first;
-            selectedDivision = DivisionEnum.all;
-            selectedStudentStates = null;
-          });
-        },
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildSectionTitle("المرحلة الدراسية"),
+    return SafeArea(
+      child: Scaffold(
+        appBar: StudentsFilterAppBar(
+          onClickingReset: () {
+            setState(() {
+              selectedPaymentType = null;
+              selectedStudyLevel = studyLevelsWithAll.first;
+              selectedDivision = DivisionEnum.all;
+              selectedStudentStates = null;
+            });
+          },
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSectionTitle("المرحلة الدراسية"),
 
-                const SizedBox(height: 8),
-                StudyLevelDropDown(),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildSectionTitle("الشعبة"),
-
-                const SizedBox(height: 8),
-                DivisionDropDown(),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatusCard(
-                    icon: Icons.how_to_reg,
-                    label: 'نشط',
-                    isSelected: selectedStudentStates == StudentStatus.active,
-                    onTap: () {
-                      setState(() {
-                        if (selectedStudentStates == StudentStatus.active) {
-                          selectedStudentStates = null;
-                        } else {
-                          selectedStudentStates = StudentStatus.active;
-                        }
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatusCard(
-                    icon: Icons.person_off,
-                    label: 'غير نشط',
-                    isSelected: selectedStudentStates == StudentStatus.inactive,
-                    onTap: () {
-                      setState(() {
-                        if (selectedStudentStates == StudentStatus.inactive) {
-                          selectedStudentStates = null;
-                        } else {
-                          selectedStudentStates = StudentStatus.inactive;
-                        }
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatusCard(
-                    icon: Icons.schedule,
-                    label: 'متاخر فى الدفع',
-                    isSelected:
-                        selectedStudentStates == StudentStatus.latePayment,
-                    onTap: () {
-                      setState(() {
-                        if (selectedStudentStates ==
-                            StudentStatus.latePayment) {
-                          selectedStudentStates = null;
-                        } else {
-                          selectedStudentStates = StudentStatus.latePayment;
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Payment System
-            _buildSectionTitle('نظام الدفع'),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceContainer,
-                borderRadius: BorderRadius.circular(16),
+                  const SizedBox(height: 8),
+                  StudyLevelDropDown(),
+                ],
               ),
-              child: Row(
+              const SizedBox(height: 24),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSectionTitle("الشعبة"),
+
+                  const SizedBox(height: 8),
+                  DivisionDropDown(),
+                ],
+              ),
+              const SizedBox(height: 24),
+
+              Row(
                 children: [
                   Expanded(
-                    child: _buildPaymentToggle(
-                      label: 'اشتراك شهري',
-                      isSelected:
-                          selectedPaymentType == PaymentTypeEnum.byMonth,
+                    child: _buildStatusCard(
+                      icon: Icons.how_to_reg,
+                      label: 'نشط',
+                      isSelected: selectedStudentStates == StudentStatus.active,
                       onTap: () {
                         setState(() {
-                          if (selectedPaymentType == PaymentTypeEnum.byMonth) {
-                            selectedPaymentType = null;
+                          if (selectedStudentStates == StudentStatus.active) {
+                            selectedStudentStates = null;
                           } else {
-                            selectedPaymentType = PaymentTypeEnum.byMonth;
+                            selectedStudentStates = StudentStatus.active;
                           }
                         });
                       },
                     ),
                   ),
+                  const SizedBox(width: 12),
                   Expanded(
-                    child: _buildPaymentToggle(
-                      label: 'بالحصة',
+                    child: _buildStatusCard(
+                      icon: Icons.person_off,
+                      label: 'غير نشط',
                       isSelected:
-                          selectedPaymentType == PaymentTypeEnum.byClass,
+                          selectedStudentStates == StudentStatus.inactive,
                       onTap: () {
                         setState(() {
-                          if (selectedPaymentType == PaymentTypeEnum.byClass) {
-                            selectedPaymentType = null;
+                          if (selectedStudentStates == StudentStatus.inactive) {
+                            selectedStudentStates = null;
                           } else {
-                            selectedPaymentType = PaymentTypeEnum.byClass;
+                            selectedStudentStates = StudentStatus.inactive;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildStatusCard(
+                      icon: Icons.schedule,
+                      label: 'متاخر فى الدفع',
+                      isSelected:
+                          selectedStudentStates == StudentStatus.latePayment,
+                      onTap: () {
+                        setState(() {
+                          if (selectedStudentStates ==
+                              StudentStatus.latePayment) {
+                            selectedStudentStates = null;
+                          } else {
+                            selectedStudentStates = StudentStatus.latePayment;
                           }
                         });
                       },
@@ -209,68 +165,143 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 24),
-            const SizedBox(height: 80), // Padding for bottom bar
-          ],
-        ),
-      ),
-      bottomSheet: Container(
-        color: AppTheme.surface.withOpacity(0.95),
-        padding: const EdgeInsets.fromLTRB(24, 20, 24, 40),
-        child: ElevatedButton.icon(
-          onPressed: () async {
-            if (isLoading) return;
-            setState(() {
-              isLoading = true;
-            });
-            try {
-              final data = FilterParams(
-                selectedPaymentType: selectedPaymentType,
-                selectedStudentStates: selectedStudentStates,
-                selectedDivision: selectedDivision,
-                selectedStudyLevel: selectedStudyLevel,
-              );
-              if (!mounted) return;
-              await getFilterData(data);
-              await Future.delayed(Duration(milliseconds: 400));
-
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => StudentsListScreen(
-                    filterDataList: filterDataList,
-                    params: data,
-                  ),
+              const SizedBox(height: 24),
+              // Payment System
+              _buildSectionTitle('نظام الدفع'),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(16),
                 ),
-              );
-            } finally {
-              if (mounted) {
-                setState(() => isLoading = false);
-              }
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 56),
-          ),
-          icon: Stack(
-            alignment: Alignment.center,
-            clipBehavior: Clip.none,
-            children: [
-              Opacity(opacity: isLoading ? 0 : 1, child: Text('تطبيق الفلاتر')),
-              isLoading
-                  ? SizedBox(
-                      height: 16,
-                      width: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.5,
-                        color: AppColors.onPrimary,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _buildPaymentToggle(
+                        label: 'اشتراك شهري',
+                        isSelected:
+                            selectedPaymentType == PaymentTypeEnum.byMonth,
+                        onTap: () {
+                          setState(() {
+                            if (selectedPaymentType ==
+                                PaymentTypeEnum.byMonth) {
+                              selectedPaymentType = null;
+                            } else {
+                              selectedPaymentType = PaymentTypeEnum.byMonth;
+                            }
+                          });
+                        },
                       ),
-                    )
-                  : SizedBox(),
+                    ),
+                    Expanded(
+                      child: _buildPaymentToggle(
+                        label: 'بالحصة',
+                        isSelected:
+                            selectedPaymentType == PaymentTypeEnum.byClass,
+                        onTap: () {
+                          setState(() {
+                            if (selectedPaymentType ==
+                                PaymentTypeEnum.byClass) {
+                              selectedPaymentType = null;
+                            } else {
+                              selectedPaymentType = PaymentTypeEnum.byClass;
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              const SizedBox(height: 80), // Padding for bottom bar
             ],
           ),
-          label: !isLoading ? const Icon(Icons.filter_alt) : SizedBox(),
+        ),
+        bottomSheet: Container(
+          color: AppTheme.surface.withOpacity(0.95),
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 40),
+          child: ElevatedButton.icon(
+            onPressed: () async {
+              if (isLoading) return;
+              setState(() {
+                isLoading = true;
+              });
+              try {
+                final data = FilterParams(
+                  selectedPaymentType: selectedPaymentType,
+                  selectedStudentStates: selectedStudentStates,
+                  selectedDivision: selectedDivision,
+                  selectedStudyLevel: selectedStudyLevel,
+                );
+                if (!mounted) return;
+                await getFilterData(data);
+                await Future.delayed(Duration(milliseconds: 400));
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: Duration(milliseconds: 300),
+                    reverseTransitionDuration: Duration(milliseconds: 300),
+
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return  StudentsListScreen(
+                        filterDataList: filterDataList,
+                        params: data,
+                      );
+                    },
+
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      final slide = Tween<Offset>(
+                        begin: Offset(1, 0),
+                        end: Offset.zero,
+                      ).animate(animation);
+
+                      final fade = Tween<double>(begin: 0.0, end: 1.0).animate(animation);
+
+                      return FadeTransition(
+                        opacity: fade,
+                        child: SlideTransition(position: slide, child: child),
+                      );
+                    },
+                  ),
+                );
+
+
+
+              } finally {
+                if (mounted) {
+                  setState(() => isLoading = false);
+                }
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              minimumSize: const Size(double.infinity, 0),
+            ),
+            icon: Stack(
+              alignment: Alignment.center,
+              clipBehavior: Clip.none,
+              children: [
+                Opacity(
+                  opacity: isLoading ? 0 : 1,
+                  child: Text('تطبيق الفلاتر'),
+                ),
+                isLoading
+                    ? SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          color: AppColors.onPrimary,
+                        ),
+                      )
+                    : SizedBox(),
+              ],
+            ),
+            label: !isLoading ? const Icon(Icons.filter_alt) : SizedBox(),
+          ),
         ),
       ),
     );
@@ -423,6 +454,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                       children: studyLevelsWithAll.map((item) {
                         return TextButton(
                           style: ButtonStyle(
+                            padding: WidgetStatePropertyAll(EdgeInsets.zero),
                             shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(),
                             ),
@@ -553,6 +585,9 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                           .map((item) {
                             return TextButton(
                               style: ButtonStyle(
+                                padding: WidgetStatePropertyAll(
+                                  EdgeInsets.zero,
+                                ),
                                 shape: WidgetStatePropertyAll(
                                   RoundedRectangleBorder(),
                                 ),

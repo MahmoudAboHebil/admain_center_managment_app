@@ -12,7 +12,8 @@ import '../../domain/repository/student_repository.dart';
 import '../bloc/selection_cubit/selection_cubit.dart';
 
 class StudentSearchTextField extends StatefulWidget {
-  const StudentSearchTextField({super.key});
+  final double width;
+  const StudentSearchTextField({super.key, required this.width});
 
   @override
   State<StudentSearchTextField> createState() => _StudentSearchTextFieldState();
@@ -58,7 +59,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
     _dropdownOpacity = 0;
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        width: 300,
+        width: widget.width,
         child: CompositedTransformFollower(
           link: layerLink,
           showWhenUnlinked: false,
@@ -118,7 +119,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
     return CompositedTransformTarget(
       link: layerLink,
       child: SizedBox(
-        width: 300,
+        width: widget.width,
         child: TextField(
           controller: searchController,
           focusNode: searchFocusNode,
@@ -150,7 +151,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             fillColor: searchFocusNode.hasFocus
                 ? Colors.white
-                : AppColors.surfaceContainerHigh,
+                : AppColors.surfaceContainerHigh.withOpacity(0.3),
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(100),
@@ -177,7 +178,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                 borderRadius: BorderRadius.circular(8),
                 color: AppColors.surfaceContainer,
               ),
-              width: 300,
+              width: widget.width,
               padding: EdgeInsets.only(bottom: 12),
               child: Column(
                 children: [
@@ -255,18 +256,35 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                 onPressed: () {
                   if ((filterDataList.length >= 4)) {
                     context.read<SelectionCubit>().clearSelection();
-
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) {
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 300),
+                        reverseTransitionDuration: Duration(milliseconds: 300),
+
+                        pageBuilder: (context, animation, secondaryAnimation) {
                           return StudentsSearchScreen(
                             query: searchController.text,
                             initialData: filterDataList,
                           );
                         },
+
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          final slide = Tween<Offset>(
+                            begin: Offset(1, 0),
+                            end: Offset.zero,
+                          ).animate(animation);
+
+                          final fade = Tween<double>(begin: 0.0, end: 1.0).animate(animation);
+
+                          return FadeTransition(
+                            opacity: fade,
+                            child: SlideTransition(position: slide, child: child),
+                          );
+                        },
                       ),
                     );
+
                   }
                 },
                 child: Container(

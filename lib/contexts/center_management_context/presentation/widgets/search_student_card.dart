@@ -23,8 +23,31 @@ class SearchStudentCard extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => StudentProfileScreen(student: studentEntity),
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 300),
+            reverseTransitionDuration: Duration(milliseconds: 300),
+
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return StudentProfileScreen(student: studentEntity);
+            },
+
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  final slide = Tween<Offset>(
+                    begin: Offset(1, 0),
+                    end: Offset.zero,
+                  ).animate(animation);
+
+                  final fade = Tween<double>(
+                    begin: 0.0,
+                    end: 1.0,
+                  ).animate(animation);
+
+                  return FadeTransition(
+                    opacity: fade,
+                    child: SlideTransition(position: slide, child: child),
+                  );
+                },
           ),
         );
       },

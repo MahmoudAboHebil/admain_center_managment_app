@@ -10,50 +10,81 @@ class StatCard extends StatelessWidget {
     required this.value,
     required this.valueColor,
     this.isDesktop = true,
+    required this.lineColor,
   });
   final String label;
   final String value;
   final Color valueColor;
+  final Color lineColor;
   final bool isDesktop;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      alignment: Alignment.center,
+    return Stack(
+      alignment: Alignment.centerRight,
+      clipBehavior: Clip.hardEdge,
 
-      padding: isDesktop ? EdgeInsets.all(24) : EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.outlineVariant.withOpacity(0.15)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              color: AppColors.onSurfaceVariant,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 5),
+          width: 20,
+          height: 83,
+          decoration: BoxDecoration(
+            color: lineColor,
+            borderRadius: BorderRadius.circular(300),
           ),
-          SizedBox(height: isDesktop ? 8 : 5),
-          Text(
-            value,
-            style: isDesktop
-                ? AppTypography.textTheme.headlineMedium?.copyWith(
-                    color: valueColor,
-                  )
-                : AppTypography.textTheme.headlineMedium?.copyWith(
-                    color: valueColor,
-                    fontSize: 20,
+        ),
+        Row(
+          children: [
+            SizedBox(width: 5),
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                height: 90,
+
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 4,
+                      spreadRadius: 0,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                  color: AppColors.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.outlineVariant.withOpacity(0.15),
                   ),
-          ),
-        ],
-      ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      label,
+                      style: const TextStyle(
+                        color: AppColors.onSurfaceVariant,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      value,
+                      style: AppTypography.textTheme.headlineMedium?.copyWith(
+                        color: valueColor,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

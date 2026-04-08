@@ -71,9 +71,31 @@ class _StudentCardState extends State<StudentCard> {
           if (!isSelectedMode) {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    StudentProfileScreen(student: widget.student),
+              PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 300),
+                reverseTransitionDuration: Duration(milliseconds: 300),
+
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  return StudentProfileScreen(student: widget.student);
+                },
+
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                      final slide = Tween<Offset>(
+                        begin: Offset(1, 0),
+                        end: Offset.zero,
+                      ).animate(animation);
+
+                      final fade = Tween<double>(
+                        begin: 0.0,
+                        end: 1.0,
+                      ).animate(animation);
+
+                      return FadeTransition(
+                        opacity: fade,
+                        child: SlideTransition(position: slide, child: child),
+                      );
+                    },
               ),
             );
           } else {
@@ -117,6 +139,14 @@ class _StudentCardState extends State<StudentCard> {
                           bottom: 12,
                         ),
                         decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 4,
+                              spreadRadius: 0,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
                           color: isSelected
                               ? AppColors.primary.withOpacity(0.05)
                               : AppColors.surfaceContainerLowest,
@@ -204,7 +234,7 @@ class _StudentCardState extends State<StudentCard> {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
-                                            const SizedBox(height: 4),
+                                            const SizedBox(height: 8),
                                             Text(
                                               widget.level,
                                               style: const TextStyle(
@@ -215,39 +245,36 @@ class _StudentCardState extends State<StudentCard> {
                                                 ), // primary
                                               ),
                                             ),
-                                            // const SizedBox(height: 4),
-                                            // Text(
-                                            //   widget.id,
-                                            //   style: const TextStyle(
-                                            //     fontSize: 10,
-                                            //     color: Color(0xFF5C5F68),
-                                            //   ),
-                                            // ),
                                           ],
                                         ),
                                       ),
-                                      CompositedTransformTarget(
-                                        link: _layerLink,
-                                        child: IconButton(
-                                          padding: EdgeInsets.zero,
-                                          constraints: const BoxConstraints(),
-                                          icon: const Icon(
-                                            Icons.more_vert,
-                                            color: Color(0xFF5C5F68),
-                                            size: 20,
-                                          ),
-                                          onPressed: !isSelectedMode
-                                              ? _toggleMenu
-                                              : null,
+                                      Container(
+                                        height: 20,
+                                        width: 20,
+                                        alignment: Alignment.topLeft,
+                                        child: CompositedTransformTarget(
+                                          link: _layerLink,
+                                          child: IconButton(
+                                            padding: EdgeInsets.zero,
+                                            constraints: const BoxConstraints(),
+                                            icon: const Icon(
+                                              Icons.more_vert,
+                                              color: Color(0xFF5C5F68),
+                                              size: 20,
+                                            ),
+                                            onPressed: !isSelectedMode
+                                                ? _toggleMenu
+                                                : null,
 
-                                          splashRadius: 20,
+                                            splashRadius: 20,
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 12),
+                                  SizedBox(height: 10),
                                   Container(
-                                    padding: const EdgeInsets.only(top: 12),
+                                    padding: const EdgeInsets.only(top: 3),
                                     decoration: BoxDecoration(
                                       border: Border(
                                         top: BorderSide(
@@ -313,39 +340,98 @@ class _StudentCardState extends State<StudentCard> {
                                               ? () {
                                                   Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          EditStudentScreen(
-                                                            studentEntity:
-                                                                widget.student,
+                                                    PageRouteBuilder(
+                                                      transitionDuration:
+                                                          Duration(
+                                                            milliseconds: 300,
                                                           ),
+                                                      reverseTransitionDuration:
+                                                          Duration(
+                                                            milliseconds: 300,
+                                                          ),
+
+                                                      pageBuilder:
+                                                          (
+                                                            context,
+                                                            animation,
+                                                            secondaryAnimation,
+                                                          ) {
+                                                            return EditStudentScreen(
+                                                              studentEntity:
+                                                                  widget
+                                                                      .student,
+                                                            );
+                                                          },
+
+                                                      transitionsBuilder:
+                                                          (
+                                                            context,
+                                                            animation,
+                                                            secondaryAnimation,
+                                                            child,
+                                                          ) {
+                                                            final slide =
+                                                                Tween<Offset>(
+                                                                  begin: Offset(
+                                                                    1,
+                                                                    0,
+                                                                  ),
+                                                                  end: Offset
+                                                                      .zero,
+                                                                ).animate(
+                                                                  animation,
+                                                                );
+
+                                                            final fade =
+                                                                Tween<double>(
+                                                                  begin: 0.0,
+                                                                  end: 1.0,
+                                                                ).animate(
+                                                                  animation,
+                                                                );
+
+                                                            return FadeTransition(
+                                                              opacity: fade,
+                                                              child:
+                                                                  SlideTransition(
+                                                                    position:
+                                                                        slide,
+                                                                    child:
+                                                                        child,
+                                                                  ),
+                                                            );
+                                                          },
                                                     ),
                                                   );
                                                 }
                                               : null,
                                           style: TextButton.styleFrom(
+                                            padding: EdgeInsets.zero,
                                             foregroundColor: const Color(
                                               0xFF495F8B,
                                             ),
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                              vertical: 8,
+                                          ),
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 14,
+                                              vertical: 6,
                                             ),
-                                            shape: RoundedRectangleBorder(
+                                            decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10),
-                                              side: BorderSide(
+                                              border: Border.all(
                                                 color: const Color(
                                                   0xFF495F8B,
                                                 ).withOpacity(0.2),
                                               ),
                                             ),
-                                          ),
-                                          child: const Text(
-                                            'تعديل',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
+
+                                            child: const Text(
+                                              'تعديل',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -402,7 +488,7 @@ class _StudentCardState extends State<StudentCard> {
               elevation: 1,
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                width: 150,
+                width: 140,
                 padding: const EdgeInsets.symmetric(vertical: 3),
                 decoration: BoxDecoration(
                   color: AppColors.surfaceContainerLowest,
@@ -413,17 +499,63 @@ class _StudentCardState extends State<StudentCard> {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    /// Edit
-                    MaterialButton(
+                    TextButton(
+                      style: ButtonStyle(
+                        padding: WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        minimumSize: WidgetStatePropertyAll(Size.zero),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        backgroundColor: WidgetStatePropertyAll(
+                          Colors.transparent,
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                StudentProfileScreen(student: widget.student),
+                          PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 300),
+                            reverseTransitionDuration: Duration(
+                              milliseconds: 300,
+                            ),
+
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                                  return StudentProfileScreen(
+                                    student: widget.student,
+                                  );
+                                },
+
+                            transitionsBuilder:
+                                (
+                                  context,
+                                  animation,
+                                  secondaryAnimation,
+                                  child,
+                                ) {
+                                  final slide = Tween<Offset>(
+                                    begin: Offset(1, 0),
+                                    end: Offset.zero,
+                                  ).animate(animation);
+
+                                  final fade = Tween<double>(
+                                    begin: 0.0,
+                                    end: 1.0,
+                                  ).animate(animation);
+
+                                  return FadeTransition(
+                                    opacity: fade,
+                                    child: SlideTransition(
+                                      position: slide,
+                                      child: child,
+                                    ),
+                                  );
+                                },
                           ),
                         );
+
                         _overlayEntry?.remove();
                         _overlayEntry = null;
                       },
@@ -431,23 +563,22 @@ class _StudentCardState extends State<StudentCard> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
+                                horizontal: 6,
                               ),
                               child: Icon(
                                 Icons.remove_red_eye_outlined,
                                 size: 15,
-                                color: AppColors.onSurfaceVariant,
+                                color: Colors.black,
                               ),
                             ),
                             Text(
                               "عرض الملف الشخصى",
                               style: TextStyle(
-                                color: AppColors.onSurfaceVariant,
+                                color: Colors.black,
                                 fontSize: 11,
                               ),
                             ),
@@ -456,8 +587,20 @@ class _StudentCardState extends State<StudentCard> {
                       ),
                     ),
 
+                    /// Edit
+
                     ///todo: you need implement this
-                    MaterialButton(
+                    TextButton(
+                      style: ButtonStyle(
+                        padding: WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        minimumSize: WidgetStatePropertyAll(Size.zero),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        backgroundColor: WidgetStatePropertyAll(
+                          Colors.transparent,
+                        ),
+                      ),
                       onPressed: () {
                         _overlayEntry?.remove();
                         _overlayEntry = null;
@@ -467,23 +610,22 @@ class _StudentCardState extends State<StudentCard> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
+                                horizontal: 6,
                               ),
                               child: Icon(
                                 Icons.av_timer,
                                 size: 15,
-                                color: AppColors.onSurfaceVariant,
+                                color: Colors.black,
                               ),
                             ),
                             Text(
                               "سجل الحضور",
                               style: TextStyle(
-                                color: AppColors.onSurfaceVariant,
+                                color: Colors.black,
                                 fontSize: 11,
                               ),
                             ),
@@ -491,15 +633,24 @@ class _StudentCardState extends State<StudentCard> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 6),
                     Container(
                       height: 1,
                       color: const Color(0xFFAFB1BC).withOpacity(0.1),
                     ),
-                    SizedBox(height: 6),
 
-                    MaterialButton(
-                      hoverColor: AppColors.onError,
+                    TextButton(
+                      style: ButtonStyle(
+                        shadowColor: WidgetStatePropertyAll(AppColors.onError),
+                        overlayColor: WidgetStatePropertyAll(AppColors.onError),
+                        padding: WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        minimumSize: WidgetStatePropertyAll(Size.zero),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        backgroundColor: WidgetStatePropertyAll(
+                          Colors.transparent,
+                        ),
+                      ),
                       onPressed: () async {
                         try {
                           final addResult = await sl<StudentRepository>()
@@ -524,8 +675,48 @@ class _StudentCardState extends State<StudentCard> {
                               if (response == null) {
                                 Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => StudentsListScreen(),
+                                  PageRouteBuilder(
+                                    transitionDuration: Duration(
+                                      milliseconds: 300,
+                                    ),
+                                    reverseTransitionDuration: Duration(
+                                      milliseconds: 300,
+                                    ),
+
+                                    pageBuilder:
+                                        (
+                                          context,
+                                          animation,
+                                          secondaryAnimation,
+                                        ) {
+                                          return StudentsListScreen();
+                                        },
+
+                                    transitionsBuilder:
+                                        (
+                                          context,
+                                          animation,
+                                          secondaryAnimation,
+                                          child,
+                                        ) {
+                                          final slide = Tween<Offset>(
+                                            begin: Offset(1, 0),
+                                            end: Offset.zero,
+                                          ).animate(animation);
+
+                                          final fade = Tween<double>(
+                                            begin: 0.0,
+                                            end: 1.0,
+                                          ).animate(animation);
+
+                                          return FadeTransition(
+                                            opacity: fade,
+                                            child: SlideTransition(
+                                              position: slide,
+                                              child: child,
+                                            ),
+                                          );
+                                        },
                                   ),
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -581,12 +772,11 @@ class _StudentCardState extends State<StudentCard> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
+                                horizontal: 6,
                               ),
                               child: Icon(
                                 Icons.delete_outline,

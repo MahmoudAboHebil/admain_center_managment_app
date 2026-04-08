@@ -10,8 +10,34 @@ class AddStudentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const AddStudentScreen()),
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 300),
+            reverseTransitionDuration: Duration(milliseconds: 300),
+
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return AddStudentScreen();
+            },
+
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  final slide = Tween<Offset>(
+                    begin: Offset(0, 1),
+                    end: Offset.zero,
+                  ).animate(animation);
+
+                  final fade = Tween<double>(
+                    begin: 0,
+                    end: 1,
+                  ).animate(animation);
+
+                  return FadeTransition(
+                    opacity: fade,
+                    child: SlideTransition(position: slide, child: child),
+                  );
+                },
+          ),
         );
       },
       icon: const Icon(Icons.person_add),

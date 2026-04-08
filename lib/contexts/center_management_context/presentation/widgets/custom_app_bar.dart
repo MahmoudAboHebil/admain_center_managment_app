@@ -57,7 +57,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   icon: Icon(
                     Icons.arrow_forward_outlined,
                     color: AppColors.primary,
-                    size: 20,
+                    size: 26,
                   ),
                 ),
               ],
