@@ -38,6 +38,8 @@ class StudentsListScreen extends StatefulWidget {
 }
 
 class _StudentsListScreenState extends State<StudentsListScreen> {
+  final FocusNode searchFocusNode = FocusNode();
+
   late StreamSubscription subscription;
   late List<StudentEntity>? filterDataList;
   bool isFilterLoading = false;
@@ -71,19 +73,27 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     return WillPopScope(
       onWillPop: () async {
         final isMode = context.read<SelectionCubit>().state.isSelectionMode;
+
         if (isMode) {
           context.read<SelectionCubit>().clearSelection();
           return false;
-        } else {
-          return true;
         }
+        if (searchFocusNode.hasFocus) {
+          searchFocusNode.unfocus();
+          return false;
+        }
+
+        return true;
       },
       child: SafeArea(
         child: GestureDetector(
           onTap: () {
+            searchFocusNode.unfocus();
+
             FocusScope.of(context).unfocus();
           },
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             appBar: StudentsScreenAppBar(),
             // extendBodyBehindAppBar: true,
             body: Stack(
@@ -103,6 +113,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                         children: [
                           StudentSearchTextField(
                             width: (530 * screenWidth) / 720,
+                            searchFocusNode: searchFocusNode,
                           ),
                           Spacer(),
 
@@ -111,6 +122,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
                             onTap: () async {
                               context.read<SelectionCubit>().clearSelection();
+                              searchFocusNode.unfocus();
+
+                              FocusScope.of(context).unfocus();
+
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
@@ -640,6 +655,11 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                         child: FloatingActionButton(
                           onPressed: () {
                             context.read<SelectionCubit>().clearSelection();
+                            searchFocusNode.unfocus();
+
+                            FocusScope.of(context).unfocus();
+                            print('dddddd${searchFocusNode.hasFocus}');
+
                             Navigator.push(
                               context,
                               PageRouteBuilder(
@@ -700,6 +720,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     return MaterialButton(
       onPressed: () {
         context.read<SelectionCubit>().clearSelection();
+        searchFocusNode.unfocus();
+
+        FocusScope.of(context).unfocus();
+
         Navigator.push(
           context,
           PageRouteBuilder(
@@ -779,7 +803,9 @@ class _StudentsScreenAppBarState extends State<StudentsScreenAppBar> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Column(children: [TopAppBar(isDesktop: false, label: 'الطلاب')]),
     );
   }

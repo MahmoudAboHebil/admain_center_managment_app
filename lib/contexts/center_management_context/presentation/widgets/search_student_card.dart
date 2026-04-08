@@ -52,7 +52,7 @@ class SearchStudentCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        padding: const EdgeInsets.symmetric(vertical: 0.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -61,7 +61,7 @@ class SearchStudentCard extends StatelessWidget {
               height: 33,
               width: 33,
               decoration: BoxDecoration(
-                color: AppColors.surfaceContainerHigh,
+                color: AppColors.tertiary.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Text(name[0], style: TextStyle(color: AppColors.primary)),

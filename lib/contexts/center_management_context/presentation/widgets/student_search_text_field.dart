@@ -13,7 +13,13 @@ import '../bloc/selection_cubit/selection_cubit.dart';
 
 class StudentSearchTextField extends StatefulWidget {
   final double width;
-  const StudentSearchTextField({super.key, required this.width});
+  final FocusNode searchFocusNode;
+
+  const StudentSearchTextField({
+    super.key,
+    required this.width,
+    required this.searchFocusNode,
+  });
 
   @override
   State<StudentSearchTextField> createState() => _StudentSearchTextFieldState();
@@ -21,8 +27,8 @@ class StudentSearchTextField extends StatefulWidget {
 
 class _StudentSearchTextFieldState extends State<StudentSearchTextField>
     with SingleTickerProviderStateMixin {
-  final TextEditingController searchController = TextEditingController();
-  final FocusNode searchFocusNode = FocusNode();
+  TextEditingController searchController = TextEditingController();
+  late final FocusNode searchFocusNode;
   List<StudentEntity> filterDataList = [];
   final layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
@@ -33,12 +39,14 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
 
   @override
   void initState() {
+    print('ddddddddddddddaaaaaaaaaaa');
     super.initState();
-
+    searchFocusNode = widget.searchFocusNode;
     searchFocusNode.addListener(() {
       if (searchFocusNode.hasFocus) {
         _showOverlay();
       } else {
+        searchController = TextEditingController();
         _hideOverlay();
       }
     });
@@ -123,6 +131,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
         child: TextField(
           controller: searchController,
           focusNode: searchFocusNode,
+          autofocus: false,
           onChanged: (text) async {
             setState(() {
               filterDataList = [];
@@ -269,22 +278,28 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                           );
                         },
 
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          final slide = Tween<Offset>(
-                            begin: Offset(1, 0),
-                            end: Offset.zero,
-                          ).animate(animation);
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                              final slide = Tween<Offset>(
+                                begin: Offset(1, 0),
+                                end: Offset.zero,
+                              ).animate(animation);
 
-                          final fade = Tween<double>(begin: 0.0, end: 1.0).animate(animation);
+                              final fade = Tween<double>(
+                                begin: 0.0,
+                                end: 1.0,
+                              ).animate(animation);
 
-                          return FadeTransition(
-                            opacity: fade,
-                            child: SlideTransition(position: slide, child: child),
-                          );
-                        },
+                              return FadeTransition(
+                                opacity: fade,
+                                child: SlideTransition(
+                                  position: slide,
+                                  child: child,
+                                ),
+                              );
+                            },
                       ),
                     );
-
                   }
                 },
                 child: Container(

@@ -397,7 +397,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                         },
                         ifRight: (response) {
                           if (response == null) {
-                            Navigator.pushReplacement(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               PageRouteBuilder(
                                 transitionDuration: Duration(milliseconds: 300),
@@ -436,6 +436,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                                       );
                                     },
                               ),
+                              (route) => false,
                             );
 
                             ScaffoldMessenger.of(context).showSnackBar(

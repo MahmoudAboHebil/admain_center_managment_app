@@ -238,37 +238,42 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                 if (!mounted) return;
                 await getFilterData(data);
                 await Future.delayed(Duration(milliseconds: 400));
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
                   PageRouteBuilder(
                     transitionDuration: Duration(milliseconds: 300),
                     reverseTransitionDuration: Duration(milliseconds: 300),
 
                     pageBuilder: (context, animation, secondaryAnimation) {
-                      return  StudentsListScreen(
+                      return StudentsListScreen(
                         filterDataList: filterDataList,
                         params: data,
                       );
                     },
 
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      final slide = Tween<Offset>(
-                        begin: Offset(1, 0),
-                        end: Offset.zero,
-                      ).animate(animation);
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          final slide = Tween<Offset>(
+                            begin: Offset(1, 0),
+                            end: Offset.zero,
+                          ).animate(animation);
 
-                      final fade = Tween<double>(begin: 0.0, end: 1.0).animate(animation);
+                          final fade = Tween<double>(
+                            begin: 0.0,
+                            end: 1.0,
+                          ).animate(animation);
 
-                      return FadeTransition(
-                        opacity: fade,
-                        child: SlideTransition(position: slide, child: child),
-                      );
-                    },
+                          return FadeTransition(
+                            opacity: fade,
+                            child: SlideTransition(
+                              position: slide,
+                              child: child,
+                            ),
+                          );
+                        },
                   ),
+                  (route) => false,
                 );
-
-
-
               } finally {
                 if (mounted) {
                   setState(() => isLoading = false);
@@ -759,7 +764,40 @@ class _StudentsFilterAppBarState extends State<StudentsFilterAppBar> {
           children: [
             IconButton(
               icon: const Icon(Icons.close),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: Duration(milliseconds: 300),
+                    reverseTransitionDuration: Duration(milliseconds: 300),
+
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return StudentsListScreen();
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                          final slide = Tween<Offset>(
+                            begin: Offset(1, 0),
+                            end: Offset.zero,
+                          ).animate(animation);
+
+                          final fade = Tween<double>(
+                            begin: 0.0,
+                            end: 1.0,
+                          ).animate(animation);
+
+                          return FadeTransition(
+                            opacity: fade,
+                            child: SlideTransition(
+                              position: slide,
+                              child: child,
+                            ),
+                          );
+                        },
+                  ),
+                  (route) => false,
+                );
+              },
             ),
             Text(
               'تصفية النتائج',
