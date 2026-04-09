@@ -228,6 +228,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                                   left: 12,
                                 ),
                                 child: SearchStudentCard(
+                                  width: widget.width,
                                   studentEntity: item,
                                   name: item.name,
                                   level: division == null

@@ -468,15 +468,15 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.person_add),
-                            const SizedBox(width: 8),
                             Text(
                               'إضافة طالب',
                               style: GoogleFonts.inter(
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            const SizedBox(width: 8),
+                            const Icon(Icons.person_add, size: 17),
                           ],
                         ),
                       ),

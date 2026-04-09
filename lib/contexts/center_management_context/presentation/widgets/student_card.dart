@@ -11,7 +11,6 @@ import '../bloc/selection_cubit/selection_cubit.dart';
 import '../bloc/selection_cubit/selection_state.dart';
 import '../screens/mobile_app_screens/edit_student_screen.dart';
 import '../screens/mobile_app_screens/student_profile_screen.dart';
-import '../screens/mobile_app_screens/students_list_screen.dart';
 
 class StudentCard extends StatefulWidget {
   final StudentEntity student;
@@ -673,52 +672,6 @@ class _StudentCardState extends State<StudentCard> {
                             },
                             ifRight: (response) {
                               if (response == null) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  PageRouteBuilder(
-                                    transitionDuration: Duration(
-                                      milliseconds: 300,
-                                    ),
-                                    reverseTransitionDuration: Duration(
-                                      milliseconds: 300,
-                                    ),
-
-                                    pageBuilder:
-                                        (
-                                          context,
-                                          animation,
-                                          secondaryAnimation,
-                                        ) {
-                                          return StudentsListScreen();
-                                        },
-
-                                    transitionsBuilder:
-                                        (
-                                          context,
-                                          animation,
-                                          secondaryAnimation,
-                                          child,
-                                        ) {
-                                          final slide = Tween<Offset>(
-                                            begin: Offset(1, 0),
-                                            end: Offset.zero,
-                                          ).animate(animation);
-
-                                          final fade = Tween<double>(
-                                            begin: 0.0,
-                                            end: 1.0,
-                                          ).animate(animation);
-
-                                          return FadeTransition(
-                                            opacity: fade,
-                                            child: SlideTransition(
-                                              position: slide,
-                                              child: child,
-                                            ),
-                                          );
-                                        },
-                                  ),
-                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: AwesomeSnackbarContent(

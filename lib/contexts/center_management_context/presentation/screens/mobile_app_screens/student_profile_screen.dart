@@ -37,6 +37,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
@@ -135,7 +136,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                     fontWeight: FontWeight.w800,
                                     color: AppTheme.onSurface,
                                   ),
-                                  maxLines: 2,
+                                  maxLines: 4,
                                 ),
                               ),
                               SizedBox(width: 12),
@@ -283,6 +284,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: _buildContactRow(
+                  screenWidth: screenWidth,
+
                   context: context,
 
                   icon: Icons.smartphone,
@@ -294,6 +297,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: _buildContactRow(
+                  screenWidth: screenWidth,
                   context: context,
 
                   icon: Icons.home,
@@ -305,6 +309,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: _buildContactRow(
+                  screenWidth: screenWidth,
+
                   context: context,
 
                   icon: Icons.family_restroom,
@@ -316,6 +322,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: _buildContactRow(
+                  screenWidth: screenWidth,
+
                   context: context,
                   icon: Icons.mail,
                   title: 'البريد الإلكتروني',
@@ -379,14 +387,15 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           ),
                           const SizedBox(height: 4),
                           widget.student.parentJob != null
-                              ? Text(
-                                  widget.student.parentJob!,
-                                  style: GoogleFonts.inter(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppTheme.onSurface,
+                              ? SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    widget.student.parentJob!,
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.onSurface,
+                                    ),
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                 )
                               : Text(
                                   "غير مضاف",
@@ -605,7 +614,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           ],
                         ),
                         label: !isLoading
-                            ? const Icon(Icons.delete_outline, size: 16)
+                            ? const Icon(Icons.delete_outline, size: 17)
                             : SizedBox(),
                       ),
                     ),
@@ -669,7 +678,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           "تعديل الطالب",
                           style: TextStyle(fontSize: 14),
                         ),
-                        label: const Icon(Icons.edit, size: 16),
+                        label: const Icon(Icons.edit, size: 17),
                       ),
                     ),
                   ),
@@ -798,6 +807,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
   }
 
   Widget _buildContactRow({
+    required double screenWidth,
     required BuildContext context,
     required IconData icon,
     required String title,
@@ -813,26 +823,34 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(icon, color: AppTheme.onSurfaceVariant),
           const SizedBox(width: 12),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
                 style: GoogleFonts.inter(
-                  fontSize: 10,
+                  fontSize: 12,
                   color: AppTheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 2),
               value != null
-                  ? Text(
-                      value,
-                      style: GoogleFonts.inter(
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.onSurface,
+                  ? Container(
+                      width: screenWidth * 0.55,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Text(
+                          value,
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.onSurface,
+                          ),
+                        ),
                       ),
                     )
                   : Text(
@@ -844,140 +862,72 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     ),
             ],
           ),
+          Spacer(),
           if (hasCallAction)
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (value != null)
-                    MaterialButton(
-                      onPressed: () {},
-                      elevation: 0,
-                      hoverElevation: 0,
-                      disabledElevation: 0,
-                      highlightElevation: 0,
-                      focusElevation: 0,
-                      padding: EdgeInsets.zero,
-                      shape: CircleBorder(),
-                      minWidth: 32,
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: AppTheme.primary.withOpacity(0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.phone,
-                          size: 16,
-                          color: AppTheme.primary,
-                        ),
-                      ),
-                    ),
-                  SizedBox(width: 12),
-
-                  /*
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (value != null)
                   MaterialButton(
-                    onPressed: () async {
-                      final result = await Helper.showPhoneDialog(
-                        context,
-                        value,
-                        title,
-                      );
-                      print('fffffffffffffffff');
-                      print(result);
-                    },
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+
+                    onPressed: () {},
                     elevation: 0,
                     hoverElevation: 0,
                     disabledElevation: 0,
                     highlightElevation: 0,
                     focusElevation: 0,
                     padding: EdgeInsets.zero,
-                    minWidth: 32,
-
                     shape: CircleBorder(),
+                    minWidth: 32,
                     child: Container(
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryFixedDim.withOpacity(0.8),
+                        color: AppTheme.primary.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.edit,
+                        Icons.phone,
                         size: 16,
                         color: AppTheme.primary,
                       ),
                     ),
                   ),
-
-
-                   */
-                ],
-              ),
+              ],
             ),
           if (!hasCallAction)
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (value != null)
-                    MaterialButton(
-                      onPressed: () {},
-                      elevation: 0,
-                      hoverElevation: 0,
-                      disabledElevation: 0,
-                      highlightElevation: 0,
-                      focusElevation: 0,
-                      padding: EdgeInsets.zero,
-                      shape: CircleBorder(),
-                      minWidth: 32,
-                      child: Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          color: AppTheme.primary.withOpacity(0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.email,
-                          size: 16,
-                          color: AppTheme.primary,
-                        ),
-                      ),
-                    ),
-                  SizedBox(width: 12),
-                  /*
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (value != null)
                   MaterialButton(
-                    onPressed: () async {
-                      await Helper.showEmailDialog(context, value, title);
-                    },
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+
+                    onPressed: () {},
                     elevation: 0,
                     hoverElevation: 0,
                     disabledElevation: 0,
                     highlightElevation: 0,
                     focusElevation: 0,
                     padding: EdgeInsets.zero,
-                    minWidth: 32,
-
                     shape: CircleBorder(),
+                    minWidth: 32,
                     child: Container(
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryFixedDim.withOpacity(0.8),
+                        color: AppTheme.primary.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.edit,
+                        Icons.email,
                         size: 16,
                         color: AppTheme.primary,
                       ),
                     ),
                   ),
-                  */
-                ],
-              ),
+              ],
             ),
         ],
       ),

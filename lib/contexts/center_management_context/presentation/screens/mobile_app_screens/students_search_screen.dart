@@ -139,8 +139,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                     const SizedBox(height: 16),
                     // StatsRow==================================
                     Row(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.person_search_outlined,
@@ -149,9 +148,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                         ),
                         Text(
                           "  تم العثور على ",
-                          style: TextStyle(
-                            color: AppColors.outline,
-                          ),
+                          style: TextStyle(color: AppColors.outline),
                         ),
                         Text(
                           " ${searchData.length} ",
@@ -161,9 +158,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                            top: 3,
-                          ),
+                          padding: const EdgeInsets.only(top: 3),
                           child: Text(
                             "طلاب",
                             textAlign: TextAlign.end,
@@ -206,7 +201,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                               children: [
                                 MaterialButton(
                                   padding: EdgeInsets.symmetric(
-                                    vertical: 13,
+                                    vertical: 8,
                                     horizontal: 3,
                                   ),
                                   color: AppColors.error.withOpacity(1),

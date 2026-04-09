@@ -4,6 +4,7 @@ import 'package:admain_center_managment_app/sync_engine/domain/entities/student_
 import 'package:flutter/material.dart';
 
 class SearchStudentCard extends StatelessWidget {
+  final double width;
   final StudentEntity studentEntity;
   final String name;
   final String level;
@@ -15,6 +16,7 @@ class SearchStudentCard extends StatelessWidget {
     required this.level,
     required this.id,
     required this.studentEntity,
+    required this.width,
   });
 
   @override
@@ -70,15 +72,18 @@ class SearchStudentCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2F323A),
+                Container(
+                  width: width * 0.65,
+                  child: Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2F323A),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 1),
                 Text(

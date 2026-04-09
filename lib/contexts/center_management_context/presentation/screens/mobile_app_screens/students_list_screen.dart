@@ -138,7 +138,9 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
                                   pageBuilder:
                                       (context, animation, secondaryAnimation) {
-                                        return StudentFilterScreen();
+                                        return StudentFilterScreen(
+                                          initialParams: widget.params,
+                                        );
                                       },
 
                                   transitionsBuilder:
@@ -416,7 +418,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                 children: [
                                   MaterialButton(
                                     padding: EdgeInsets.symmetric(
-                                      vertical: 13,
+                                      vertical: 8,
                                       horizontal: 3,
                                     ),
                                     color: AppColors.error.withOpacity(1),
@@ -731,7 +733,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
             reverseTransitionDuration: Duration(milliseconds: 300),
 
             pageBuilder: (context, animation, secondaryAnimation) {
-              return StudentFilterScreen();
+              return StudentFilterScreen(initialParams: widget.params);
             },
 
             transitionsBuilder:

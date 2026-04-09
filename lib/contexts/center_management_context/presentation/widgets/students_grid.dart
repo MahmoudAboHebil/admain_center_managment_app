@@ -104,7 +104,7 @@ class _StudentsGridState extends State<StudentsGrid> {
             crossAxisSpacing: 24,
             mainAxisSpacing: 12,
             childAspectRatio: 1.6,
-            mainAxisExtent: 152,
+            mainAxisExtent: 154,
           ),
           itemBuilder: (context, index) {
             if (index == children.length) {
