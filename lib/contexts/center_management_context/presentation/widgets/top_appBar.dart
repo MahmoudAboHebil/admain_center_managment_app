@@ -1,9 +1,12 @@
+import 'package:admain_center_managment_app/core/enums/languages.dart';
+import 'package:admain_center_managment_app/core/providers/language_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
-import '../../../../config/theme/typography.dart';
 
-class TopAppBar extends StatelessWidget {
+class TopAppBar extends ConsumerWidget {
   const TopAppBar({
     super.key,
     required this.isDesktop,
@@ -15,10 +18,10 @@ class TopAppBar extends StatelessWidget {
   final Widget? searchWidget;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return Container(
       height: 60,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
         color: AppColors.surface.withOpacity(0.9),
         border: Border(
@@ -32,7 +35,8 @@ class TopAppBar extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: AppTypography.textTheme.titleLarge?.copyWith(
+                style: TextStyle(
+                  fontSize: 20.sp,
                   color: AppColors.primary,
                   fontWeight: FontWeight.bold,
                 ),
@@ -41,18 +45,25 @@ class TopAppBar extends StatelessWidget {
           ),
           Row(
             children: [
-              const SizedBox(width: 16),
               Container(
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppColors.surfaceContainerLow,
                 ),
                 child: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.notifications_outlined,
                     color: AppColors.onSurfaceVariant,
+                    size: 24.sp,
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    final languageProv = ref.read(languageProvider.notifier);
+                    final language = ref.read(languageProvider).value;
+                    final newValue = (language == Language.ar)
+                        ? Language.en
+                        : Language.ar;
+                    await languageProv.toggleLanguage(newValue);
+                  },
                 ),
               ),
             ],

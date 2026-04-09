@@ -2,9 +2,11 @@ import 'package:admain_center_managment_app/contexts/center_management_context/p
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../domain/repository/student_repository.dart';
@@ -62,7 +64,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
       },
       child: SafeArea(
         child: Scaffold(
-          appBar: CustomAppBar(label: 'بحث الطلاب'),
+          appBar: CustomAppBar(label: S.of(context).studentSearch),
           // extendBodyBehindAppBar: true,
           body: Stack(
             children: [
@@ -116,8 +118,8 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                               }
                             },
                             decoration: InputDecoration(
-                              hintText: 'البحث بالاسم...',
-                              prefixIcon: const Icon(Icons.search, size: 20),
+                              hintText: S.of(context).searchByName,
+                              prefixIcon: Icon(Icons.search, size: 20.sp),
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                               ),
@@ -144,15 +146,19 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                         Icon(
                           Icons.person_search_outlined,
                           color: AppColors.primary,
-                          size: 20,
+                          size: 20.sp,
                         ),
                         Text(
-                          "  تم العثور على ",
-                          style: TextStyle(color: AppColors.outline),
+                          S.of(context).resultsFound,
+                          style: TextStyle(
+                            color: AppColors.outline,
+                            fontSize: 13.sp,
+                          ),
                         ),
                         Text(
                           " ${searchData.length} ",
                           style: TextStyle(
+                            fontSize: 13.sp,
                             color: AppColors.primary,
                             fontWeight: FontWeight.bold,
                           ),
@@ -160,10 +166,11 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top: 3),
                           child: Text(
-                            "طلاب",
+                            S.of(context).students,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                               height: 1,
+                              fontSize: 13.sp,
                               color: AppColors.outline,
                             ),
                           ),
@@ -228,9 +235,12 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                             SnackBar(
                                               content: AwesomeSnackbarContent(
                                                 inMaterialBanner: true,
-                                                title: "حدث خطأ",
-                                                message:
-                                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                                title: S
+                                                    .of(context)
+                                                    .wrongHappened,
+                                                message: S
+                                                    .of(context)
+                                                    .tryAgainLater,
                                                 contentType:
                                                     ContentType.failure,
                                               ),
@@ -256,8 +266,10 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                               SnackBar(
                                                 content: AwesomeSnackbarContent(
                                                   inMaterialBanner: true,
-                                                  title: "تم بنجاح",
-                                                  message: "تم حذف الطالب",
+                                                  title: S.of(context).success,
+                                                  message: S
+                                                      .of(context)
+                                                      .studentDeleted,
                                                   contentType:
                                                       ContentType.success,
                                                 ),
@@ -273,9 +285,12 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                               SnackBar(
                                                 content: AwesomeSnackbarContent(
                                                   inMaterialBanner: true,
-                                                  title: "حدث خطأ",
-                                                  message:
-                                                      "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                                  title: S
+                                                      .of(context)
+                                                      .wrongHappened,
+                                                  message: S
+                                                      .of(context)
+                                                      .tryAgainLater,
                                                   contentType:
                                                       ContentType.failure,
                                                 ),
@@ -294,9 +309,10 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                         SnackBar(
                                           content: AwesomeSnackbarContent(
                                             inMaterialBanner: true,
-                                            title: "حدث خطأ",
-                                            message:
-                                                "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                            title: S.of(context).wrongHappened,
+                                            message: S
+                                                .of(context)
+                                                .tryAgainLater,
                                             contentType: ContentType.failure,
                                           ),
                                           backgroundColor: Colors.transparent,
@@ -317,8 +333,11 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                       Opacity(
                                         opacity: isLoading ? 0 : 1,
                                         child: Text(
-                                          'حذف',
-                                          style: TextStyle(color: Colors.white),
+                                          S.of(context).delete,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13.sp,
+                                          ),
                                         ),
                                       ),
                                       isLoading
@@ -340,15 +359,15 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: 17.sp,
                                   ),
                                 ),
                                 Text(
-                                  'محدد',
+                                  S.of(context).selected,
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: 15.sp,
                                   ),
                                 ),
                                 Spacer(),
@@ -364,9 +383,12 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                           SnackBar(
                                             content: AwesomeSnackbarContent(
                                               inMaterialBanner: true,
-                                              title: "حدث خطأ",
-                                              message:
-                                                  "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                              title: S
+                                                  .of(context)
+                                                  .wrongHappened,
+                                              message: S
+                                                  .of(context)
+                                                  .tryAgainLater,
                                               contentType: ContentType.failure,
                                             ),
                                             backgroundColor: Colors.transparent,
@@ -382,13 +404,25 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                       },
                                     );
                                   },
-                                  child: Text('تحديد الكل'),
+                                  child: Text(
+                                    S.of(context).selectAll,
+                                    style: TextStyle(
+                                      color: AppColors.outline,
+                                      fontSize: 13.sp,
+                                    ),
+                                  ),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     cubit.clearSelection();
                                   },
-                                  child: Text('الغاء'),
+                                  child: Text(
+                                    S.of(context).cancel,
+                                    style: TextStyle(
+                                      color: AppColors.outline,
+                                      fontSize: 13.sp,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -404,21 +438,21 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                       context.read<SelectionCubit>().clearSelection();
                     },
                     currentIndex: 1, // "الطلاب" active
-                    items: const [
+                    items: [
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.dashboard_outlined),
-                        activeIcon: Icon(Icons.dashboard),
-                        label: 'لوحة القيادة',
+                        icon: Icon(Icons.dashboard_outlined, size: 24.sp),
+                        activeIcon: Icon(Icons.dashboard, size: 24.sp),
+                        label: S.of(context).dashboard,
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.group_outlined),
-                        activeIcon: Icon(Icons.group),
-                        label: 'الطلاب',
+                        icon: Icon(Icons.group_outlined, size: 24.sp),
+                        activeIcon: Icon(Icons.group, size: 24.sp),
+                        label: S.of(context).theStudents,
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.class_outlined),
-                        activeIcon: Icon(Icons.class_),
-                        label: 'الفصول',
+                        icon: Icon(Icons.class_outlined, size: 24.sp),
+                        activeIcon: Icon(Icons.class_, size: 24.sp),
+                        label: S.of(context).classes,
                       ),
                     ],
                   ),
@@ -480,7 +514,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                           );
                         },
                         backgroundColor: AppTheme.primary,
-                        child: const Icon(Icons.person_add),
+                        child: Icon(Icons.person_add, size: 24.sp),
                       ),
                     ),
                   );

@@ -2,9 +2,11 @@ import 'package:admain_center_managment_app/contexts/center_management_context/p
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/search_student_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../injection_container.dart';
 import '../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../domain/entities/study_level_entity.dart';
@@ -75,7 +77,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
           child: Material(
             color: Colors.transparent,
             elevation: 0,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 200),
               opacity: _dropdownOpacity,
@@ -155,9 +157,9 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
             }
           },
           decoration: InputDecoration(
-            hintText: 'البحث بالاسم...',
-            prefixIcon: const Icon(Icons.search, size: 20),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            hintText: S.of(context).searchByName,
+            prefixIcon: Icon(Icons.search, size: 20.sp),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
             fillColor: searchFocusNode.hasFocus
                 ? Colors.white
                 : AppColors.surfaceContainerHigh.withOpacity(0.3),
@@ -175,7 +177,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
   Widget _buildSearchDropdown() {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         color: Colors.transparent,
       ),
       child: SingleChildScrollView(
@@ -184,7 +186,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
           children: [
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
                 color: AppColors.surfaceContainer,
               ),
               width: widget.width,
@@ -193,22 +195,22 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                      bottom: (filterDataList.length >= 4) ? 33 : 0,
+                      bottom: ((filterDataList.length >= 4) ? 33 : 0),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                            right: 12,
-                            top: 12,
-                            left: 12,
+                          padding: EdgeInsets.only(
+                            right: 12.w,
+                            top: 12.h,
+                            left: 12.w,
                           ),
                           child: Text(
-                            "نتائج البحث",
+                            S.of(context).searchResults,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 10,
+                              fontSize: 10.sp,
                             ),
                           ),
                         ),
@@ -233,7 +235,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                                   name: item.name,
                                   level: division == null
                                       ? level?.arabicName ?? ''
-                                      : '${level?.arabicName ?? ''} • ${division.description}',
+                                      : '${level?.arabicName ?? ''} • ${division.arabic}',
                                   id: item.studentCode,
                                 ),
                               );
@@ -316,8 +318,11 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                     color: AppColors.primary,
                   ),
                   child: Text(
-                    'عرض جميع النتائج',
-                    style: TextStyle(color: AppColors.onPrimary, fontSize: 12),
+                    S.of(context).showAllResults,
+                    style: TextStyle(
+                      color: AppColors.onPrimary,
+                      fontSize: 11.sp,
+                    ),
                   ),
                 ),
               ),

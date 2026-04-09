@@ -2,6 +2,7 @@ import 'package:admain_center_managment_app/config/theme/colors.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_profile_screen.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchStudentCard extends StatelessWidget {
   final double width;
@@ -66,7 +67,10 @@ class SearchStudentCard extends StatelessWidget {
                 color: AppColors.tertiary.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: Text(name[0], style: TextStyle(color: AppColors.primary)),
+              child: Text(
+                name[0],
+                style: TextStyle(color: AppColors.primary, fontSize: 13.sp),
+              ),
             ),
             SizedBox(width: 6),
             Column(
@@ -76,8 +80,8 @@ class SearchStudentCard extends StatelessWidget {
                   width: width * 0.65,
                   child: Text(
                     name,
-                    style: const TextStyle(
-                      fontSize: 12,
+                    style: TextStyle(
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF2F323A),
                     ),
@@ -88,8 +92,8 @@ class SearchStudentCard extends StatelessWidget {
                 const SizedBox(height: 1),
                 Text(
                   level,
-                  style: const TextStyle(
-                    fontSize: 10,
+                  style: TextStyle(
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF495F8B), // primary
                   ),

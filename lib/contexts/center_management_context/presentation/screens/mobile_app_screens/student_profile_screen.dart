@@ -4,11 +4,13 @@ import 'package:admain_center_managment_app/core/enums/payment_type_enum.dart';
 import 'package:admain_center_managment_app/core/enums/student_status_enum.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
 import '../../../../../core/enums/division_enum.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../domain/entities/study_level_entity.dart';
@@ -41,7 +43,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(
-          label: 'ملف الطالب',
+          label: S.of(context).studentProfile,
           leadingWidget: MaterialButton(
             onPressed: () async {
               Navigator.push(
@@ -90,7 +92,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                 color: Colors.transparent,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.edit, size: 20, color: AppTheme.primary),
+              child: Icon(Icons.edit, size: 20.sp, color: AppTheme.primary),
             ),
           ),
         ),
@@ -132,7 +134,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                 child: Text(
                                   widget.student.name * 1,
                                   style: GoogleFonts.manrope(
-                                    fontSize: 22,
+                                    fontSize: 21.sp,
                                     fontWeight: FontWeight.w800,
                                     color: AppTheme.onSurface,
                                   ),
@@ -158,15 +160,16 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.calendar_today,
                                       color: AppTheme.primary,
-                                      size: 20,
+                                      size: 20.sp,
                                     ),
                                     const SizedBox(width: 8),
                                     Text(
-                                      'نسبة الحضور',
+                                      S.of(context).attendanceRate,
                                       style: GoogleFonts.manrope(
+                                        fontSize: 13.sp,
                                         fontWeight: FontWeight.bold,
                                         color: AppTheme.onSurfaceVariant,
                                       ),
@@ -177,7 +180,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                   '92%',
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: 17.sp,
                                     color: AppTheme.primary,
                                   ),
                                 ),
@@ -210,8 +213,10 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     child: _buildBentoCard(
                       icon: Icons.layers,
                       iconColor: AppTheme.tertiary,
-                      title: 'الصف',
-                      value: level.order == 0 ? "غير مضاف" : level.arabicName,
+                      title: S.of(context).className,
+                      value: level.order == 0
+                          ? S.of(context).notAdded
+                          : level.arabicName,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -219,13 +224,13 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     child: _buildBentoCard(
                       icon: Icons.science,
                       iconColor: AppTheme.tertiary,
-                      title: 'الشعبة',
+                      title: S.of(context).division,
                       value:
                           (widget.student.divisionEnum == null ||
                               widget.student.divisionEnum ==
                                   DivisionEnum.Division)
-                          ? "غير مضاف"
-                          : widget.student.divisionEnum!.description,
+                          ? S.of(context).notAdded
+                          : widget.student.divisionEnum!.arabic,
                     ),
                   ),
                 ],
@@ -248,8 +253,10 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         color: AppTheme.secondaryContainer,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.groups,
+                        size: 24.sp,
+
                         color: AppTheme.onSecondaryContainer,
                       ),
                     ),
@@ -258,9 +265,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'مواعيد الحصص',
+                          S.of(context).classSchedule,
                           style: GoogleFonts.inter(
-                            fontSize: 12,
+                            fontSize: 11.sp,
                             fontWeight: FontWeight.w500,
                             color: AppTheme.onSurfaceVariant,
                           ),
@@ -268,6 +275,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         Text(
                           'مجموعة A - السبت والأربعاء',
                           style: GoogleFonts.manrope(
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                             color: AppTheme.onSurface,
                           ),
@@ -279,7 +287,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               ),
               const SizedBox(height: 24),
               // Contact Information
-              _buildSectionHeader('معلومات التواصل', AppTheme.primary),
+              _buildSectionHeader(S.of(context).contactInfo, AppTheme.primary),
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
@@ -289,7 +297,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   context: context,
 
                   icon: Icons.smartphone,
-                  title: 'هاتف الطالب',
+                  title: S.of(context).studentPhone,
                   value: widget.student.phone,
                   hasCallAction: true,
                 ),
@@ -301,7 +309,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   context: context,
 
                   icon: Icons.home,
-                  title: 'هاتف البيت',
+                  title: S.of(context).homePhone,
                   value: widget.student.homePhone,
                   hasCallAction: true,
                 ),
@@ -314,7 +322,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   context: context,
 
                   icon: Icons.family_restroom,
-                  title: 'هاتف ولي الأمر',
+                  title: S.of(context).parentPhone,
                   value: widget.student.parentPhone,
                   hasCallAction: true,
                 ),
@@ -326,14 +334,17 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
 
                   context: context,
                   icon: Icons.mail,
-                  title: 'البريد الإلكتروني',
+                  title: S.of(context).email,
                   value: widget.student.email,
                   hasCallAction: false,
                 ),
               ),
               const SizedBox(height: 24),
               // Admin Details
-              _buildSectionHeader('تفاصيل إدارية', AppTheme.tertiary),
+              _buildSectionHeader(
+                S.of(context).administrativeDetails,
+                AppTheme.tertiary,
+              ),
               const SizedBox(height: 12),
               Row(
                 children: [
@@ -348,17 +359,18 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'نظام الدفع',
+                            S.of(context).paymentType,
                             style: GoogleFonts.inter(
-                              fontSize: 12,
+                              fontSize: 11.sp,
                               color: AppTheme.onSurfaceVariant,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            widget.student.paymentTypeEnum?.description ??
-                                PaymentTypeEnum.byMonth.description,
+                            widget.student.paymentTypeEnum?.arabic ??
+                                PaymentTypeEnum.byMonth.arabic,
                             style: GoogleFonts.manrope(
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -379,9 +391,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'وظيفة ولي الأمر',
+                            S.of(context).parentJob,
                             style: GoogleFonts.inter(
-                              fontSize: 12,
+                              fontSize: 11.sp,
                               color: AppTheme.onSurfaceVariant,
                             ),
                           ),
@@ -392,14 +404,16 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                   child: Text(
                                     widget.student.parentJob!,
                                     style: GoogleFonts.inter(
+                                      fontSize: 13.sp,
                                       fontWeight: FontWeight.bold,
                                       color: AppTheme.onSurface,
                                     ),
                                   ),
                                 )
                               : Text(
-                                  "غير مضاف",
+                                  S.of(context).notAdded,
                                   style: GoogleFonts.inter(
+                                    fontSize: 13.sp,
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.error,
                                   ),
@@ -429,11 +443,16 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.edit_note, color: AppTheme.primary),
+                          Icon(
+                            Icons.edit_note,
+                            size: 24.sp,
+                            color: AppTheme.primary,
+                          ),
                           const SizedBox(width: 8),
                           Text(
-                            'ملاحظات المعلم',
+                            S.of(context).teacherNotes,
                             style: GoogleFonts.manrope(
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: AppTheme.primary,
                             ),
@@ -444,7 +463,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       Text(
                         widget.student.notes!,
                         style: GoogleFonts.inter(
-                          fontSize: 14,
+                          fontSize: 13.sp,
                           color: AppTheme.onSurfaceVariant,
                           height: 1.5,
                         ),
@@ -476,9 +495,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                   SnackBar(
                                     content: AwesomeSnackbarContent(
                                       inMaterialBanner: true,
-                                      title: "حدث خطأ",
+                                      title: S.of(context).wrongHappened,
                                       message:
-                                          "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                      S.of(context).tryAgainLater,
                                       contentType: ContentType.failure,
                                     ),
                                     backgroundColor: Colors.transparent,
@@ -539,8 +558,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                     SnackBar(
                                       content: AwesomeSnackbarContent(
                                         inMaterialBanner: true,
-                                        title: "تم بنجاح",
-                                        message: "تم حذف الطالب",
+                                        title: S.of(context).success,
+                                        message: S.of(context).studentDeleted,
                                         contentType: ContentType.success,
                                       ),
                                       backgroundColor: Colors.transparent,
@@ -552,9 +571,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                     SnackBar(
                                       content: AwesomeSnackbarContent(
                                         inMaterialBanner: true,
-                                        title: "حدث خطأ",
-                                        message:
-                                            "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                        title: S.of(context).wrongHappened,
+                                        message: S.of(context).tryAgainLater,
                                         contentType: ContentType.failure,
                                       ),
                                       backgroundColor: Colors.transparent,
@@ -570,9 +588,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                               SnackBar(
                                 content: AwesomeSnackbarContent(
                                   inMaterialBanner: true,
-                                  title: "حدث خطأ",
-                                  message:
-                                      "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                  title: S.of(context).wrongHappened,
+                                  message: S.of(context).tryAgainLater,
                                   contentType: ContentType.failure,
                                 ),
                                 backgroundColor: Colors.transparent,
@@ -597,8 +614,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                             Opacity(
                               opacity: isLoading ? 0 : 1,
                               child: Text(
-                                'حذف الطالب',
-                                style: TextStyle(fontSize: 14),
+                                S.of(context).deleteStudent,
+                                style: TextStyle(fontSize: 13.sp),
                               ),
                             ),
                             isLoading
@@ -614,7 +631,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           ],
                         ),
                         label: !isLoading
-                            ? const Icon(Icons.delete_outline, size: 17)
+                            ? Icon(Icons.delete_outline, size: 17.sp)
                             : SizedBox(),
                       ),
                     ),
@@ -675,10 +692,10 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                           padding: EdgeInsets.symmetric(vertical: 10),
                         ),
                         icon: Text(
-                          "تعديل الطالب",
-                          style: TextStyle(fontSize: 14),
+                          S.of(context).editStudent,
+                          style: TextStyle(fontSize: 13.sp),
                         ),
-                        label: const Icon(Icons.edit, size: 17),
+                        label: Icon(Icons.edit, size: 17.sp),
                       ),
                     ),
                   ),
@@ -702,9 +719,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          StudentStatus.active.description,
+          StudentStatus.active.arabic,
           style: GoogleFonts.inter(
-            fontSize: 12,
+            fontSize: 11.sp,
             color: AppTheme.onPrimary,
             fontWeight: FontWeight.bold,
           ),
@@ -718,9 +735,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          StudentStatus.inactive.description,
+          StudentStatus.inactive.arabic,
           style: GoogleFonts.inter(
-            fontSize: 12,
+            fontSize: 11.sp,
             color: const Color(0xFF5C5F68),
             fontWeight: FontWeight.bold,
           ),
@@ -734,9 +751,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          StudentStatus.latePayment.description,
+          StudentStatus.latePayment.arabic,
           style: GoogleFonts.inter(
-            fontSize: 12,
+            fontSize: 11.sp,
             color: Colors.red.shade800,
             fontWeight: FontWeight.bold,
           ),
@@ -760,12 +777,12 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: iconColor, size: 24),
+          Icon(icon, color: iconColor, size: 24.sp),
           const SizedBox(height: 8),
           Text(
             title,
             style: GoogleFonts.inter(
-              fontSize: 12,
+              fontSize: 11.sp,
               color: AppTheme.onSurfaceVariant,
             ),
           ),
@@ -773,6 +790,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           Text(
             value,
             style: GoogleFonts.manrope(
+              fontSize: 13.sp,
               fontWeight: FontWeight.bold,
               color: AppTheme.onSurface,
             ),
@@ -797,7 +815,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
         Text(
           title,
           style: GoogleFonts.manrope(
-            fontSize: 14,
+            fontSize: 13.sp,
             fontWeight: FontWeight.bold,
             color: AppTheme.onSurfaceVariant,
           ),
@@ -825,7 +843,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(icon, color: AppTheme.onSurfaceVariant),
+          Icon(icon, color: AppTheme.onSurfaceVariant, size: 24.sp),
           const SizedBox(width: 12),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -834,7 +852,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               Text(
                 title,
                 style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: 11.sp,
                   color: AppTheme.onSurfaceVariant,
                 ),
               ),
@@ -847,6 +865,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         child: Text(
                           value,
                           style: GoogleFonts.inter(
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                             color: AppTheme.onSurface,
                           ),
@@ -854,8 +873,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       ),
                     )
                   : Text(
-                      "غير مضاف",
+                S.of(context).notAdded,
                       style: GoogleFonts.inter(
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.error,
                       ),
@@ -887,9 +907,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         color: AppTheme.primary.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.phone,
-                        size: 16,
+                        size: 16.sp,
                         color: AppTheme.primary,
                       ),
                     ),
@@ -920,9 +940,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         color: AppTheme.primary.withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.email,
-                        size: 16,
+                        size: 16.sp,
                         color: AppTheme.primary,
                       ),
                     ),
@@ -973,10 +993,10 @@ class _TeacherNoteState extends State<TeacherNote> {
               scrollPhysics: NeverScrollableScrollPhysics(),
               decoration: InputDecoration(
                 enabled: false,
-                hintText: 'اضاف ملاحظة جديده',
+                hintText: S.of(context).addNewStudent,
                 hintStyle: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 13.sp,
                   color: AppTheme.onSurfaceVariant,
                 ),
                 border: InputBorder.none,
@@ -1030,16 +1050,20 @@ class AddNote extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
               ),
-              child: const Icon(Icons.add, color: AppColors.onSurfaceVariant),
+              child: Icon(
+                Icons.add,
+                color: AppColors.onSurfaceVariant,
+                size: 24.sp,
+              ),
             ),
             const SizedBox(height: 12),
             Text(
-              'إضافة ملاحظة جديده',
+              S.of(context).addNewStudent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.onSurfaceVariant,
                 fontWeight: FontWeight.bold,
-                fontSize: 12,
+                fontSize: 11.sp,
               ),
             ),
           ],

@@ -2,8 +2,10 @@ import 'package:admain_center_managment_app/config/theme/colors.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/entities/study_level_entity.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/loading/student_grid_skeleton.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/student_card.dart';
+import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:admain_center_managment_app/sync_engine/data/models/student_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -12,20 +14,21 @@ import '../../../../core/enums/payment_type_enum.dart';
 import '../../../../core/enums/student_status_enum.dart';
 import '../../../../core/isar_local_database/isar/collections/student_collection.dart';
 import '../../../../core/isar_local_database/isar/isar_service.dart';
+import '../../../../core/providers/language_provider.dart';
 import '../../../../sync_engine/domain/entities/student_entity.dart';
 import 'add_student_cart_button.dart';
 
-class StudentsGrid extends StatefulWidget {
+class StudentsGrid extends ConsumerStatefulWidget {
   const StudentsGrid({super.key, this.filterDataList, required this.isLoading});
 
   final List<StudentEntity>? filterDataList;
   final bool isLoading;
 
   @override
-  State<StudentsGrid> createState() => _StudentsGridState();
+  ConsumerState<StudentsGrid> createState() => _StudentsGridState();
 }
 
-class _StudentsGridState extends State<StudentsGrid> {
+class _StudentsGridState extends ConsumerState<StudentsGrid> {
   late Stream<List<StudentCollection>> studentStream;
   @override
   void initState() {
@@ -40,6 +43,8 @@ class _StudentsGridState extends State<StudentsGrid> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(languageProvider).value;
+
     /// todo: you need handle this
     if (widget.isLoading) {
       return const StudentGridSkeleton();
@@ -47,7 +52,12 @@ class _StudentsGridState extends State<StudentsGrid> {
 
     // Case 1: Filtered data
     if (widget.filterDataList != null) {
-      return _buildGrid(_mapStudents(widget.filterDataList!));
+      return _buildGrid(
+        _mapStudents(
+          widget.filterDataList!,
+          (language == Language.ar) ? true : false,
+        ),
+      );
     }
 
     // Case 2: Stream data
@@ -69,7 +79,9 @@ class _StudentsGridState extends State<StudentsGrid> {
           return _buildGrid([]);
         }
 
-        return _buildGrid(_mapCollections(data));
+        return _buildGrid(
+          _mapCollections(data, (language == Language.ar) ? true : false),
+        );
       },
     );
   }
@@ -123,7 +135,7 @@ class _StudentsGridState extends State<StudentsGrid> {
   /// 🔹 Mapping (Optimized)
   /// ----------------------------
 
-  List<Widget> _mapStudents(List<StudentEntity> list) {
+  List<Widget> _mapStudents(List<StudentEntity> list, bool isArabic) {
     List<Widget> myWidgetsList = [];
     for (var item in list.indexed) {
       var e = item.$2;
@@ -142,16 +154,17 @@ class _StudentsGridState extends State<StudentsGrid> {
           ? null
           : division;
       final lev = (level == null || level.order == 0) ? null : level;
-
+      final levelString = isArabic ? lev?.arabicName : lev?.englishName;
+      final divString = isArabic ? div?.arabic : div?.english;
       Widget myWidget = _buildStudentCard(
         student: e,
         sideColor: item.$1 % 2 == 0 ? AppColors.primary : AppColors.secondary,
         level: (div == null)
-            ? lev?.arabicName ?? ''
-            : '${lev?.arabicName ?? ''} • ${div.description}',
-        status: statusEnum.description,
+            ? levelString ?? ''
+            : '${levelString ?? ''} • ${divString}',
+        status: isArabic ? statusEnum.arabic : statusEnum.english,
         isStatusGreen: e.studentStatus == StudentStatus.active,
-        subStatus: payment.description,
+        subStatus: isArabic ? payment.arabic : payment.english,
         isStatusRed: e.studentStatus == StudentStatus.latePayment,
       );
       myWidgetsList.add(myWidget);
@@ -159,7 +172,7 @@ class _StudentsGridState extends State<StudentsGrid> {
     return myWidgetsList;
   }
 
-  List<Widget> _mapCollections(List<StudentCollection> list) {
+  List<Widget> _mapCollections(List<StudentCollection> list, bool isArabic) {
     List<Widget> myWidgetsList = [];
     for (var item in list.indexed) {
       var e = item.$2;
@@ -185,15 +198,17 @@ class _StudentsGridState extends State<StudentsGrid> {
           ? null
           : division;
       final lev = (level == null || level.order == 0) ? null : level;
+      final levelString = isArabic ? lev?.arabicName : lev?.englishName;
+      final divString = isArabic ? div?.arabic : div?.english;
       Widget myWidget = _buildStudentCard(
         student: StudentModel.fromCollection(e).toEntity(),
         sideColor: item.$1 % 2 == 0 ? AppColors.primary : AppColors.secondary,
         level: (div == null)
-            ? lev?.arabicName ?? ''
-            : '${lev?.arabicName ?? ''} • ${div.description}',
-        status: statusEnum.description,
+            ? levelString ?? ''
+            : '${levelString ?? ''} • ${divString}',
+        status: isArabic ? statusEnum.arabic : statusEnum.english,
         isStatusGreen: e.studentStatus == StudentStatus.active.name,
-        subStatus: payment.description,
+        subStatus: isArabic ? payment.arabic : payment.english,
         isStatusRed: e.studentStatus == StudentStatus.latePayment.name,
       );
       myWidgetsList.add(myWidget);

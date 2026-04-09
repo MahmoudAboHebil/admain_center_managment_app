@@ -5,6 +5,7 @@ import 'package:admain_center_managment_app/core/enums/division_enum.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
@@ -12,6 +13,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
 import '../../../../../core/helper/helper.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../domain/repository/student_repository.dart';
@@ -112,13 +114,13 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                       Row(
                         children: [
                           StudentSearchTextField(
-                            width: (530 * screenWidth) / 720,
+                            width: (820 * screenWidth) / 1080,
                             searchFocusNode: searchFocusNode,
                           ),
                           Spacer(),
 
                           InkWell(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(12.r),
 
                             onTap: () async {
                               context.read<SelectionCubit>().clearSelection();
@@ -176,21 +178,21 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                 color: AppColors.primaryContainer.withOpacity(
                                   0.4,
                                 ),
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: EdgeInsets.all(10.0.w),
                                 child: Icon(
                                   Icons.filter_list,
                                   color: Colors.black,
-                                  size: 26,
+                                  size: 26.sp,
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       // StatsRow==================================
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,7 +209,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                 child: StatCard(
                                   lineColor: AppColors.primary,
                                   isDesktop: false,
-                                  label: 'إجمالي الطلاب',
+                                  label: S.of(context).totalStudents,
                                   value: isLoading
                                       ? '...'
                                       : Helper.formatNumber(count),
@@ -222,7 +224,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                             child: StatCard(
                               lineColor: AppColors.tertiary,
                               isDesktop: false,
-                              label: 'الفصول النشطة',
+                              label: S.of(context).totalClasses,
                               value: Helper.formatNumber(20000),
                               valueColor: AppColors.tertiary,
                             ),
@@ -262,17 +264,20 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                           Icon(
                                             Icons.person_search_outlined,
                                             color: AppColors.primary,
-                                            size: 20,
+                                            size: 20.sp,
                                           ),
                                           Text(
-                                            "  تم العثور على ",
+                                            S.of(context).resultsFound,
                                             style: TextStyle(
+                                              fontSize: 13.sp,
                                               color: AppColors.outline,
                                             ),
                                           ),
                                           Text(
                                             " ${filterDataList!.length} ",
                                             style: TextStyle(
+                                              fontSize: 13.sp,
+
                                               color: AppColors.primary,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -282,9 +287,11 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                               top: 3,
                                             ),
                                             child: Text(
-                                              "طلاب",
+                                              S.of(context).students,
                                               textAlign: TextAlign.end,
                                               style: TextStyle(
+                                                fontSize: 13.sp,
+
                                                 height: 1,
                                                 color: AppColors.outline,
                                               ),
@@ -299,11 +306,11 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                           });
                                         },
                                         child: Text(
-                                          'مسح الفلتر',
+                                          S.of(context).clearFilters,
                                           style: GoogleFonts.inter(
                                             color: AppTheme.primary,
                                             fontWeight: FontWeight.w600,
-                                            fontSize: 14,
+                                            fontSize: 13.sp,
                                           ),
                                         ),
                                       ),
@@ -325,7 +332,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                             .selectedStudyLevel
                                                             .order ==
                                                         0)
-                                                ? "الصف الدراسي الكل "
+                                                ? S.of(context).allClasses
                                                 : widget
                                                       .params!
                                                       .selectedStudyLevel
@@ -341,11 +348,11 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                             .params
                                                             ?.selectedDivision ==
                                                         DivisionEnum.all)
-                                                ? "الشعبة الكل "
+                                                ? S.of(context).allSections
                                                 : widget
                                                       .params!
                                                       .selectedDivision
-                                                      .description,
+                                                      .arabic,
                                             AppTheme.secondaryContainer,
                                             AppTheme.onSecondaryContainer,
                                           ),
@@ -355,11 +362,11 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                         .params
                                                         ?.selectedPaymentType ==
                                                     null)
-                                                ? "نظام الدفع الكل "
+                                                ? S.of(context).allPaymentTypes
                                                 : widget
                                                       .params!
                                                       .selectedPaymentType!
-                                                      .description,
+                                                      .arabic,
                                             AppTheme.secondaryContainer,
                                             AppTheme.onSecondaryContainer,
                                           ),
@@ -369,11 +376,11 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                         .params
                                                         ?.selectedStudentStates ==
                                                     null)
-                                                ? "حالة الطالب الكل "
+                                                ? S.of(context).allStudentStatus
                                                 : widget
                                                       .params!
                                                       .selectedStudentStates!
-                                                      .description,
+                                                      .arabic,
                                             AppTheme.secondaryContainer,
                                             AppTheme.onSecondaryContainer,
                                           ),
@@ -445,9 +452,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                               SnackBar(
                                                 content: AwesomeSnackbarContent(
                                                   inMaterialBanner: true,
-                                                  title: "حدث خطأ",
-                                                  message:
-                                                      "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                                  title: S
+                                                      .of(context)
+                                                      .wrongHappened,
+                                                  message: S
+                                                      .of(context)
+                                                      .tryAgainLater,
                                                   contentType:
                                                       ContentType.failure,
                                                 ),
@@ -466,9 +476,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                   content:
                                                       AwesomeSnackbarContent(
                                                         inMaterialBanner: true,
-                                                        title: "تم بنجاح",
-                                                        message:
-                                                            "تم حذف الطالب",
+                                                        title: S
+                                                            .of(context)
+                                                            .success,
+                                                        message: S
+                                                            .of(context)
+                                                            .studentDeleted,
                                                         contentType:
                                                             ContentType.success,
                                                       ),
@@ -482,14 +495,18 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                 context,
                                               ).showSnackBar(
                                                 SnackBar(
-                                                  content: AwesomeSnackbarContent(
-                                                    inMaterialBanner: true,
-                                                    title: "حدث خطأ",
-                                                    message:
-                                                        "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
-                                                    contentType:
-                                                        ContentType.failure,
-                                                  ),
+                                                  content:
+                                                      AwesomeSnackbarContent(
+                                                        inMaterialBanner: true,
+                                                        title: S
+                                                            .of(context)
+                                                            .wrongHappened,
+                                                        message: S
+                                                            .of(context)
+                                                            .tryAgainLater,
+                                                        contentType:
+                                                            ContentType.failure,
+                                                      ),
                                                   backgroundColor:
                                                       Colors.transparent,
                                                   elevation: 0,
@@ -505,9 +522,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                           SnackBar(
                                             content: AwesomeSnackbarContent(
                                               inMaterialBanner: true,
-                                              title: "حدث خطأ",
-                                              message:
-                                                  "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                              title: S
+                                                  .of(context)
+                                                  .wrongHappened,
+                                              message: S
+                                                  .of(context)
+                                                  .tryAgainLater,
                                               contentType: ContentType.failure,
                                             ),
                                             backgroundColor: Colors.transparent,
@@ -528,8 +548,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                         Opacity(
                                           opacity: isLoading ? 0 : 1,
                                           child: Text(
-                                            'حذف',
+                                            S.of(context).delete,
                                             style: TextStyle(
+                                              fontSize: 13.sp,
+
                                               color: Colors.white,
                                             ),
                                           ),
@@ -555,15 +577,15 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                     style: TextStyle(
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                      fontSize: 17.sp,
                                     ),
                                   ),
                                   Text(
-                                    'محدد',
+                                    S.of(context).selected,
                                     style: TextStyle(
                                       color: AppColors.primary,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                      fontSize: 15.sp,
                                     ),
                                   ),
                                   Spacer(),
@@ -580,9 +602,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                             SnackBar(
                                               content: AwesomeSnackbarContent(
                                                 inMaterialBanner: true,
-                                                title: "حدث خطأ",
-                                                message:
-                                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                                title: S
+                                                    .of(context)
+                                                    .wrongHappened,
+                                                message: S
+                                                    .of(context)
+                                                    .tryAgainLater,
                                                 contentType:
                                                     ContentType.failure,
                                               ),
@@ -600,13 +625,19 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                         },
                                       );
                                     },
-                                    child: Text('تحديد الكل'),
+                                    child: Text(
+                                      S.of(context).selectAll,
+                                      style: TextStyle(fontSize: 13.sp),
+                                    ),
                                   ),
                                   TextButton(
                                     onPressed: () {
                                       cubit.clearSelection();
                                     },
-                                    child: Text('الغاء'),
+                                    child: Text(
+                                      S.of(context).cancel,
+                                      style: TextStyle(fontSize: 13.sp),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -623,21 +654,21 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                         context.read<SelectionCubit>().clearSelection();
                       },
                       currentIndex: 1, // "الطلاب" active
-                      items: const [
+                      items: [
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.dashboard_outlined),
-                          activeIcon: Icon(Icons.dashboard),
-                          label: 'لوحة القيادة',
+                          icon: Icon(Icons.dashboard_outlined, size: 24.sp),
+                          activeIcon: Icon(Icons.dashboard, size: 24.sp),
+                          label: S.of(context).dashboard,
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.group_outlined),
-                          activeIcon: Icon(Icons.group),
-                          label: 'الطلاب',
+                          icon: Icon(Icons.group_outlined, size: 24.sp),
+                          activeIcon: Icon(Icons.group, size: 24.sp),
+                          label: S.of(context).theStudents,
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.class_outlined),
-                          activeIcon: Icon(Icons.class_),
-                          label: 'الفصول',
+                          icon: Icon(Icons.class_outlined, size: 24.sp),
+                          activeIcon: Icon(Icons.class_, size: 24.sp),
+                          label: S.of(context).classes,
                         ),
                       ],
                     ),
@@ -704,7 +735,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                             );
                           },
                           backgroundColor: AppTheme.primary,
-                          child: const Icon(Icons.person_add),
+                          child: Icon(Icons.person_add, size: 24.sp),
                         ),
                       ),
                     );
@@ -777,12 +808,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
               label,
               style: GoogleFonts.inter(
                 color: textColor,
-                fontSize: 12,
+                fontSize: 11.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(width: 6),
-            Icon(Icons.close, size: 16, color: textColor),
+            Icon(Icons.close, size: 16.sp, color: textColor),
           ],
         ),
       ),
@@ -808,123 +839,11 @@ class _StudentsScreenAppBarState extends State<StudentsScreenAppBar> {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: Column(children: [TopAppBar(isDesktop: false, label: 'الطلاب')]),
+      child: Column(
+        children: [
+          TopAppBar(isDesktop: false, label: S.of(context).studentsPageTitle),
+        ],
+      ),
     );
   }
 }
-
-/*
-final students = [
-  StudentModel(
-    entityId: '15',
-    centerId: 'center_1',
-    byUser: 'admin',
-    byDevice: 'device_1',
-    isDeleted: false,
-    version: 1,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    name: 'Ahmed Mohamed',
-    studyLevelId: 'dc4c08a7-d32a-4e9e-9c3a-2d02f6abda61',
-    gender: Gender.male,
-    studentCode: 'STD001',
-    phone: '01000000001',
-    parentPhone: '01100000001',
-    paymentTypeEnum: PaymentTypeEnum.byMonth,
-    divisionEnum: DivisionEnum.scientificMathematicsSection,
-    studentStatus: StudentStatus.active,
-  ),
-  StudentModel(
-    entityId: '16',
-    centerId: 'center_1',
-    byUser: 'admin',
-    byDevice: 'device_1',
-    isDeleted: false,
-    version: 1,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    name: 'Ahmed Mohamed',
-    studyLevelId: 'dc4c08a7-d32a-4e9e-9c3a-2d02f6abda61',
-    gender: Gender.male,
-    studentCode: 'STD001',
-    phone: '01000000001',
-    parentPhone: '01100000001',
-    paymentTypeEnum: PaymentTypeEnum.byMonth,
-    divisionEnum: DivisionEnum.scientificMathematicsSection,
-    studentStatus: StudentStatus.active,
-  ),
-  StudentModel(
-    entityId: '17',
-    centerId: 'center_1',
-    byUser: 'admin',
-    byDevice: 'device_1',
-    isDeleted: false,
-    version: 1,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    name: 'Ahmed Mohamed',
-    studyLevelId: 'dc4c08a7-d32a-4e9e-9c3a-2d02f6abda61',
-    gender: Gender.male,
-    studentCode: 'STD001',
-    phone: '01000000001',
-    parentPhone: '01100000001',
-    paymentTypeEnum: PaymentTypeEnum.byMonth,
-    divisionEnum: DivisionEnum.scientificMathematicsSection,
-    studentStatus: StudentStatus.active,
-  ),
-  StudentModel(
-    entityId: '18',
-    centerId: 'center_1',
-    byUser: 'admin',
-    byDevice: 'device_1',
-    isDeleted: false,
-    version: 1,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    name: 'Ahmed Mohamed',
-    studyLevelId: 'dc4c08a7-d32a-4e9e-9c3a-2d02f6abda61',
-    gender: Gender.male,
-    studentCode: 'STD001',
-    phone: '01000000001',
-    parentPhone: '01100000001',
-    paymentTypeEnum: PaymentTypeEnum.byMonth,
-    divisionEnum: DivisionEnum.scientificMathematicsSection,
-    studentStatus: StudentStatus.active,
-  ),
-  StudentModel(
-    entityId: '19',
-    centerId: 'center_1',
-    byUser: 'admin',
-    byDevice: 'device_1',
-    isDeleted: false,
-    version: 1,
-    createdAt: DateTime.now(),
-    updatedAt: DateTime.now(),
-    name: 'Ahmed Mohamed',
-    studyLevelId: 'dc4c08a7-d32a-4e9e-9c3a-2d02f6abda61',
-    gender: Gender.male,
-    studentCode: 'STD001',
-    phone: '01000000001',
-    parentPhone: '01100000001',
-    paymentTypeEnum: PaymentTypeEnum.byMonth,
-    divisionEnum: DivisionEnum.scientificMathematicsSection,
-    studentStatus: StudentStatus.active,
-  ),
-];
-for (var item in students) {
-final result = await sl<AddEntityLocalUseCase>().call(
-AddEntityLocalUseCaseParams(
-table: DBTable.students,
-jsonEntity: null,
-entity: item.toEntity(),
-),
-);
-result.fold(
-ifLeft: (e) {
-print(e);
-},
-ifRight: (d) {},
-);
-}
-
- */

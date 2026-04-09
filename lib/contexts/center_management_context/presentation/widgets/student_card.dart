@@ -1,10 +1,15 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
+import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
+import '../../../../core/providers/language_provider.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../injection_container.dart';
 import '../../domain/repository/student_repository.dart';
 import '../bloc/selection_cubit/selection_cubit.dart';
@@ -12,7 +17,7 @@ import '../bloc/selection_cubit/selection_state.dart';
 import '../screens/mobile_app_screens/edit_student_screen.dart';
 import '../screens/mobile_app_screens/student_profile_screen.dart';
 
-class StudentCard extends StatefulWidget {
+class StudentCard extends ConsumerStatefulWidget {
   final StudentEntity student;
   final String level;
   final Color sideColor;
@@ -33,16 +38,18 @@ class StudentCard extends StatefulWidget {
   });
 
   @override
-  State<StudentCard> createState() => _StudentCardState();
+  ConsumerState<StudentCard> createState() => _StudentCardState();
 }
 
-class _StudentCardState extends State<StudentCard> {
+class _StudentCardState extends ConsumerState<StudentCard> {
   bool isHover = false;
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(languageProvider).value;
+
     Color statusBgColor = const Color(0xFFF3F3FA);
     Color statusTextColor = const Color(0xFF5C5F68);
 
@@ -126,315 +133,288 @@ class _StudentCardState extends State<StudentCard> {
                     borderRadius: BorderRadius.circular(300),
                   ),
                 ),
-                Row(
-                  children: [
-                    SizedBox(width: 5),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 20,
-                          right: state.isSelectionMode ? 0 : 20,
-                          left: 20,
-                          bottom: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 4,
-                              spreadRadius: 0,
-                              offset: Offset(0, 2),
+                Container(
+                  margin: EdgeInsetsDirectional.only(start: 5),
+                  padding: EdgeInsetsDirectional.only(
+                    top: 20,
+                    start: state.isSelectionMode ? 0 : 20,
+                    end: 20,
+                    bottom: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4,
+                        spreadRadius: 0,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                    color: isSelected
+                        ? AppColors.primary.withOpacity(0.05)
+                        : AppColors.surfaceContainerLowest,
+                    borderRadius: BorderRadius.circular(12),
+                    border: isSelected
+                        ? BoxBorder.fromSTEB(
+                            top: BorderSide(
+                              color: AppColors.primary,
+                              width: 1.5,
                             ),
-                          ],
-                          color: isSelected
-                              ? AppColors.primary.withOpacity(0.05)
-                              : AppColors.surfaceContainerLowest,
-                          borderRadius: BorderRadius.circular(12),
-                          border: isSelected
-                              ? BoxBorder.fromLTRB(
-                                  top: BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.5,
-                                  ),
-                                  left: BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.5,
-                                  ),
-                                  bottom: BorderSide(
-                                    color: AppColors.primary,
-                                    width: 1.5,
-                                  ),
-                                  right: BorderSide(
-                                    color: AppColors.primary,
-                                    width: 5,
-                                  ),
-                                )
-                              : Border.all(
-                                  width: isSelected ? 1.5 : 1,
-                                  color: isSelected
-                                      ? AppColors.primary
-                                      : (isHover
-                                            ? AppColors.outlineVariant
-                                                  .withOpacity(0.3)
-                                            : const Color(
-                                                0xFFAFB1BC,
-                                              ).withOpacity(0.15)),
+                            end: BorderSide(
+                              color: AppColors.primary,
+                              width: 1.5,
+                            ),
+                            bottom: BorderSide(
+                              color: AppColors.primary,
+                              width: 1.5,
+                            ),
+                            start: BorderSide(
+                              color: AppColors.primary,
+                              width: 5,
+                            ),
+                          )
+                        : Border.all(
+                            width: isSelected ? 1.5 : 1,
+                            color: isSelected
+                                ? AppColors.primary
+                                : (isHover
+                                      ? AppColors.outlineVariant.withOpacity(
+                                          0.3,
+                                        )
+                                      : const Color(
+                                          0xFFAFB1BC,
+                                        ).withOpacity(0.15)),
+                          ),
+                  ),
+                  child: Row(
+                    children: [
+                      if (state.isSelectionMode)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Transform.scale(
+                              scale: 1.1,
+                              child: Checkbox(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
-                        ),
-                        child: Row(
-                          children: [
-                            if (state.isSelectionMode)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: Transform.scale(
-                                    scale: 1.1,
-                                    child: Checkbox(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      value: isSelected,
+                                value: isSelected,
 
-                                      onChanged: (_) {
-                                        cubit.toggleSelection(
-                                          widget.student.entityId,
-                                        );
-                                      },
+                                onChanged: (_) {
+                                  cubit.toggleSelection(
+                                    widget.student.entityId,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.student.name,
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF2F323A),
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        widget.level,
+                                        style: TextStyle(
+                                          fontSize: 11.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF495F8B), // primary
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 20,
+                                  width: 20,
+                                  alignment: Alignment.topLeft,
+                                  child: CompositedTransformTarget(
+                                    link: _layerLink,
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                      icon: Icon(
+                                        Icons.more_vert,
+                                        color: Color(0xFF5C5F68),
+                                        size: 20.sp,
+                                      ),
+                                      onPressed: !isSelectedMode
+                                          ? () {
+                                              _toggleMenu(language);
+                                            }
+                                          : null,
+
+                                      splashRadius: 20,
                                     ),
                                   ),
                                 ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              padding: const EdgeInsets.only(top: 3),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    color: const Color(
+                                      0xFFAFB1BC,
+                                    ).withOpacity(0.1),
+                                  ),
+                                ),
                               ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              widget.student.name,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFF2F323A),
-                                              ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              widget.level,
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(
-                                                  0xFF495F8B,
-                                                ), // primary
-                                              ),
-                                            ),
-                                          ],
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: statusBgColor,
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          widget.status,
+                                          style: TextStyle(
+                                            fontSize: 9.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: statusTextColor,
+                                          ),
                                         ),
                                       ),
+                                      const SizedBox(width: 8),
                                       Container(
-                                        height: 20,
-                                        width: 20,
-                                        alignment: Alignment.topLeft,
-                                        child: CompositedTransformTarget(
-                                          link: _layerLink,
-                                          child: IconButton(
-                                            padding: EdgeInsets.zero,
-                                            constraints: const BoxConstraints(),
-                                            icon: const Icon(
-                                              Icons.more_vert,
-                                              color: Color(0xFF5C5F68),
-                                              size: 20,
-                                            ),
-                                            onPressed: !isSelectedMode
-                                                ? _toggleMenu
-                                                : null,
-
-                                            splashRadius: 20,
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: const Color(
+                                            0xFFE7E8F1,
+                                          ), // surface-container-high
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          widget.subStatus,
+                                          style: TextStyle(
+                                            fontSize: 9.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF5C5F68),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 10),
-                                  Container(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
+                                  TextButton(
+                                    onPressed: !isSelectedMode
+                                        ? () {
+                                            Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                transitionDuration: Duration(
+                                                  milliseconds: 300,
+                                                ),
+                                                reverseTransitionDuration:
+                                                    Duration(milliseconds: 300),
+
+                                                pageBuilder:
+                                                    (
+                                                      context,
+                                                      animation,
+                                                      secondaryAnimation,
+                                                    ) {
+                                                      return EditStudentScreen(
+                                                        studentEntity:
+                                                            widget.student,
+                                                      );
+                                                    },
+
+                                                transitionsBuilder:
+                                                    (
+                                                      context,
+                                                      animation,
+                                                      secondaryAnimation,
+                                                      child,
+                                                    ) {
+                                                      final slide =
+                                                          Tween<Offset>(
+                                                            begin: Offset(1, 0),
+                                                            end: Offset.zero,
+                                                          ).animate(animation);
+
+                                                      final fade =
+                                                          Tween<double>(
+                                                            begin: 0.0,
+                                                            end: 1.0,
+                                                          ).animate(animation);
+
+                                                      return FadeTransition(
+                                                        opacity: fade,
+                                                        child: SlideTransition(
+                                                          position: slide,
+                                                          child: child,
+                                                        ),
+                                                      );
+                                                    },
+                                              ),
+                                            );
+                                          }
+                                        : null,
+                                    style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      foregroundColor: const Color(0xFF495F8B),
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 6,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
                                           color: const Color(
-                                            0xFFAFB1BC,
-                                          ).withOpacity(0.1),
+                                            0xFF495F8B,
+                                          ).withOpacity(0.2),
                                         ),
                                       ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 4,
-                                                  ),
-                                              decoration: BoxDecoration(
-                                                color: statusBgColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              child: Text(
-                                                widget.status,
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: statusTextColor,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 4,
-                                                  ),
-                                              decoration: BoxDecoration(
-                                                color: const Color(
-                                                  0xFFE7E8F1,
-                                                ), // surface-container-high
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              child: Text(
-                                                widget.subStatus,
-                                                style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF5C5F68),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+
+                                      child: Text(
+                                        S.of(context).edite,
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.normal,
                                         ),
-                                        TextButton(
-                                          onPressed: !isSelectedMode
-                                              ? () {
-                                                  Navigator.push(
-                                                    context,
-                                                    PageRouteBuilder(
-                                                      transitionDuration:
-                                                          Duration(
-                                                            milliseconds: 300,
-                                                          ),
-                                                      reverseTransitionDuration:
-                                                          Duration(
-                                                            milliseconds: 300,
-                                                          ),
-
-                                                      pageBuilder:
-                                                          (
-                                                            context,
-                                                            animation,
-                                                            secondaryAnimation,
-                                                          ) {
-                                                            return EditStudentScreen(
-                                                              studentEntity:
-                                                                  widget
-                                                                      .student,
-                                                            );
-                                                          },
-
-                                                      transitionsBuilder:
-                                                          (
-                                                            context,
-                                                            animation,
-                                                            secondaryAnimation,
-                                                            child,
-                                                          ) {
-                                                            final slide =
-                                                                Tween<Offset>(
-                                                                  begin: Offset(
-                                                                    1,
-                                                                    0,
-                                                                  ),
-                                                                  end: Offset
-                                                                      .zero,
-                                                                ).animate(
-                                                                  animation,
-                                                                );
-
-                                                            final fade =
-                                                                Tween<double>(
-                                                                  begin: 0.0,
-                                                                  end: 1.0,
-                                                                ).animate(
-                                                                  animation,
-                                                                );
-
-                                                            return FadeTransition(
-                                                              opacity: fade,
-                                                              child:
-                                                                  SlideTransition(
-                                                                    position:
-                                                                        slide,
-                                                                    child:
-                                                                        child,
-                                                                  ),
-                                                            );
-                                                          },
-                                                    ),
-                                                  );
-                                                }
-                                              : null,
-                                          style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            foregroundColor: const Color(
-                                              0xFF495F8B,
-                                            ),
-                                          ),
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 14,
-                                              vertical: 6,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                color: const Color(
-                                                  0xFF495F8B,
-                                                ).withOpacity(0.2),
-                                              ),
-                                            ),
-
-                                            child: const Text(
-                                              'تعديل',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -443,8 +423,8 @@ class _StudentCardState extends State<StudentCard> {
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             );
@@ -454,9 +434,9 @@ class _StudentCardState extends State<StudentCard> {
     );
   }
 
-  void _toggleMenu() {
+  void _toggleMenu(Language? language) {
     if (_overlayEntry == null) {
-      _overlayEntry = _createOverlay();
+      _overlayEntry = _createOverlay(language);
       Overlay.of(context).insert(_overlayEntry!);
     } else {
       _overlayEntry!.remove();
@@ -464,7 +444,8 @@ class _StudentCardState extends State<StudentCard> {
     }
   }
 
-  OverlayEntry _createOverlay() {
+  OverlayEntry _createOverlay(Language? lang) {
+    final double xSpace = (lang == null || lang == Language.en) ? -110 : 0;
     return OverlayEntry(
       builder: (context) => Stack(
         children: [
@@ -482,12 +463,12 @@ class _StudentCardState extends State<StudentCard> {
           /// menu
           CompositedTransformFollower(
             link: _layerLink,
-            offset: const Offset(0, 30), // تحت الزرار
+            offset: Offset(xSpace, 30), // تحت الزرار
             child: Material(
               elevation: 1,
               borderRadius: BorderRadius.circular(12),
               child: Container(
-                width: 140,
+                width: 150.w,
                 padding: const EdgeInsets.symmetric(vertical: 3),
                 decoration: BoxDecoration(
                   color: AppColors.surfaceContainerLowest,
@@ -570,15 +551,15 @@ class _StudentCardState extends State<StudentCard> {
                               ),
                               child: Icon(
                                 Icons.remove_red_eye_outlined,
-                                size: 15,
+                                size: 15.sp,
                                 color: Colors.black,
                               ),
                             ),
                             Text(
-                              "عرض الملف الشخصى",
+                              S.of(context).showPortfolio,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 11,
+                                fontSize: 11.sp,
                               ),
                             ),
                           ],
@@ -617,15 +598,15 @@ class _StudentCardState extends State<StudentCard> {
                               ),
                               child: Icon(
                                 Icons.av_timer,
-                                size: 15,
+                                size: 15.sp,
                                 color: Colors.black,
                               ),
                             ),
                             Text(
-                              "سجل الحضور",
+                              S.of(context).attendanceList,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 11,
+                                fontSize: 11.sp,
                               ),
                             ),
                           ],
@@ -660,9 +641,8 @@ class _StudentCardState extends State<StudentCard> {
                                 SnackBar(
                                   content: AwesomeSnackbarContent(
                                     inMaterialBanner: true,
-                                    title: "حدث خطأ",
-                                    message:
-                                        "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                    title: S.of(context).wrongHappened,
+                                    message: S.of(context).tryAgainLater,
                                     contentType: ContentType.failure,
                                   ),
                                   backgroundColor: Colors.transparent,
@@ -676,8 +656,8 @@ class _StudentCardState extends State<StudentCard> {
                                   SnackBar(
                                     content: AwesomeSnackbarContent(
                                       inMaterialBanner: true,
-                                      title: "تم بنجاح",
-                                      message: "تم حذف الطالب",
+                                      title: S.of(context).success,
+                                      message: S.of(context).studentDeleted,
                                       contentType: ContentType.success,
                                     ),
                                     backgroundColor: Colors.transparent,
@@ -689,9 +669,8 @@ class _StudentCardState extends State<StudentCard> {
                                   SnackBar(
                                     content: AwesomeSnackbarContent(
                                       inMaterialBanner: true,
-                                      title: "حدث خطأ",
-                                      message:
-                                          "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                      title: S.of(context).wrongHappened,
+                                      message: S.of(context).tryAgainLater,
                                       contentType: ContentType.failure,
                                     ),
                                     backgroundColor: Colors.transparent,
@@ -706,9 +685,8 @@ class _StudentCardState extends State<StudentCard> {
                             SnackBar(
                               content: AwesomeSnackbarContent(
                                 inMaterialBanner: true,
-                                title: "حدث خطأ",
-                                message:
-                                    "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                title: S.of(context).wrongHappened,
+                                message: S.of(context).tryAgainLater,
                                 contentType: ContentType.failure,
                               ),
                               backgroundColor: Colors.transparent,
@@ -733,15 +711,15 @@ class _StudentCardState extends State<StudentCard> {
                               ),
                               child: Icon(
                                 Icons.delete_outline,
-                                size: 15,
+                                size: 15.sp,
                                 color: AppColors.error,
                               ),
                             ),
                             Text(
-                              "حذف الطالب",
+                              S.of(context).deleteStudent,
                               style: TextStyle(
                                 color: AppColors.error,
-                                fontSize: 11,
+                                fontSize: 11.sp,
                               ),
                             ),
                           ],

@@ -6,6 +6,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dart_either/dart_either.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,6 +17,7 @@ import '../../../../../core/enums/division_enum.dart';
 import '../../../../../core/enums/payment_type_enum.dart';
 import '../../../../../core/enums/student_status_enum.dart';
 import '../../../../../core/helper/helper.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../domain/entities/study_level_entity.dart';
 import '../../../domain/repository/student_repository.dart';
@@ -88,7 +90,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: AppTheme.surface,
-          appBar: CustomAppBar(label: 'اضافه طالب'),
+          appBar: CustomAppBar(label: S.of(context).addStudent),
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
               horizontal: 20.0,
@@ -97,15 +99,18 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
             child: Column(
               children: [
                 // Section: Basic Data
-                _buildSectionHeader('البيانات الأساسية', AppTheme.primary),
+                _buildSectionHeader(
+                  S.of(context).primaryInfo,
+                  AppTheme.primary,
+                ),
                 _buildContainer([
                   _buildLabelAndInput(
-                    label: 'الاسم بالكامل',
+                    label: S.of(context).fullName,
                     child: _buildTextField(
-                      hint: 'مثال: محمد أحمد علي',
+                      hint: S.of(context).nameExample,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "اسم الطالب مطلوب";
+                          return S.of(context).nameRequired;
                         }
 
                         return null;
@@ -124,7 +129,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   ),
                   const SizedBox(height: 16),
                   _buildLabelAndInput(
-                    label: 'النوع',
+                    label: S.of(context).type,
                     child: _buildGenderSwitch(),
                   ),
                   const SizedBox(height: 16),
@@ -132,10 +137,13 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 const SizedBox(height: 32),
 
                 // Section: Contact Info
-                _buildSectionHeader('معلومات التواصل', AppTheme.tertiary),
+                _buildSectionHeader(
+                  S.of(context).contactInfo,
+                  AppTheme.tertiary,
+                ),
                 _buildContainer([
                   _buildLabelAndInput(
-                    label: 'رقم هاتف الطالب',
+                    label: S.of(context).studentPhone,
                     child: TextPhoneWidget(
                       initialValue: studentPhone,
                       onChange: (value) {
@@ -148,14 +156,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         });
                         print(studentPhone);
                       },
-                      title: 'رقم هاتف الطالب',
+                      title: S.of(context).studentPhone,
                       hint: '01XXXXXXXXX',
                       keyboardType: TextInputType.phone,
                     ),
                   ),
                   const SizedBox(height: 16),
                   _buildLabelAndInput(
-                    label: 'رقم هاتف ولي الأمر',
+                    label: S.of(context).parentPhone,
                     child: TextPhoneWidget(
                       initialValue: parentPhone,
                       onChange: (value) {
@@ -168,14 +176,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         });
                         print(parentPhone);
                       },
-                      title: "رقم هاتف ولي الأمر",
+                      title: S.of(context).parentPhone,
                       hint: '01XXXXXXXXX',
                       keyboardType: TextInputType.phone,
                     ),
                   ),
                   const SizedBox(height: 16),
                   _buildLabelAndInput(
-                    label: 'رقم هاتف البيت',
+                    label: S.of(context).homePhone,
                     child: TextPhoneWidget(
                       initialValue: homePhone,
                       onChange: (value) {
@@ -188,14 +196,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         });
                         print(homePhone);
                       },
-                      title: 'رقم هاتف البيت',
+                      title: S.of(context).homePhone,
                       hint: '01XXXXXXXXX',
                       keyboardType: TextInputType.phone,
                     ),
                   ),
                   const SizedBox(height: 16),
                   _buildLabelAndInput(
-                    label: 'البريد الإلكتروني',
+                    label: S.of(context).email,
                     child: _buildTextField(
                       onChange: (value) {
                         setState(() {
@@ -215,7 +223,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           return null;
                         }
                         if (!emailRegex.hasMatch(value)) {
-                          return "البريد الإلكتروني غير صحيح";
+                          return S.of(context).emailNotValid;
                         }
 
                         return null;
@@ -224,9 +232,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   ),
                   const SizedBox(height: 16),
                   _buildLabelAndInput(
-                    label: 'وظيفة ولي الأمر',
+                    label: S.of(context).parentJob,
                     child: _buildTextField(
-                      hint: 'المهنة',
+                      hint: S.of(context).job,
                       onChange: (value) {
                         setState(() {
                           if (value.isEmpty || value.trim().isEmpty) {
@@ -244,41 +252,44 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
                 // Section: Academic Path
                 _buildSectionHeader(
-                  'المسار الأكاديمي',
+                  S.of(context).acadamicPath,
                   const Color(0xFFA2B9EA),
                 ),
                 _buildContainer([
                   _buildLabelAndInput(
-                    label: 'الصف الدراسية',
+                    label: S.of(context).studyClass,
                     child: StudyLevelDropDown(),
                   ),
                   const SizedBox(height: 16),
                   _buildLabelAndInput(
-                    label: 'الشعبة',
+                    label: S.of(context).division,
                     child: DivisionDropDown(),
                   ),
                   const SizedBox(height: 16),
                   _buildLabelAndInput(
-                    label: 'المجموعة',
+                    label: S.of(context).group,
                     child: _buildTextField(hint: 'اسم أو كود المجموعة'),
                   ),
                 ]),
                 const SizedBox(height: 32),
 
                 // Section: Payment System
-                _buildSectionHeader('نظام الدفع', const Color(0xFF575F72)),
+                _buildSectionHeader(
+                  S.of(context).paymentType,
+                  const Color(0xFF575F72),
+                ),
                 Row(
                   children: [
                     _buildPaymentOption(
                       isSelected: _paymentMethod == 0,
-                      label: 'اشتراك شهري',
+                      label: S.of(context).byMonth,
                       icon: Icons.payments,
                       onTap: () => setState(() => _paymentMethod = 0),
                     ),
                     const SizedBox(width: 16),
                     _buildPaymentOption(
                       isSelected: _paymentMethod == 1,
-                      label: 'بالحصة',
+                      label: S.of(context).byClass,
                       icon: Icons.receipt_long,
                       onTap: () => setState(() => _paymentMethod = 1),
                     ),
@@ -287,7 +298,10 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 const SizedBox(height: 32),
 
                 // Section: Additional Notes
-                _buildSectionHeader('ملاحظات إضافية', AppTheme.outline),
+                _buildSectionHeader(
+                  S.of(context).additionalNotes,
+                  AppTheme.outline,
+                ),
                 _buildTextField(
                   onChange: (value) {
                     setState(() {
@@ -299,7 +313,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     });
                     print(studentNotes);
                   },
-                  hint: 'أي تفاصيل أخرى تخص الطالب...',
+                  hint: S.of(context).anyStudentDetails,
                   maxLines: 4,
                   fillColor: AppTheme.surfaceContainerLow,
                 ),
@@ -318,8 +332,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           SnackBar(
                             content: AwesomeSnackbarContent(
                               inMaterialBanner: true,
-                              title: "بيانات غير مكتملة",
-                              message: "اسم الطالب مطلوب",
+                              title: S.of(context).unCompleteDetails,
+                              message: S.of(context).nameRequired,
                               contentType: ContentType.failure,
                             ),
                             backgroundColor: Colors.transparent,
@@ -334,8 +348,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           SnackBar(
                             content: AwesomeSnackbarContent(
                               inMaterialBanner: true,
-                              title: "بيانات غير صحيحة",
-                              message: "البريد الإلكتروني غير صحيح",
+                              title: S.of(context).informationNotCorrect,
+                              message: S.of(context).emailNotValid,
                               contentType: ContentType.failure,
                             ),
                             backgroundColor: Colors.transparent,
@@ -382,9 +396,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                               SnackBar(
                                 content: AwesomeSnackbarContent(
                                   inMaterialBanner: true,
-                                  title: "حدث خطأ",
-                                  message:
-                                      "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                  title: S.of(context).wrongHappened,
+                                  message: S.of(context).tryAgainLater,
                                   contentType: ContentType.failure,
                                 ),
                                 backgroundColor: Colors.transparent,
@@ -399,8 +412,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                 SnackBar(
                                   content: AwesomeSnackbarContent(
                                     inMaterialBanner: true,
-                                    title: "تم بنجاح",
-                                    message: "تم إنشاء الطالب",
+                                    title: S.of(context).success,
+                                    message: S.of(context).studentCreated,
                                     contentType: ContentType.success,
                                   ),
                                   backgroundColor: Colors.transparent,
@@ -414,9 +427,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                 SnackBar(
                                   content: AwesomeSnackbarContent(
                                     inMaterialBanner: true,
-                                    title: "حدث خطأ",
-                                    message:
-                                        "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                                    title: S.of(context).wrongHappened,
+                                    message: S.of(context).tryAgainLater,
                                     contentType: ContentType.failure,
                                   ),
                                   backgroundColor: Colors.transparent,
@@ -434,8 +446,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         SnackBar(
                           content: AwesomeSnackbarContent(
                             inMaterialBanner: true,
-                            title: "حدث خطأ",
-                            message: "تعذر إتمام العملية، يرجى المحاولة لاحقًا",
+                            title: S.of(context).wrongHappened,
+                            message: S.of(context).tryAgainLater,
                             contentType: ContentType.failure,
                           ),
                           backgroundColor: Colors.transparent,
@@ -469,14 +481,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'إضافة طالب',
+                              S.of(context).addStudent,
                               style: GoogleFonts.inter(
-                                fontSize: 16,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(width: 8),
-                            const Icon(Icons.person_add, size: 17),
+                            Icon(Icons.person_add, size: 17.sp),
                           ],
                         ),
                       ),
@@ -505,9 +517,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     ),
                   ),
                   child: Text(
-                    'إلغاء',
+                    S.of(context).cancel,
                     style: GoogleFonts.inter(
-                      fontSize: 16,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -523,7 +535,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   Widget _buildSectionHeader(String title, Color color) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsetsDirectional.only(bottom: 12.0),
       child: Row(
         children: [
           Container(
@@ -538,7 +550,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
           Text(
             title,
             style: GoogleFonts.inter(
-              fontSize: 18,
+              fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: AppTheme.onSurface,
             ),
@@ -567,11 +579,11 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 4.0, bottom: 6.0),
+          padding: const EdgeInsetsDirectional.only(start: 4.0, bottom: 6.0),
           child: Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: 13.sp,
               fontWeight: FontWeight.w600,
               color: AppTheme.onSurfaceVariant,
             ),
@@ -604,7 +616,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
         // Because of RTL, setting prefixIcon might be on the right.
         // We put the icon where we want based on design.
         prefixIcon: prefixIcon != null
-            ? Icon(prefixIcon, color: AppTheme.outlineVariant)
+            ? Icon(prefixIcon, color: AppTheme.outlineVariant, size: 24.sp)
             : null,
         filled: true,
         fillColor: fillColor,
@@ -659,8 +671,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      selectedDivision.description,
+                      selectedDivision.arabic,
                       style: GoogleFonts.inter(
+                        fontSize: 13.sp,
                         color: AppTheme.onSurface,
                         fontWeight: FontWeight.bold,
                       ),
@@ -669,7 +682,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   AnimatedRotation(
                     turns: isOpenDivision ? 0.5 : 0,
                     duration: const Duration(milliseconds: 300),
-                    child: const Icon(Icons.keyboard_arrow_down_rounded),
+                    child: Icon(Icons.keyboard_arrow_down_rounded, size: 24.sp),
                   ),
                 ],
               ),
@@ -731,12 +744,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                     ),
 
                                     child: Text(
-                                      item.description,
+                                      item.arabic,
                                       style: TextStyle(
                                         color: AppColors.onSurface.withOpacity(
                                           0.7,
                                         ),
-                                        fontSize: 13,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.normal,
                                       ),
                                     ),
@@ -782,8 +795,10 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     : null,
                 child: Center(
                   child: Text(
-                    'ذكر',
+                    S.of(context).male,
                     style: GoogleFonts.inter(
+                      fontSize: 13.sp,
+
                       fontWeight: _isMale ? FontWeight.bold : FontWeight.w500,
                       color: _isMale
                           ? AppTheme.primary
@@ -810,8 +825,10 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     : null,
                 child: Center(
                   child: Text(
-                    'أنثى',
+                    S.of(context).female,
                     style: GoogleFonts.inter(
+                      fontSize: 13.sp,
+
                       fontWeight: !_isMale ? FontWeight.bold : FontWeight.w500,
                       color: !_isMale
                           ? AppTheme.primary
@@ -865,13 +882,13 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     color: isSelected
                         ? AppTheme.primary
                         : AppTheme.onSurfaceVariant,
-                    size: 28,
+                    size: 28.sp,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     label,
                     style: GoogleFonts.inter(
-                      fontSize: 14,
+                      fontSize: 13.sp,
                       fontWeight: isSelected
                           ? FontWeight.bold
                           : FontWeight.w500,
@@ -962,6 +979,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                     child: Text(
                       selectedStudyLevel.arabicName,
                       style: GoogleFonts.inter(
+                        fontSize: 13.sp,
+
                         color: AppTheme.onSurface,
                         fontWeight: FontWeight.bold,
                       ),
@@ -970,7 +989,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   AnimatedRotation(
                     turns: isOpenStudy ? 0.5 : 0,
                     duration: const Duration(milliseconds: 300),
-                    child: const Icon(Icons.keyboard_arrow_down_rounded),
+                    child: Icon(Icons.keyboard_arrow_down_rounded, size: 24.sp),
                   ),
                 ],
               ),
@@ -1031,7 +1050,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                   item.arabicName,
                                   style: TextStyle(
                                     color: AppColors.onSurface.withOpacity(0.7),
-                                    fontSize: 13,
+                                    fontSize: 12.sp,
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),

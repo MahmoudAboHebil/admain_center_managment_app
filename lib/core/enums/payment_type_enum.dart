@@ -1,10 +1,11 @@
 enum PaymentTypeEnum {
-  byMonth('اشتراك شهري'),
-  byClass('بالحصة');
+  byMonth('اشتراك شهري', "Monthly Subscription"),
+  byClass('بالحصة', "Per Class");
 
-  final String description;
+  final String arabic;
+  final String english;
 
-  const PaymentTypeEnum(this.description);
+  const PaymentTypeEnum(this.arabic, this.english);
 
   static PaymentTypeEnum getPaymentFromString(String paymentType) {
     PaymentTypeEnum? edu;

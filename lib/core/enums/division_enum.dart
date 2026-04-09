@@ -1,15 +1,16 @@
 enum DivisionEnum {
-  all('الكل'),
-  Division('الشعبة'),
-  literarySection(' ادبي'),
-  scientificMathematicsSection(' علمي رياضة'),
-  scientificBiologySection(' علمي علوم'),
-  scientificSection(' علمي'),
-  alAzharSection(' أزهر');
+  all('الكل', 'All'),
+  Division('الشعبة', 'Division'),
+  literarySection(' ادبي', "Literary"),
+  scientificMathematicsSection(' علمي رياضة', "Scientific Mathematics"),
+  scientificBiologySection(' علمي علوم', "Scientific Biology"),
+  scientificSection(' علمي', "Scientific"),
+  alAzharSection(' أزهر', "AlAzhar");
 
-  final String description;
+  final String arabic;
+  final String english;
 
-  const DivisionEnum(this.description);
+  const DivisionEnum(this.arabic, this.english);
 
   static DivisionEnum getDivisionFromString(String divisionString) {
     DivisionEnum? edu;

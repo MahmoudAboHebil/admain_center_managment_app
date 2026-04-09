@@ -1,14 +1,15 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
-import '../../../../../config/theme/typography.dart';
 import '../../../../../core/constants/constants.dart';
 import '../../../../../core/enums/division_enum.dart';
 import '../../../../../core/enums/payment_type_enum.dart';
 import '../../../../../core/enums/student_status_enum.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../domain/entities/study_level_entity.dart';
@@ -90,7 +91,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildSectionTitle("المرحلة الدراسية"),
+                  _buildSectionTitle(S.of(context).studyClass),
 
                   const SizedBox(height: 8),
                   StudyLevelDropDown(),
@@ -100,7 +101,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildSectionTitle("الشعبة"),
+                  _buildSectionTitle(S.of(context).division),
 
                   const SizedBox(height: 8),
                   DivisionDropDown(),
@@ -113,7 +114,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   Expanded(
                     child: _buildStatusCard(
                       icon: Icons.how_to_reg,
-                      label: 'نشط',
+                      label: S.of(context).active,
                       isSelected: selectedStudentStates == StudentStatus.active,
                       onTap: () {
                         setState(() {
@@ -130,7 +131,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   Expanded(
                     child: _buildStatusCard(
                       icon: Icons.person_off,
-                      label: 'غير نشط',
+                      label: S.of(context).inactive,
                       isSelected:
                           selectedStudentStates == StudentStatus.inactive,
                       onTap: () {
@@ -148,7 +149,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   Expanded(
                     child: _buildStatusCard(
                       icon: Icons.schedule,
-                      label: 'متاخر فى الدفع',
+                      label: S.of(context).latePayment,
                       isSelected:
                           selectedStudentStates == StudentStatus.latePayment,
                       onTap: () {
@@ -167,7 +168,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
               ),
               const SizedBox(height: 24),
               // Payment System
-              _buildSectionTitle('نظام الدفع'),
+              _buildSectionTitle(S.of(context).paymentType),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(4),
@@ -179,7 +180,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   children: [
                     Expanded(
                       child: _buildPaymentToggle(
-                        label: 'اشتراك شهري',
+                        label: S.of(context).byMonth,
                         isSelected:
                             selectedPaymentType == PaymentTypeEnum.byMonth,
                         onTap: () {
@@ -196,7 +197,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                     ),
                     Expanded(
                       child: _buildPaymentToggle(
-                        label: 'بالحصة',
+                        label: S.of(context).byClass,
                         isSelected:
                             selectedPaymentType == PaymentTypeEnum.byClass,
                         onTap: () {
@@ -291,7 +292,10 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
               children: [
                 Opacity(
                   opacity: isLoading ? 0 : 1,
-                  child: Text('تطبيق الفلاتر'),
+                  child: Text(
+                    S.of(context).applyFilters,
+                    style: TextStyle(fontSize: 13.sp),
+                  ),
                 ),
                 isLoading
                     ? SizedBox(
@@ -305,7 +309,9 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                     : SizedBox(),
               ],
             ),
-            label: !isLoading ? const Icon(Icons.filter_alt) : SizedBox(),
+            label: !isLoading
+                ? Icon(Icons.filter_alt, size: 24.sp)
+                : SizedBox(),
           ),
         ),
       ),
@@ -374,7 +380,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
-      style: GoogleFonts.manrope(fontSize: 14, fontWeight: FontWeight.bold),
+      style: GoogleFonts.manrope(fontSize: 13.sp, fontWeight: FontWeight.bold),
     );
   }
 
@@ -417,7 +423,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                     child: Text(
                       selectedStudyLevel.arabicName,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13.sp,
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                       ),
@@ -426,7 +432,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   AnimatedRotation(
                     turns: isOpenStudy ? 0.5 : 0,
                     duration: const Duration(milliseconds: 300),
-                    child: const Icon(Icons.keyboard_arrow_down_rounded),
+                    child: Icon(Icons.keyboard_arrow_down_rounded, size: 24.sp),
                   ),
                 ],
               ),
@@ -487,7 +493,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                                   item.arabicName,
                                   style: TextStyle(
                                     color: AppColors.onSurface.withOpacity(0.7),
-                                    fontSize: 13,
+                                    fontSize: 12.sp,
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
@@ -544,9 +550,9 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      selectedDivision.description,
+                      selectedDivision.arabic,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 13.sp,
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                       ),
@@ -555,7 +561,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   AnimatedRotation(
                     turns: isOpenDivision ? 0.5 : 0,
                     duration: const Duration(milliseconds: 300),
-                    child: const Icon(Icons.keyboard_arrow_down_rounded),
+                    child: Icon(Icons.keyboard_arrow_down_rounded, size: 24.sp),
                   ),
                 ],
               ),
@@ -617,12 +623,12 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                                     ),
 
                                     child: Text(
-                                      item.description,
+                                      item.arabic,
                                       style: TextStyle(
                                         color: AppColors.onSurface.withOpacity(
                                           0.7,
                                         ),
-                                        fontSize: 13,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.normal,
                                       ),
                                     ),
@@ -673,13 +679,13 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
               color: isSelected
                   ? AppTheme.onPrimary
                   : AppTheme.onSurfaceVariant,
-              size: 24,
+              size: 24.sp,
             ),
             const SizedBox(height: 8),
             Text(
               label,
               style: GoogleFonts.manrope(
-                fontSize: 11,
+                fontSize: 10.sp,
                 fontWeight: FontWeight.bold,
                 color: isSelected
                     ? AppTheme.onPrimary
@@ -720,7 +726,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
         child: Text(
           label,
           style: GoogleFonts.manrope(
-            fontSize: 12,
+            fontSize: 11.sp,
             fontWeight: FontWeight.bold,
             color: isSelected ? AppTheme.primary : AppTheme.onSurfaceVariant,
           ),
@@ -763,7 +769,7 @@ class _StudentsFilterAppBarState extends State<StudentsFilterAppBar> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconButton(
-              icon: const Icon(Icons.close),
+              icon: Icon(Icons.close, size: 24.sp),
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -800,8 +806,9 @@ class _StudentsFilterAppBarState extends State<StudentsFilterAppBar> {
               },
             ),
             Text(
-              'تصفية النتائج',
-              style: AppTypography.textTheme.titleLarge?.copyWith(
+              S.of(context).filterResults,
+              style: TextStyle(
+                fontSize: 20.sp,
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -812,8 +819,9 @@ class _StudentsFilterAppBarState extends State<StudentsFilterAppBar> {
                 await widget.onClickingReset();
               },
               child: Text(
-                'إعادة ضبط',
+                S.of(context).reset,
                 style: GoogleFonts.manrope(
+                  fontSize: 13.sp,
                   color: AppTheme.primary,
                   fontWeight: FontWeight.bold,
                 ),

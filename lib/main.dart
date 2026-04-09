@@ -6,12 +6,17 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'bloc_observer.dart';
 import 'config/theme/app_theme.dart';
 import 'contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
+import 'core/enums/languages.dart';
 import 'core/internet_service/internet_bloc/internet_bloc.dart';
+import 'core/providers/language_provider.dart';
+import 'generated/l10n.dart';
 import 'injection_container.dart';
 
 void main() async {
@@ -22,17 +27,24 @@ void main() async {
   await initializeDependencies();
   runApp(
     DevicePreview(
-      enabled: false,
-      builder: (context) => MyApp(), // Wrap your app
+      enabled: true,
+      builder: (context) {
+        return ScreenUtilInit(
+          builder: (context, child) => ProviderScope(child: MyApp()),
+          designSize: Size(384, 857),
+        );
+      }, // Wrap your app
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final languageState = ref.watch(languageProvider);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<SyncBloc>(
@@ -48,15 +60,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        localizationsDelegates: const [
+        locale: Locale(languageState.value?.name ?? Language.en.name),
+        localizationsDelegates: [
+          S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('ar', 'AE'), // Arabic
-        ],
-        locale: const Locale('ar', 'AE'), // Default to Arabic RTL
+        supportedLocales: S.delegate.supportedLocales,
         home: const StudentsListScreen(),
       ),
     );

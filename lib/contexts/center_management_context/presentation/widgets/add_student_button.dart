@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
+import '../../../../generated/l10n.dart';
 import '../screens/mobile_app_screens/add_student_screen.dart';
 
 class AddStudentButton extends StatelessWidget {
@@ -40,8 +42,8 @@ class AddStudentButton extends StatelessWidget {
           ),
         );
       },
-      icon: const Icon(Icons.person_add),
-      label: const Text('إضافة طالب'),
+      icon: Icon(Icons.person_add, size: 24.sp),
+      label: Text(S.of(context).addStudent, style: TextStyle(fontSize: 13.sp)),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.onPrimary,

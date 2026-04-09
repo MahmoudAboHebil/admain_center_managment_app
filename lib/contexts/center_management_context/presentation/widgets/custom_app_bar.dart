@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
-import '../../../../config/theme/typography.dart';
 import '../bloc/selection_cubit/selection_cubit.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -38,7 +38,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
           children: [
             Text(
               widget.label,
-              style: AppTypography.textTheme.titleLarge?.copyWith(
+              style: TextStyle(
+                fontSize: 20.sp,
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
               ),
@@ -57,7 +58,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   icon: Icon(
                     Icons.arrow_forward_outlined,
                     color: AppColors.primary,
-                    size: 26,
+                    size: 26.sp,
                   ),
                 ),
               ],

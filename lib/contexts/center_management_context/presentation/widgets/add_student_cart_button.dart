@@ -1,4 +1,6 @@
+import 'package:admain_center_managment_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
 import '../screens/mobile_app_screens/add_student_screen.dart';
@@ -62,15 +64,19 @@ class AddStudentCartButton extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
               ),
-              child: const Icon(Icons.add, color: AppColors.onSurfaceVariant),
+              child: Icon(
+                Icons.add,
+                color: AppColors.onSurfaceVariant,
+                size: 24.sp,
+              ),
             ),
             const SizedBox(height: 12),
-            const Text(
-              'إضافة طالب جديد',
+            Text(
+              S.of(context).addNewStudent,
               style: TextStyle(
                 color: AppColors.onSurfaceVariant,
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 12.sp,
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
 import '../../../../config/theme/typography.dart';
@@ -21,14 +22,14 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.centerRight,
+      alignment: AlignmentDirectional.centerStart,
       clipBehavior: Clip.hardEdge,
 
       children: [
         Container(
           margin: EdgeInsets.symmetric(vertical: 5),
           width: 20,
-          height: 83,
+          height: 86,
           decoration: BoxDecoration(
             color: lineColor,
             borderRadius: BorderRadius.circular(300),
@@ -36,13 +37,12 @@ class StatCard extends StatelessWidget {
         ),
         Row(
           children: [
-            SizedBox(width: 5),
             Expanded(
               child: Container(
+                margin: const EdgeInsetsDirectional.only(start: 5),
                 alignment: Alignment.center,
-                height: 90,
-
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                height: 93,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -64,9 +64,9 @@ class StatCard extends StatelessWidget {
                   children: [
                     Text(
                       label,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.onSurfaceVariant,
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -75,7 +75,7 @@ class StatCard extends StatelessWidget {
                       value,
                       style: AppTypography.textTheme.headlineMedium?.copyWith(
                         color: valueColor,
-                        fontSize: 20,
+                        fontSize: 18.sp,
                       ),
                     ),
                   ],
