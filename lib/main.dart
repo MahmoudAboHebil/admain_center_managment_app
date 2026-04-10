@@ -31,7 +31,7 @@ void main() async {
       builder: (context) {
         return ScreenUtilInit(
           builder: (context, child) => ProviderScope(child: MyApp()),
-          designSize: Size(384, 857),
+          designSize: Size(400, 857),
         );
       }, // Wrap your app
     ),

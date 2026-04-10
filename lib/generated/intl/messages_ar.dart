@@ -32,12 +32,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "تفاصيل إدارية",
     ),
     "allClasses": MessageLookupByLibrary.simpleMessage("الصف الدراسي الكل "),
-    "allPaymentTypes": MessageLookupByLibrary.simpleMessage(
-      "All Payment Types",
-    ),
-    "allSections": MessageLookupByLibrary.simpleMessage("All Sections"),
+    "allPaymentTypes": MessageLookupByLibrary.simpleMessage("نظام الدفع الكل "),
+    "allSections": MessageLookupByLibrary.simpleMessage("الشعبة الكل "),
     "allStudentStatus": MessageLookupByLibrary.simpleMessage(
-      "All Student Status",
+      "حالة الطالب الكل ",
     ),
     "anyStudentDetails": MessageLookupByLibrary.simpleMessage(
       "أي تفاصيل أخرى تخص الطالب...",
@@ -83,7 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "paymentType": MessageLookupByLibrary.simpleMessage("نظام الدفع"),
     "primaryInfo": MessageLookupByLibrary.simpleMessage("البيانات الأساسية"),
     "reset": MessageLookupByLibrary.simpleMessage("إعادة ضبط"),
-    "resultsFound": MessageLookupByLibrary.simpleMessage("  تم العثور على "),
+    "resultsFound": MessageLookupByLibrary.simpleMessage("تم العثور على"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "searchByName": MessageLookupByLibrary.simpleMessage("البحث بالاسم..."),
     "searchResults": MessageLookupByLibrary.simpleMessage("نتائج البحث"),

@@ -1,11 +1,15 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_search_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/search_student_card.dart';
+import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/enums/division_enum.dart';
+import '../../../../core/providers/language_provider.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../injection_container.dart';
 import '../../../../sync_engine/domain/entities/student_entity.dart';
@@ -13,7 +17,7 @@ import '../../domain/entities/study_level_entity.dart';
 import '../../domain/repository/student_repository.dart';
 import '../bloc/selection_cubit/selection_cubit.dart';
 
-class StudentSearchTextField extends StatefulWidget {
+class StudentSearchTextField extends ConsumerStatefulWidget {
   final double width;
   final FocusNode searchFocusNode;
 
@@ -24,10 +28,11 @@ class StudentSearchTextField extends StatefulWidget {
   });
 
   @override
-  State<StudentSearchTextField> createState() => _StudentSearchTextFieldState();
+  ConsumerState<StudentSearchTextField> createState() =>
+      _StudentSearchTextFieldState();
 }
 
-class _StudentSearchTextFieldState extends State<StudentSearchTextField>
+class _StudentSearchTextFieldState extends ConsumerState<StudentSearchTextField>
     with SingleTickerProviderStateMixin {
   TextEditingController searchController = TextEditingController();
   late final FocusNode searchFocusNode;
@@ -46,7 +51,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
     searchFocusNode = widget.searchFocusNode;
     searchFocusNode.addListener(() {
       if (searchFocusNode.hasFocus) {
-        _showOverlay();
+        _showOverlay(ref.read(languageProvider).value == Language.ar);
       } else {
         searchController = TextEditingController();
         _hideOverlay();
@@ -62,7 +67,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
     super.dispose();
   }
 
-  void _showOverlay() {
+  void _showOverlay(bool isArabic) {
     if (_overlayEntry != null) return;
 
     _dropdownHeight = 0;
@@ -86,7 +91,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                 curve: Curves.easeOut,
                 child: SizedBox(
                   height: _dropdownHeight,
-                  child: _buildSearchDropdown(),
+                  child: _buildSearchDropdown(isArabic),
                 ),
               ),
             ),
@@ -174,7 +179,7 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
     );
   }
 
-  Widget _buildSearchDropdown() {
+  Widget _buildSearchDropdown(bool isArabic) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
@@ -223,6 +228,20 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                                 if (l.entityId == item.studyLevelId) level = l;
                               }
                               final division = item.divisionEnum;
+                              final div =
+                                  (division == null ||
+                                      division == DivisionEnum.Division)
+                                  ? null
+                                  : division;
+                              final lev = (level == null || level.order == 0)
+                                  ? null
+                                  : level;
+                              final levelString = isArabic
+                                  ? lev?.arabicName
+                                  : lev?.englishName;
+                              final divString = isArabic
+                                  ? div?.arabic
+                                  : div?.english;
                               return Padding(
                                 padding: EdgeInsets.only(
                                   top: 8,
@@ -233,9 +252,9 @@ class _StudentSearchTextFieldState extends State<StudentSearchTextField>
                                   width: widget.width,
                                   studentEntity: item,
                                   name: item.name,
-                                  level: division == null
-                                      ? level?.arabicName ?? ''
-                                      : '${level?.arabicName ?? ''} • ${division.arabic}',
+                                  level: (div == null)
+                                      ? levelString ?? ''
+                                      : '${levelString ?? ''} • ${divString}',
                                   id: item.studentCode,
                                 ),
                               );

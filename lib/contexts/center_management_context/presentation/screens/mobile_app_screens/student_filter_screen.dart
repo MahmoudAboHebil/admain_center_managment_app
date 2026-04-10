@@ -1,5 +1,7 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
+import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,21 +11,22 @@ import '../../../../../core/constants/constants.dart';
 import '../../../../../core/enums/division_enum.dart';
 import '../../../../../core/enums/payment_type_enum.dart';
 import '../../../../../core/enums/student_status_enum.dart';
+import '../../../../../core/providers/language_provider.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../domain/entities/study_level_entity.dart';
 import '../../../domain/repository/student_repository.dart';
 
-class StudentFilterScreen extends StatefulWidget {
+class StudentFilterScreen extends ConsumerStatefulWidget {
   final FilterParams? initialParams;
   const StudentFilterScreen({super.key, this.initialParams});
 
   @override
-  State<StudentFilterScreen> createState() => _StudentFilterScreenState();
+  ConsumerState<StudentFilterScreen> createState() => _StudentFilterScreenState();
 }
 
-class _StudentFilterScreenState extends State<StudentFilterScreen> {
+class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
   bool isLoading = false;
   bool isOpenStudy = false;
   bool isOpenDivision = false;
@@ -71,6 +74,8 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(languageProvider).value;
+
     return SafeArea(
       child: Scaffold(
         appBar: StudentsFilterAppBar(
@@ -94,7 +99,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   _buildSectionTitle(S.of(context).studyClass),
 
                   const SizedBox(height: 8),
-                  StudyLevelDropDown(),
+                  StudyLevelDropDown(language==Language.ar),
                 ],
               ),
               const SizedBox(height: 24),
@@ -104,7 +109,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   _buildSectionTitle(S.of(context).division),
 
                   const SizedBox(height: 8),
-                  DivisionDropDown(),
+                  DivisionDropDown(language==Language.ar),
                 ],
               ),
               const SizedBox(height: 24),
@@ -282,9 +287,8 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
               }
             },
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              minimumSize: const Size(double.infinity, 0),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              minimumSize: const Size(double.infinity, 50),
             ),
             icon: Stack(
               alignment: Alignment.center,
@@ -294,7 +298,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                   opacity: isLoading ? 0 : 1,
                   child: Text(
                     S.of(context).applyFilters,
-                    style: TextStyle(fontSize: 13.sp),
+                    style: TextStyle(fontSize: 16.sp ,fontWeight: FontWeight.bold),
                   ),
                 ),
                 isLoading
@@ -310,7 +314,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
               ],
             ),
             label: !isLoading
-                ? Icon(Icons.filter_alt, size: 24.sp)
+                ? Icon(Icons.filter_alt, size: 17.sp)
                 : SizedBox(),
           ),
         ),
@@ -384,7 +388,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
     );
   }
 
-  Widget StudyLevelDropDown() {
+  Widget StudyLevelDropDown(bool isArabic) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -421,7 +425,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      selectedStudyLevel.arabicName,
+                      isArabic?selectedStudyLevel.arabicName:selectedStudyLevel.englishName,
                       style: TextStyle(
                         fontSize: 13.sp,
                         color: AppColors.primary,
@@ -490,7 +494,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                                 ),
 
                                 child: Text(
-                                  item.arabicName,
+                                  isArabic?item.arabicName:item.englishName,
                                   style: TextStyle(
                                     color: AppColors.onSurface.withOpacity(0.7),
                                     fontSize: 12.sp,
@@ -513,7 +517,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
     );
   }
 
-  Widget DivisionDropDown() {
+  Widget DivisionDropDown(bool isArabic) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -550,7 +554,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      selectedDivision.arabic,
+                      isArabic?selectedDivision.arabic:selectedDivision.english,
                       style: TextStyle(
                         fontSize: 13.sp,
                         color: AppColors.primary,
@@ -623,7 +627,7 @@ class _StudentFilterScreenState extends State<StudentFilterScreen> {
                                     ),
 
                                     child: Text(
-                                      item.arabic,
+                                      isArabic? item.arabic:item.english,
                                       style: TextStyle(
                                         color: AppColors.onSurface.withOpacity(
                                           0.7,

@@ -148,6 +148,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                           color: AppColors.primary,
                           size: 20.sp,
                         ),
+                        SizedBox(width: 5),
                         Text(
                           S.of(context).resultsFound,
                           style: TextStyle(
@@ -155,6 +156,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                             fontSize: 13.sp,
                           ),
                         ),
+                        SizedBox(width: 2),
                         Text(
                           " ${searchData.length} ",
                           style: TextStyle(

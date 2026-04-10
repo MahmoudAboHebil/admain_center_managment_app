@@ -1,15 +1,17 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
 import 'package:admain_center_managment_app/core/constants/constants.dart';
-import 'package:admain_center_managment_app/core/enums/payment_type_enum.dart';
+import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:admain_center_managment_app/core/enums/student_status_enum.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
 import '../../../../../core/enums/division_enum.dart';
+import '../../../../../core/providers/language_provider.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
@@ -18,15 +20,16 @@ import '../../../domain/repository/student_repository.dart';
 import '../../widgets/custom_app_bar.dart';
 import 'edit_student_screen.dart';
 
-class StudentProfileScreen extends StatefulWidget {
+class StudentProfileScreen extends ConsumerStatefulWidget {
   final StudentEntity student;
   const StudentProfileScreen({super.key, required this.student});
 
   @override
-  State<StudentProfileScreen> createState() => _StudentProfileScreenState();
+  ConsumerState<StudentProfileScreen> createState() =>
+      _StudentProfileScreenState();
 }
 
-class _StudentProfileScreenState extends State<StudentProfileScreen> {
+class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
   bool isLoading = false;
   late final StudyLevelEntity level;
   @override
@@ -39,6 +42,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(languageProvider).value;
     final screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
@@ -112,9 +116,10 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   clipBehavior: Clip.none,
                   alignment: Alignment.topRight,
                   children: [
-                    Positioned(
+                    Positioned.directional(
                       top: -90,
-                      right: -90,
+                      start: -90,
+                      textDirection: Directionality.of(context),
                       child: Container(
                         height: 130,
                         width: 130,
@@ -146,6 +151,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                 padding: const EdgeInsets.only(top: 5.0),
                                 child: _buildStates(
                                   widget.student.studentStatus,
+                                  (language == Language.ar),
                                 ),
                               ),
                             ],
@@ -216,7 +222,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       title: S.of(context).className,
                       value: level.order == 0
                           ? S.of(context).notAdded
-                          : level.arabicName,
+                          : ((language == Language.ar)
+                                ? level.arabicName
+                                : level.englishName),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -230,7 +238,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                               widget.student.divisionEnum ==
                                   DivisionEnum.Division)
                           ? S.of(context).notAdded
-                          : widget.student.divisionEnum!.arabic,
+                          : ((language == Language.ar)
+                                ? widget.student.divisionEnum!.arabic
+                                : widget.student.divisionEnum!.english),
                     ),
                   ),
                 ],
@@ -366,12 +376,16 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            widget.student.paymentTypeEnum?.arabic ??
-                                PaymentTypeEnum.byMonth.arabic,
-                            style: GoogleFonts.manrope(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.bold,
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Text(
+                              (language == Language.ar)
+                                  ? widget.student.paymentTypeEnum.arabic
+                                  : widget.student.paymentTypeEnum.english,
+                              style: GoogleFonts.manrope(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -477,6 +491,70 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               Row(
                 children: [
                   Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: AppTheme.surface.withOpacity(0.95),
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 300),
+                              reverseTransitionDuration: Duration(
+                                milliseconds: 300,
+                              ),
+
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                    return EditStudentScreen(
+                                      studentEntity: widget.student,
+                                    );
+                                  },
+
+                              transitionsBuilder:
+                                  (
+                                    context,
+                                    animation,
+                                    secondaryAnimation,
+                                    child,
+                                  ) {
+                                    final slide = Tween<Offset>(
+                                      begin: Offset(1, 0),
+                                      end: Offset.zero,
+                                    ).animate(animation);
+
+                                    final fade = Tween<double>(
+                                      begin: 0.0,
+                                      end: 1.0,
+                                    ).animate(animation);
+
+                                    return FadeTransition(
+                                      opacity: fade,
+                                      child: SlideTransition(
+                                        position: slide,
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: AppColors.primaryDim,
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        icon: Text(
+                          S.of(context).editStudent,
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                        label: Icon(Icons.edit, size: 17.sp),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(width: 12),
+                  Expanded(
                     flex: 1,
                     child: Container(
                       color: AppTheme.surface.withOpacity(0.95),
@@ -496,8 +574,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                     content: AwesomeSnackbarContent(
                                       inMaterialBanner: true,
                                       title: S.of(context).wrongHappened,
-                                      message:
-                                      S.of(context).tryAgainLater,
+                                      message: S.of(context).tryAgainLater,
                                       contentType: ContentType.failure,
                                     ),
                                     backgroundColor: Colors.transparent,
@@ -614,7 +691,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                             Opacity(
                               opacity: isLoading ? 0 : 1,
                               child: Text(
-                                S.of(context).deleteStudent,
+                                S.of(context).delete,
                                 style: TextStyle(fontSize: 13.sp),
                               ),
                             ),
@@ -636,69 +713,6 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      color: AppTheme.surface.withOpacity(0.95),
-                      child: ElevatedButton.icon(
-                        onPressed: () async {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              transitionDuration: Duration(milliseconds: 300),
-                              reverseTransitionDuration: Duration(
-                                milliseconds: 300,
-                              ),
-
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                    return EditStudentScreen(
-                                      studentEntity: widget.student,
-                                    );
-                                  },
-
-                              transitionsBuilder:
-                                  (
-                                    context,
-                                    animation,
-                                    secondaryAnimation,
-                                    child,
-                                  ) {
-                                    final slide = Tween<Offset>(
-                                      begin: Offset(1, 0),
-                                      end: Offset.zero,
-                                    ).animate(animation);
-
-                                    final fade = Tween<double>(
-                                      begin: 0.0,
-                                      end: 1.0,
-                                    ).animate(animation);
-
-                                    return FadeTransition(
-                                      opacity: fade,
-                                      child: SlideTransition(
-                                        position: slide,
-                                        child: child,
-                                      ),
-                                    );
-                                  },
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: AppColors.primaryDim,
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                        ),
-                        icon: Text(
-                          S.of(context).editStudent,
-                          style: TextStyle(fontSize: 13.sp),
-                        ),
-                        label: Icon(Icons.edit, size: 17.sp),
-                      ),
-                    ),
-                  ),
                 ],
               ),
               const SizedBox(height: 24),
@@ -710,7 +724,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
   }
 
   // Widget _buildTeacherNote(List<String>? notes){
-  Widget _buildStates(StudentStatus status) {
+  Widget _buildStates(StudentStatus status, bool isArabic) {
     if (status == StudentStatus.active) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -719,7 +733,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          StudentStatus.active.arabic,
+          isArabic ? StudentStatus.active.arabic : StudentStatus.active.english,
           style: GoogleFonts.inter(
             fontSize: 11.sp,
             color: AppTheme.onPrimary,
@@ -735,7 +749,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          StudentStatus.inactive.arabic,
+          isArabic
+              ? StudentStatus.inactive.arabic
+              : StudentStatus.inactive.english,
           style: GoogleFonts.inter(
             fontSize: 11.sp,
             color: const Color(0xFF5C5F68),
@@ -751,7 +767,9 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Text(
-          StudentStatus.latePayment.arabic,
+          isArabic
+              ? StudentStatus.latePayment.arabic
+              : StudentStatus.latePayment.english,
           style: GoogleFonts.inter(
             fontSize: 11.sp,
             color: Colors.red.shade800,
@@ -787,12 +805,15 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            value,
-            style: GoogleFonts.manrope(
-              fontSize: 13.sp,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.onSurface,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Text(
+              value,
+              style: GoogleFonts.manrope(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.bold,
+                color: AppTheme.onSurface,
+              ),
             ),
           ),
         ],
@@ -800,27 +821,30 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
     );
   }
 
-  Widget _buildSectionHeader(String title, Color barColor) {
-    return Row(
-      children: [
-        Container(
-          width: 6,
-          height: 16,
-          decoration: BoxDecoration(
-            color: barColor,
-            borderRadius: BorderRadius.circular(4),
+  Widget _buildSectionHeader(String title, Color color) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(bottom: 12.0),
+      child: Row(
+        children: [
+          Container(
+            width: 4,
+            height: 24,
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(4),
+            ),
           ),
-        ),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: GoogleFonts.manrope(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.bold,
-            color: AppTheme.onSurfaceVariant,
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: GoogleFonts.inter(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.onSurface,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -859,7 +883,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
               const SizedBox(height: 2),
               value != null
                   ? Container(
-                      width: screenWidth * 0.55,
+                      width: screenWidth * 0.60,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Text(
@@ -873,7 +897,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       ),
                     )
                   : Text(
-                S.of(context).notAdded,
+                      S.of(context).notAdded,
                       style: GoogleFonts.inter(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.bold,

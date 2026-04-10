@@ -89,15 +89,17 @@ class SearchStudentCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(height: 1),
-                Text(
-                  level,
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF495F8B), // primary
+                if (level.trim().isNotEmpty) ...[
+                  const SizedBox(height: 1),
+                  Text(
+                    level,
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF495F8B), // primary
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ],

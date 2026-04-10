@@ -574,30 +574,30 @@ class S {
     return Intl.message('All Classes', name: 'allClasses', desc: '', args: []);
   }
 
-  /// `الشعبة الكل `
+  /// `All Sections`
   String get allSections {
     return Intl.message(
-      'الشعبة الكل ',
+      'All Sections',
       name: 'allSections',
       desc: '',
       args: [],
     );
   }
 
-  /// `نظام الدفع الكل `
+  /// `All Payment Types`
   String get allPaymentTypes {
     return Intl.message(
-      'نظام الدفع الكل ',
+      'All Payment Types',
       name: 'allPaymentTypes',
       desc: '',
       args: [],
     );
   }
 
-  /// `حالة الطالب الكل `
+  /// `All Student Status`
   String get allStudentStatus {
     return Intl.message(
-      'حالة الطالب الكل ',
+      'All Student Status',
       name: 'allStudentStatus',
       desc: '',
       args: [],

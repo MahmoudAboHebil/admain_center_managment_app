@@ -32,10 +32,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Administrative Details",
     ),
     "allClasses": MessageLookupByLibrary.simpleMessage("All Classes"),
-    "allPaymentTypes": MessageLookupByLibrary.simpleMessage("نظام الدفع الكل "),
-    "allSections": MessageLookupByLibrary.simpleMessage("الشعبة الكل "),
+    "allPaymentTypes": MessageLookupByLibrary.simpleMessage(
+      "All Payment Types",
+    ),
+    "allSections": MessageLookupByLibrary.simpleMessage("All Sections"),
     "allStudentStatus": MessageLookupByLibrary.simpleMessage(
-      "حالة الطالب الكل ",
+      "All Student Status",
     ),
     "anyStudentDetails": MessageLookupByLibrary.simpleMessage(
       "Any other student details...",

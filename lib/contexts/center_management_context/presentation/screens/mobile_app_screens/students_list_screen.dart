@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_filter_screen.dart';
 import 'package:admain_center_managment_app/core/enums/division_enum.dart';
+import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +15,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
 import '../../../../../core/helper/helper.dart';
+import '../../../../../core/providers/language_provider.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
@@ -30,16 +33,16 @@ Future<void> testInternet() async {
   print('ddddddddd ${res.statusCode}');
 }
 
-class StudentsListScreen extends StatefulWidget {
+class StudentsListScreen extends ConsumerStatefulWidget {
   final List<StudentEntity>? filterDataList;
   final FilterParams? params;
   const StudentsListScreen({super.key, this.filterDataList, this.params});
 
   @override
-  State<StudentsListScreen> createState() => _StudentsListScreenState();
+  ConsumerState<StudentsListScreen> createState() => _StudentsListScreenState();
 }
 
-class _StudentsListScreenState extends State<StudentsListScreen> {
+class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
   final FocusNode searchFocusNode = FocusNode();
 
   late StreamSubscription subscription;
@@ -71,6 +74,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(languageProvider).value;
+
     final screenWidth = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async {
@@ -266,6 +271,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                             color: AppColors.primary,
                                             size: 20.sp,
                                           ),
+                                          SizedBox(width: 5),
                                           Text(
                                             S.of(context).resultsFound,
                                             style: TextStyle(
@@ -273,6 +279,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                               color: AppColors.outline,
                                             ),
                                           ),
+                                          SizedBox(width: 2),
+
                                           Text(
                                             " ${filterDataList!.length} ",
                                             style: TextStyle(
@@ -333,10 +341,15 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                             .order ==
                                                         0)
                                                 ? S.of(context).allClasses
-                                                : widget
-                                                      .params!
-                                                      .selectedStudyLevel
-                                                      .arabicName,
+                                                : (language == Language.ar
+                                                      ? widget
+                                                            .params!
+                                                            .selectedStudyLevel
+                                                            .arabicName
+                                                      : widget
+                                                            .params!
+                                                            .selectedStudyLevel
+                                                            .englishName),
                                             AppTheme.primaryContainer,
                                             AppTheme.onPrimaryContainer,
                                           ),
@@ -349,10 +362,15 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                             ?.selectedDivision ==
                                                         DivisionEnum.all)
                                                 ? S.of(context).allSections
-                                                : widget
-                                                      .params!
-                                                      .selectedDivision
-                                                      .arabic,
+                                                : (language == Language.ar
+                                                      ? widget
+                                                            .params!
+                                                            .selectedDivision
+                                                            .arabic
+                                                      : widget
+                                                            .params!
+                                                            .selectedDivision
+                                                            .english),
                                             AppTheme.secondaryContainer,
                                             AppTheme.onSecondaryContainer,
                                           ),
@@ -363,10 +381,15 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                         ?.selectedPaymentType ==
                                                     null)
                                                 ? S.of(context).allPaymentTypes
-                                                : widget
-                                                      .params!
-                                                      .selectedPaymentType!
-                                                      .arabic,
+                                                : (language == Language.ar
+                                                      ? widget
+                                                            .params!
+                                                            .selectedPaymentType!
+                                                            .arabic
+                                                      : widget
+                                                            .params!
+                                                            .selectedPaymentType!
+                                                            .english),
                                             AppTheme.secondaryContainer,
                                             AppTheme.onSecondaryContainer,
                                           ),
@@ -377,10 +400,15 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                         ?.selectedStudentStates ==
                                                     null)
                                                 ? S.of(context).allStudentStatus
-                                                : widget
-                                                      .params!
-                                                      .selectedStudentStates!
-                                                      .arabic,
+                                                : (language == Language.ar
+                                                      ? widget
+                                                            .params!
+                                                            .selectedStudentStates!
+                                                            .arabic
+                                                      : widget
+                                                            .params!
+                                                            .selectedStudentStates!
+                                                            .english),
                                             AppTheme.secondaryContainer,
                                             AppTheme.onSecondaryContainer,
                                           ),
@@ -679,10 +707,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                   builder: (context, state) {
                     final cubit = context.read<SelectionCubit>();
                     final isSelectedMode = state.isSelectionMode;
-                    return AnimatedPositioned(
+                    return AnimatedPositionedDirectional(
                       duration: Duration(milliseconds: 300),
                       bottom: isSelectedMode ? 100 : 50,
-                      left: 20,
+                      end: 20,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: FloatingActionButton(

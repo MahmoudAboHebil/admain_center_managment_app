@@ -75,7 +75,7 @@ class StatCard extends StatelessWidget {
                       value,
                       style: AppTypography.textTheme.headlineMedium?.copyWith(
                         color: valueColor,
-                        fontSize: 18.sp,
+                        fontSize: 17.sp,
                       ),
                     ),
                   ],

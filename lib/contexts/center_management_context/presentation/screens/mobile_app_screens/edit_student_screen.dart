@@ -1,9 +1,11 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/custom_app_bar.dart';
+import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,20 +16,21 @@ import '../../../../../core/enums/division_enum.dart';
 import '../../../../../core/enums/gender_enum.dart';
 import '../../../../../core/enums/payment_type_enum.dart';
 import '../../../../../core/helper/helper.dart';
+import '../../../../../core/providers/language_provider.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../domain/entities/study_level_entity.dart';
 import '../../../domain/repository/student_repository.dart';
 
-class EditStudentScreen extends StatefulWidget {
+class EditStudentScreen extends ConsumerStatefulWidget {
   final StudentEntity studentEntity;
   const EditStudentScreen({super.key, required this.studentEntity});
 
   @override
-  State<EditStudentScreen> createState() => _EditStudentScreenState();
+  ConsumerState<EditStudentScreen> createState() => _EditStudentScreenState();
 }
 
-class _EditStudentScreenState extends State<EditStudentScreen> {
+class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
   final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   late String? studentPhone;
   late String? studentName;
@@ -95,6 +98,8 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final language = ref.watch(languageProvider).value;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppTheme.surface,
@@ -260,12 +265,12 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
               _buildContainer([
                 _buildLabelAndInput(
                   label: S.of(context).studyClass,
-                  child: StudyLevelDropDown(),
+                  child: StudyLevelDropDown(language == Language.ar),
                 ),
                 const SizedBox(height: 16),
                 _buildLabelAndInput(
                   label: S.of(context).division,
-                  child: DivisionDropDown(),
+                  child: DivisionDropDown(language == Language.ar),
                 ),
                 const SizedBox(height: 16),
                 _buildLabelAndInput(
@@ -505,7 +510,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                   backgroundColor: AppTheme.primary,
                   foregroundColor: AppTheme.onPrimary,
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  minimumSize: const Size(double.infinity, 56),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -524,7 +529,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                           Text(
                             S.of(context).save,
                             style: GoogleFonts.inter(
-                              fontSize: 17.sp,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -550,7 +555,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   foregroundColor: AppTheme.onSurfaceVariant,
-                  minimumSize: const Size(double.infinity, 56),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -558,7 +563,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                 child: Text(
                   S.of(context).cancel,
                   style: GoogleFonts.inter(
-                    fontSize: 15.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -573,7 +578,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
 
   Widget _buildSectionHeader(String title, Color color) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsetsDirectional.only(bottom: 12.0),
       child: Row(
         children: [
           Container(
@@ -588,7 +593,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
           Text(
             title,
             style: GoogleFonts.inter(
-              fontSize: 17.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: AppTheme.onSurface,
             ),
@@ -632,7 +637,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
     );
   }
 
-  Widget DivisionDropDown() {
+  Widget DivisionDropDown(bool isArabic) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -669,7 +674,9 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      selectedDivision.arabic,
+                      isArabic
+                          ? selectedDivision.arabic
+                          : selectedDivision.english,
                       style: GoogleFonts.inter(
                         fontSize: 13.sp,
 
@@ -744,7 +751,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                                     ),
 
                                     child: Text(
-                                      item.arabic,
+                                      isArabic ? item.arabic : item.english,
                                       style: TextStyle(
                                         color: AppColors.onSurface.withOpacity(
                                           0.7,
@@ -939,7 +946,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
     );
   }
 
-  Widget StudyLevelDropDown() {
+  Widget StudyLevelDropDown(bool isArabic) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -976,7 +983,9 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      selectedStudyLevel.arabicName,
+                      isArabic
+                          ? selectedStudyLevel.arabicName
+                          : selectedStudyLevel.englishName,
                       style: GoogleFonts.inter(
                         fontSize: 13.sp,
 
@@ -1047,7 +1056,7 @@ class _EditStudentScreenState extends State<EditStudentScreen> {
                                 ),
 
                                 child: Text(
-                                  item.arabicName,
+                                  isArabic ? item.arabicName : item.englishName,
                                   style: TextStyle(
                                     color: AppColors.onSurface.withOpacity(0.7),
                                     fontSize: 12.sp,
