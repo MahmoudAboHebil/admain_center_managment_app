@@ -1,9 +1,9 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/colors.dart';
@@ -15,15 +15,21 @@ import '../../../../../core/providers/language_provider.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
+import '../../../domain/entities/filter_params.dart';
 import '../../../domain/entities/study_level_entity.dart';
 import '../../../domain/repository/student_repository.dart';
+import '../../widgets/build_section_title.dart';
+import '../../widgets/custom_user_status_card.dart';
+import '../../widgets/payment_toggle.dart';
+import '../../widgets/students_filter_app_bar.dart';
 
 class StudentFilterScreen extends ConsumerStatefulWidget {
   final FilterParams? initialParams;
   const StudentFilterScreen({super.key, this.initialParams});
 
   @override
-  ConsumerState<StudentFilterScreen> createState() => _StudentFilterScreenState();
+  ConsumerState<StudentFilterScreen> createState() =>
+      _StudentFilterScreenState();
 }
 
 class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
@@ -96,20 +102,20 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildSectionTitle(S.of(context).studyClass),
+                  BuildSectionTitle(title: S.of(context).studyClass),
 
                   const SizedBox(height: 8),
-                  StudyLevelDropDown(language==Language.ar),
+                  StudyLevelDropDown(language == Language.ar),
                 ],
               ),
               const SizedBox(height: 24),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildSectionTitle(S.of(context).division),
+                  BuildSectionTitle(title: S.of(context).division),
 
                   const SizedBox(height: 8),
-                  DivisionDropDown(language==Language.ar),
+                  DivisionDropDown(language == Language.ar),
                 ],
               ),
               const SizedBox(height: 24),
@@ -117,7 +123,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _buildStatusCard(
+                    child: CustomUserStatusCard(
                       icon: Icons.how_to_reg,
                       label: S.of(context).active,
                       isSelected: selectedStudentStates == StudentStatus.active,
@@ -134,7 +140,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _buildStatusCard(
+                    child: CustomUserStatusCard(
                       icon: Icons.person_off,
                       label: S.of(context).inactive,
                       isSelected:
@@ -152,7 +158,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _buildStatusCard(
+                    child: CustomUserStatusCard(
                       icon: Icons.schedule,
                       label: S.of(context).latePayment,
                       isSelected:
@@ -173,7 +179,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
               ),
               const SizedBox(height: 24),
               // Payment System
-              _buildSectionTitle(S.of(context).paymentType),
+              BuildSectionTitle(title: S.of(context).paymentType),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(4),
@@ -184,7 +190,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: _buildPaymentToggle(
+                      child: PaymentToggle(
                         label: S.of(context).byMonth,
                         isSelected:
                             selectedPaymentType == PaymentTypeEnum.byMonth,
@@ -201,7 +207,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                       ),
                     ),
                     Expanded(
-                      child: _buildPaymentToggle(
+                      child: PaymentToggle(
                         label: S.of(context).byClass,
                         isSelected:
                             selectedPaymentType == PaymentTypeEnum.byClass,
@@ -280,6 +286,19 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                   ),
                   (route) => false,
                 );
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: AwesomeSnackbarContent(
+                      inMaterialBanner: true,
+                      title: S.of(context).wrongHappened,
+                      message: S.of(context).tryAgainLater,
+                      contentType: ContentType.failure,
+                    ),
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                  ),
+                );
               } finally {
                 if (mounted) {
                   setState(() => isLoading = false);
@@ -298,7 +317,10 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                   opacity: isLoading ? 0 : 1,
                   child: Text(
                     S.of(context).applyFilters,
-                    style: TextStyle(fontSize: 16.sp ,fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 isLoading
@@ -331,7 +353,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
 
       dataResponse.fold(
         ifLeft: (failure) {
-          ///todo: handle error
+          throw failure;
         },
         ifRight: (data) {
           if (data.isNotEmpty) {
@@ -377,15 +399,8 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
         },
       );
     } catch (e) {
-      /// todo: you need handle this
+      rethrow;
     }
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: GoogleFonts.manrope(fontSize: 13.sp, fontWeight: FontWeight.bold),
-    );
   }
 
   Widget StudyLevelDropDown(bool isArabic) {
@@ -425,7 +440,9 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      isArabic?selectedStudyLevel.arabicName:selectedStudyLevel.englishName,
+                      isArabic
+                          ? selectedStudyLevel.arabicName
+                          : selectedStudyLevel.englishName,
                       style: TextStyle(
                         fontSize: 13.sp,
                         color: AppColors.primary,
@@ -494,7 +511,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                                 ),
 
                                 child: Text(
-                                  isArabic?item.arabicName:item.englishName,
+                                  isArabic ? item.arabicName : item.englishName,
                                   style: TextStyle(
                                     color: AppColors.onSurface.withOpacity(0.7),
                                     fontSize: 12.sp,
@@ -554,7 +571,9 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      isArabic?selectedDivision.arabic:selectedDivision.english,
+                      isArabic
+                          ? selectedDivision.arabic
+                          : selectedDivision.english,
                       style: TextStyle(
                         fontSize: 13.sp,
                         color: AppColors.primary,
@@ -627,7 +646,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                                     ),
 
                                     child: Text(
-                                      isArabic? item.arabic:item.english,
+                                      isArabic ? item.arabic : item.english,
                                       style: TextStyle(
                                         color: AppColors.onSurface.withOpacity(
                                           0.7,
@@ -651,207 +670,5 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
         ],
       ),
     );
-  }
-
-  Widget _buildStatusCard({
-    required IconData icon,
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primary : AppTheme.surfaceContainerHigh,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: AppTheme.primary.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : null,
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? AppTheme.onPrimary
-                  : AppTheme.onSurfaceVariant,
-              size: 24.sp,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: GoogleFonts.manrope(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.bold,
-                color: isSelected
-                    ? AppTheme.onPrimary
-                    : AppTheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPaymentToggle({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppTheme.surfaceContainerLowest
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : null,
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          label,
-          style: GoogleFonts.manrope(
-            fontSize: 11.sp,
-            fontWeight: FontWeight.bold,
-            color: isSelected ? AppTheme.primary : AppTheme.onSurfaceVariant,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class StudentsFilterAppBar extends StatefulWidget
-    implements PreferredSizeWidget {
-  final Function onClickingReset;
-
-  const StudentsFilterAppBar({super.key, required this.onClickingReset});
-
-  @override
-  State<StudentsFilterAppBar> createState() => _StudentsFilterAppBarState();
-
-  @override
-  Size get preferredSize => Size.fromHeight(60);
-}
-
-class _StudentsFilterAppBarState extends State<StudentsFilterAppBar> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Container(
-        height: 60,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.9),
-          border: Border(
-            bottom: BorderSide(
-              color: AppColors.outlineVariant.withOpacity(0.1),
-            ),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              icon: Icon(Icons.close, size: 24.sp),
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  PageRouteBuilder(
-                    transitionDuration: Duration(milliseconds: 300),
-                    reverseTransitionDuration: Duration(milliseconds: 300),
-
-                    pageBuilder: (context, animation, secondaryAnimation) {
-                      return StudentsListScreen();
-                    },
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                          final slide = Tween<Offset>(
-                            begin: Offset(1, 0),
-                            end: Offset.zero,
-                          ).animate(animation);
-
-                          final fade = Tween<double>(
-                            begin: 0.0,
-                            end: 1.0,
-                          ).animate(animation);
-
-                          return FadeTransition(
-                            opacity: fade,
-                            child: SlideTransition(
-                              position: slide,
-                              child: child,
-                            ),
-                          );
-                        },
-                  ),
-                  (route) => false,
-                );
-              },
-            ),
-            Text(
-              S.of(context).filterResults,
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Spacer(),
-            TextButton(
-              onPressed: () async {
-                await widget.onClickingReset();
-              },
-              child: Text(
-                S.of(context).reset,
-                style: GoogleFonts.manrope(
-                  fontSize: 13.sp,
-                  color: AppTheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class FilterParams {
-  final PaymentTypeEnum? selectedPaymentType;
-  final StudyLevelEntity selectedStudyLevel;
-  final DivisionEnum selectedDivision;
-  final StudentStatus? selectedStudentStates;
-  const FilterParams({
-    required this.selectedPaymentType,
-    required this.selectedStudentStates,
-    required this.selectedDivision,
-    required this.selectedStudyLevel,
-  });
-
-  @override
-  String toString() {
-    return 'FilterParams{selectedPaymentType: $selectedPaymentType, selectedStudyLevel: $selectedStudyLevel, selectedDivision: $selectedDivision, selectedStudentStates: $selectedStudentStates}';
   }
 }

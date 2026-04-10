@@ -96,7 +96,6 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                     .getEntitiesNameStartWith(text);
                                 await result.fold(
                                   ifLeft: (_) {
-                                    /// todo: you need handle this
                                     setState(() {
                                       isGettingData = false;
                                     });

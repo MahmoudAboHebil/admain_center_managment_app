@@ -19,9 +19,11 @@ import '../../../../../core/providers/language_provider.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
+import '../../../domain/entities/filter_params.dart';
 import '../../../domain/repository/student_repository.dart';
 import '../../bloc/selection_cubit/selection_cubit.dart';
 import '../../bloc/selection_cubit/selection_state.dart';
+import '../../widgets/filter_chip.dart';
 import '../../widgets/state_cart.dart';
 import '../../widgets/student_search_text_field.dart';
 import '../../widgets/students_grid.dart';
@@ -332,8 +334,11 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                                       physics: AlwaysScrollableScrollPhysics(),
                                       child: Row(
                                         children: [
-                                          _buildFilterChip(
-                                            (widget.params?.selectedStudyLevel ==
+                                          CustomFilterChip(
+                                            label:
+                                                (widget
+                                                            .params
+                                                            ?.selectedStudyLevel ==
                                                         null ||
                                                     widget
                                                             .params!
@@ -350,12 +355,85 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                                                             .params!
                                                             .selectedStudyLevel
                                                             .englishName),
-                                            AppTheme.primaryContainer,
-                                            AppTheme.onPrimaryContainer,
+                                            bgColor: AppTheme.primaryContainer,
+                                            textColor:
+                                                AppTheme.onPrimaryContainer,
+                                            onTap: () {
+                                              context
+                                                  .read<SelectionCubit>()
+                                                  .clearSelection();
+                                              searchFocusNode.unfocus();
+
+                                              FocusScope.of(context).unfocus();
+
+                                              Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                  transitionDuration: Duration(
+                                                    milliseconds: 300,
+                                                  ),
+                                                  reverseTransitionDuration:
+                                                      Duration(
+                                                        milliseconds: 300,
+                                                      ),
+
+                                                  pageBuilder:
+                                                      (
+                                                        context,
+                                                        animation,
+                                                        secondaryAnimation,
+                                                      ) {
+                                                        return StudentFilterScreen(
+                                                          initialParams:
+                                                              widget.params,
+                                                        );
+                                                      },
+
+                                                  transitionsBuilder:
+                                                      (
+                                                        context,
+                                                        animation,
+                                                        secondaryAnimation,
+                                                        child,
+                                                      ) {
+                                                        final slide =
+                                                            Tween<Offset>(
+                                                              begin: Offset(
+                                                                0,
+                                                                1,
+                                                              ),
+                                                              end: Offset.zero,
+                                                            ).animate(
+                                                              animation,
+                                                            );
+
+                                                        final fade =
+                                                            Tween<double>(
+                                                              begin: 0,
+                                                              end: 1,
+                                                            ).animate(
+                                                              animation,
+                                                            );
+
+                                                        return FadeTransition(
+                                                          opacity: fade,
+                                                          child:
+                                                              SlideTransition(
+                                                                position: slide,
+                                                                child: child,
+                                                              ),
+                                                        );
+                                                      },
+                                                ),
+                                              );
+                                            },
                                           ),
                                           const SizedBox(width: 8),
-                                          _buildFilterChip(
-                                            (widget.params?.selectedDivision ==
+                                          CustomFilterChip(
+                                            label:
+                                                (widget
+                                                            .params
+                                                            ?.selectedDivision ==
                                                         null ||
                                                     widget
                                                             .params
@@ -371,12 +449,84 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                                                             .params!
                                                             .selectedDivision
                                                             .english),
-                                            AppTheme.secondaryContainer,
-                                            AppTheme.onSecondaryContainer,
+                                            bgColor:
+                                                AppTheme.secondaryContainer,
+                                            textColor:
+                                                AppTheme.onSecondaryContainer,
+                                            onTap: () {
+                                              context
+                                                  .read<SelectionCubit>()
+                                                  .clearSelection();
+                                              searchFocusNode.unfocus();
+
+                                              FocusScope.of(context).unfocus();
+
+                                              Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                  transitionDuration: Duration(
+                                                    milliseconds: 300,
+                                                  ),
+                                                  reverseTransitionDuration:
+                                                      Duration(
+                                                        milliseconds: 300,
+                                                      ),
+
+                                                  pageBuilder:
+                                                      (
+                                                        context,
+                                                        animation,
+                                                        secondaryAnimation,
+                                                      ) {
+                                                        return StudentFilterScreen(
+                                                          initialParams:
+                                                              widget.params,
+                                                        );
+                                                      },
+
+                                                  transitionsBuilder:
+                                                      (
+                                                        context,
+                                                        animation,
+                                                        secondaryAnimation,
+                                                        child,
+                                                      ) {
+                                                        final slide =
+                                                            Tween<Offset>(
+                                                              begin: Offset(
+                                                                0,
+                                                                1,
+                                                              ),
+                                                              end: Offset.zero,
+                                                            ).animate(
+                                                              animation,
+                                                            );
+
+                                                        final fade =
+                                                            Tween<double>(
+                                                              begin: 0,
+                                                              end: 1,
+                                                            ).animate(
+                                                              animation,
+                                                            );
+
+                                                        return FadeTransition(
+                                                          opacity: fade,
+                                                          child:
+                                                              SlideTransition(
+                                                                position: slide,
+                                                                child: child,
+                                                              ),
+                                                        );
+                                                      },
+                                                ),
+                                              );
+                                            },
                                           ),
                                           const SizedBox(width: 8),
-                                          _buildFilterChip(
-                                            (widget
+                                          CustomFilterChip(
+                                            label:
+                                                (widget
                                                         .params
                                                         ?.selectedPaymentType ==
                                                     null)
@@ -390,12 +540,84 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                                                             .params!
                                                             .selectedPaymentType!
                                                             .english),
-                                            AppTheme.secondaryContainer,
-                                            AppTheme.onSecondaryContainer,
+                                            bgColor:
+                                                AppTheme.secondaryContainer,
+                                            textColor:
+                                                AppTheme.onSecondaryContainer,
+                                            onTap: () {
+                                              context
+                                                  .read<SelectionCubit>()
+                                                  .clearSelection();
+                                              searchFocusNode.unfocus();
+
+                                              FocusScope.of(context).unfocus();
+
+                                              Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                  transitionDuration: Duration(
+                                                    milliseconds: 300,
+                                                  ),
+                                                  reverseTransitionDuration:
+                                                      Duration(
+                                                        milliseconds: 300,
+                                                      ),
+
+                                                  pageBuilder:
+                                                      (
+                                                        context,
+                                                        animation,
+                                                        secondaryAnimation,
+                                                      ) {
+                                                        return StudentFilterScreen(
+                                                          initialParams:
+                                                              widget.params,
+                                                        );
+                                                      },
+
+                                                  transitionsBuilder:
+                                                      (
+                                                        context,
+                                                        animation,
+                                                        secondaryAnimation,
+                                                        child,
+                                                      ) {
+                                                        final slide =
+                                                            Tween<Offset>(
+                                                              begin: Offset(
+                                                                0,
+                                                                1,
+                                                              ),
+                                                              end: Offset.zero,
+                                                            ).animate(
+                                                              animation,
+                                                            );
+
+                                                        final fade =
+                                                            Tween<double>(
+                                                              begin: 0,
+                                                              end: 1,
+                                                            ).animate(
+                                                              animation,
+                                                            );
+
+                                                        return FadeTransition(
+                                                          opacity: fade,
+                                                          child:
+                                                              SlideTransition(
+                                                                position: slide,
+                                                                child: child,
+                                                              ),
+                                                        );
+                                                      },
+                                                ),
+                                              );
+                                            },
                                           ),
                                           const SizedBox(width: 8),
-                                          _buildFilterChip(
-                                            (widget
+                                          CustomFilterChip(
+                                            label:
+                                                (widget
                                                         .params
                                                         ?.selectedStudentStates ==
                                                     null)
@@ -409,8 +631,79 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                                                             .params!
                                                             .selectedStudentStates!
                                                             .english),
-                                            AppTheme.secondaryContainer,
-                                            AppTheme.onSecondaryContainer,
+                                            bgColor:
+                                                AppTheme.secondaryContainer,
+                                            textColor:
+                                                AppTheme.onSecondaryContainer,
+                                            onTap: () {
+                                              context
+                                                  .read<SelectionCubit>()
+                                                  .clearSelection();
+                                              searchFocusNode.unfocus();
+
+                                              FocusScope.of(context).unfocus();
+
+                                              Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                  transitionDuration: Duration(
+                                                    milliseconds: 300,
+                                                  ),
+                                                  reverseTransitionDuration:
+                                                      Duration(
+                                                        milliseconds: 300,
+                                                      ),
+
+                                                  pageBuilder:
+                                                      (
+                                                        context,
+                                                        animation,
+                                                        secondaryAnimation,
+                                                      ) {
+                                                        return StudentFilterScreen(
+                                                          initialParams:
+                                                              widget.params,
+                                                        );
+                                                      },
+
+                                                  transitionsBuilder:
+                                                      (
+                                                        context,
+                                                        animation,
+                                                        secondaryAnimation,
+                                                        child,
+                                                      ) {
+                                                        final slide =
+                                                            Tween<Offset>(
+                                                              begin: Offset(
+                                                                0,
+                                                                1,
+                                                              ),
+                                                              end: Offset.zero,
+                                                            ).animate(
+                                                              animation,
+                                                            );
+
+                                                        final fade =
+                                                            Tween<double>(
+                                                              begin: 0,
+                                                              end: 1,
+                                                            ).animate(
+                                                              animation,
+                                                            );
+
+                                                        return FadeTransition(
+                                                          opacity: fade,
+                                                          child:
+                                                              SlideTransition(
+                                                                position: slide,
+                                                                child: child,
+                                                              ),
+                                                        );
+                                                      },
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ],
                                       ),
@@ -678,7 +971,6 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                     ),
                     BottomNavigationBar(
                       onTap: (index) async {
-                        await testInternet();
                         context.read<SelectionCubit>().clearSelection();
                       },
                       currentIndex: 1, // "الطلاب" active
@@ -772,77 +1064,6 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterChip(String label, Color bgColor, Color textColor) {
-    return MaterialButton(
-      onPressed: () {
-        context.read<SelectionCubit>().clearSelection();
-        searchFocusNode.unfocus();
-
-        FocusScope.of(context).unfocus();
-
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 300),
-            reverseTransitionDuration: Duration(milliseconds: 300),
-
-            pageBuilder: (context, animation, secondaryAnimation) {
-              return StudentFilterScreen(initialParams: widget.params);
-            },
-
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-                  final slide = Tween<Offset>(
-                    begin: Offset(0, 1),
-                    end: Offset.zero,
-                  ).animate(animation);
-
-                  final fade = Tween<double>(
-                    begin: 0,
-                    end: 1,
-                  ).animate(animation);
-
-                  return FadeTransition(
-                    opacity: fade,
-                    child: SlideTransition(position: slide, child: child),
-                  );
-                },
-          ),
-        );
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      color: bgColor,
-      elevation: 0,
-      focusElevation: 0,
-      highlightElevation: 0,
-      disabledElevation: 0,
-      hoverElevation: 0,
-      padding: EdgeInsets.zero,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: GoogleFonts.inter(
-                color: textColor,
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(width: 6),
-            Icon(Icons.close, size: 16.sp, color: textColor),
-          ],
         ),
       ),
     );

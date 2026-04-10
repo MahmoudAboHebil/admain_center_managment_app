@@ -1,6 +1,6 @@
 import 'package:admain_center_managment_app/config/theme/colors.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/entities/study_level_entity.dart';
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/loading/student_grid_skeleton.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/error_widgets/app_error_widget.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/student_card.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:admain_center_managment_app/sync_engine/data/models/student_model.dart';
@@ -17,6 +17,7 @@ import '../../../../core/isar_local_database/isar/isar_service.dart';
 import '../../../../core/providers/language_provider.dart';
 import '../../../../sync_engine/domain/entities/student_entity.dart';
 import 'add_student_cart_button.dart';
+import 'loading_widgets/student_grid_skeleton.dart';
 
 class StudentsGrid extends ConsumerStatefulWidget {
   const StudentsGrid({super.key, this.filterDataList, required this.isLoading});
@@ -45,7 +46,6 @@ class _StudentsGridState extends ConsumerState<StudentsGrid> {
   Widget build(BuildContext context) {
     final language = ref.watch(languageProvider).value;
 
-    /// todo: you need handle this
     if (widget.isLoading) {
       return const StudentGridSkeleton();
     }
@@ -69,8 +69,7 @@ class _StudentsGridState extends ConsumerState<StudentsGrid> {
         }
 
         if (snapshot.hasError) {
-          ///todo:you need handle this
-          return const Center(child: Text("Something went wrong"));
+          return const AppErrorWidget();
         }
 
         final data = snapshot.data ?? [];

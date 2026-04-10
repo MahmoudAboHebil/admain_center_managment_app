@@ -1,7 +1,6 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
 import 'package:admain_center_managment_app/core/constants/constants.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
-import 'package:admain_center_managment_app/core/enums/student_status_enum.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +16,11 @@ import '../../../../../injection_container.dart';
 import '../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../domain/entities/study_level_entity.dart';
 import '../../../domain/repository/student_repository.dart';
+import '../../widgets/bento_card.dart';
+import '../../widgets/contact_row_card.dart';
 import '../../widgets/custom_app_bar.dart';
+import '../../widgets/section_header.dart';
+import '../../widgets/user_state_card.dart';
 import 'edit_student_screen.dart';
 
 class StudentProfileScreen extends ConsumerStatefulWidget {
@@ -149,9 +152,9 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                               SizedBox(width: 12),
                               Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
-                                child: _buildStates(
-                                  widget.student.studentStatus,
-                                  (language == Language.ar),
+                                child: UserStateCard(
+                                  status: widget.student.studentStatus,
+                                  isArabic: (language == Language.ar),
                                 ),
                               ),
                             ],
@@ -216,7 +219,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _buildBentoCard(
+                    child: BentoCard(
                       icon: Icons.layers,
                       iconColor: AppTheme.tertiary,
                       title: S.of(context).className,
@@ -229,7 +232,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: _buildBentoCard(
+                    child: BentoCard(
                       icon: Icons.science,
                       iconColor: AppTheme.tertiary,
                       title: S.of(context).division,
@@ -297,11 +300,14 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
               ),
               const SizedBox(height: 24),
               // Contact Information
-              _buildSectionHeader(S.of(context).contactInfo, AppTheme.primary),
+              SectionHeader(
+                title: S.of(context).contactInfo,
+                color: AppTheme.primary,
+              ),
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: _buildContactRow(
+                child: ContactRowCard(
                   screenWidth: screenWidth,
 
                   context: context,
@@ -314,7 +320,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: _buildContactRow(
+                child: ContactRowCard(
                   screenWidth: screenWidth,
                   context: context,
 
@@ -326,7 +332,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: _buildContactRow(
+                child: ContactRowCard(
                   screenWidth: screenWidth,
 
                   context: context,
@@ -339,9 +345,8 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: _buildContactRow(
+                child: ContactRowCard(
                   screenWidth: screenWidth,
-
                   context: context,
                   icon: Icons.mail,
                   title: S.of(context).email,
@@ -351,9 +356,9 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
               ),
               const SizedBox(height: 24),
               // Admin Details
-              _buildSectionHeader(
-                S.of(context).administrativeDetails,
-                AppTheme.tertiary,
+              SectionHeader(
+                title: S.of(context).administrativeDetails,
+                color: AppTheme.tertiary,
               ),
               const SizedBox(height: 12),
               Row(
@@ -718,379 +723,6 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
               const SizedBox(height: 24),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  // Widget _buildTeacherNote(List<String>? notes){
-  Widget _buildStates(StudentStatus status, bool isArabic) {
-    if (status == StudentStatus.active) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        decoration: BoxDecoration(
-          color: AppTheme.primary,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Text(
-          isArabic ? StudentStatus.active.arabic : StudentStatus.active.english,
-          style: GoogleFonts.inter(
-            fontSize: 11.sp,
-            color: AppTheme.onPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-    } else if (status == StudentStatus.inactive) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        decoration: BoxDecoration(
-          color: Color(0xFFF3F3FA),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Text(
-          isArabic
-              ? StudentStatus.inactive.arabic
-              : StudentStatus.inactive.english,
-          style: GoogleFonts.inter(
-            fontSize: 11.sp,
-            color: const Color(0xFF5C5F68),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-    } else {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        decoration: BoxDecoration(
-          color: Colors.red.shade100,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Text(
-          isArabic
-              ? StudentStatus.latePayment.arabic
-              : StudentStatus.latePayment.english,
-          style: GoogleFonts.inter(
-            fontSize: 11.sp,
-            color: Colors.red.shade800,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-    }
-  }
-
-  Widget _buildBentoCard({
-    required IconData icon,
-    required Color iconColor,
-    required String title,
-    required String value,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: iconColor, size: 24.sp),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            style: GoogleFonts.inter(
-              fontSize: 11.sp,
-              color: AppTheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 4),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Text(
-              value,
-              style: GoogleFonts.manrope(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.onSurface,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionHeader(String title, Color color) {
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: 12.0),
-      child: Row(
-        children: [
-          Container(
-            width: 4,
-            height: 24,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            title,
-            style: GoogleFonts.inter(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.onSurface,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContactRow({
-    required double screenWidth,
-    required BuildContext context,
-    required IconData icon,
-    required String title,
-    required String? value,
-    required bool hasCallAction,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.outlineVariant.withOpacity(0.15)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(icon, color: AppTheme.onSurfaceVariant, size: 24.sp),
-          const SizedBox(width: 12),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.inter(
-                  fontSize: 11.sp,
-                  color: AppTheme.onSurfaceVariant,
-                ),
-              ),
-              const SizedBox(height: 2),
-              value != null
-                  ? Container(
-                      width: screenWidth * 0.60,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Text(
-                          value,
-                          style: GoogleFonts.inter(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.onSurface,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Text(
-                      S.of(context).notAdded,
-                      style: GoogleFonts.inter(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.error,
-                      ),
-                    ),
-            ],
-          ),
-          Spacer(),
-          if (hasCallAction)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (value != null)
-                  MaterialButton(
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-
-                    onPressed: () {},
-                    elevation: 0,
-                    hoverElevation: 0,
-                    disabledElevation: 0,
-                    highlightElevation: 0,
-                    focusElevation: 0,
-                    padding: EdgeInsets.zero,
-                    shape: CircleBorder(),
-                    minWidth: 32,
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: AppTheme.primary.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.phone,
-                        size: 16.sp,
-                        color: AppTheme.primary,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          if (!hasCallAction)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (value != null)
-                  MaterialButton(
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-
-                    onPressed: () {},
-                    elevation: 0,
-                    hoverElevation: 0,
-                    disabledElevation: 0,
-                    highlightElevation: 0,
-                    focusElevation: 0,
-                    padding: EdgeInsets.zero,
-                    shape: CircleBorder(),
-                    minWidth: 32,
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: AppTheme.primary.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.email,
-                        size: 16.sp,
-                        color: AppTheme.primary,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class TeacherNote extends StatefulWidget {
-  final String? initialValue;
-  const TeacherNote({super.key, this.initialValue});
-
-  @override
-  State<TeacherNote> createState() => _TeacherNoteState();
-}
-
-class _TeacherNoteState extends State<TeacherNote> {
-  late final TextEditingController _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.initialValue);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(16),
-        border: const Border(
-          right: BorderSide(color: AppTheme.primary, width: 4),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _controller,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              scrollPhysics: NeverScrollableScrollPhysics(),
-              decoration: InputDecoration(
-                enabled: false,
-                hintText: S.of(context).addNewStudent,
-                hintStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13.sp,
-                  color: AppTheme.onSurfaceVariant,
-                ),
-                border: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
-                filled: false,
-                fillColor: Colors.transparent,
-              ),
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                color: AppTheme.onSurfaceVariant,
-                height: 1.5,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class AddNote extends StatelessWidget {
-  const AddNote({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        height: 120,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: AppColors.surfaceContainerLow.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.outlineVariant.withOpacity(0.3),
-            style: BorderStyle.solid,
-          ), // In Flutter dashed border requires custom paint, using solid for now.
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: AppColors.surfaceContainerLowest,
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-              ),
-              child: Icon(
-                Icons.add,
-                color: AppColors.onSurfaceVariant,
-                size: 24.sp,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              S.of(context).addNewStudent,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppColors.onSurfaceVariant,
-                fontWeight: FontWeight.bold,
-                fontSize: 11.sp,
-              ),
-            ),
-          ],
         ),
       ),
     );
