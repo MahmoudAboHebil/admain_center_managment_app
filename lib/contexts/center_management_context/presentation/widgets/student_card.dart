@@ -14,8 +14,8 @@ import '../../../../injection_container.dart';
 import '../../domain/repository/student_repository.dart';
 import '../bloc/selection_cubit/selection_cubit.dart';
 import '../bloc/selection_cubit/selection_state.dart';
-import '../screens/mobile_app_screens/edit_student_screen.dart';
-import '../screens/mobile_app_screens/student_profile_screen.dart';
+import '../screens/mobile_app_screens/student_screens/edit_student_screen.dart';
+import '../screens/mobile_app_screens/student_screens/student_profile_screen.dart';
 
 class StudentCard extends ConsumerStatefulWidget {
   final StudentEntity student;

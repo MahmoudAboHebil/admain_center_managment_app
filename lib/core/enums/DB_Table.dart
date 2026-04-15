@@ -14,6 +14,9 @@
 enum DBTable {
   Center,
   students,
+  classes,
+  enrollments,
+  class_sections,
   StudentLevel;
 
   static DBTable getDBTableFromString(String table) {

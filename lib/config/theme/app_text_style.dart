@@ -26,4 +26,28 @@ class AppTextStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.onSurfaceVariant,
   );
+  // Typography
+  static const String headlineFont = 'Manrope';
+  static const String bodyFont = 'Inter';
+
+  static const TextStyle displayLarge = TextStyle(
+    fontFamily: headlineFont,
+    fontWeight: FontWeight.w800,
+    fontSize: 24,
+    color: AppColors.onSurface,
+  );
+
+  static const TextStyle bodyMedium = TextStyle(
+    fontFamily: bodyFont,
+    fontWeight: FontWeight.w500,
+    fontSize: 14,
+    color: AppColors.onSurface,
+  );
+
+  static const TextStyle labelSmall = TextStyle(
+    fontFamily: bodyFont,
+    fontWeight: FontWeight.w500,
+    fontSize: 12,
+    color: AppColors.onSurfaceVariant,
+  );
 }

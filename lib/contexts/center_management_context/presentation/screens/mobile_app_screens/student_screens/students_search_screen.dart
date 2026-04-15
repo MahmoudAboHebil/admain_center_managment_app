@@ -1,19 +1,19 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/add_student_screen.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/add_student_screen.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../config/theme/app_theme.dart';
-import '../../../../../config/theme/colors.dart';
-import '../../../../../generated/l10n.dart';
-import '../../../../../injection_container.dart';
-import '../../../../../sync_engine/domain/entities/student_entity.dart';
-import '../../../domain/repository/student_repository.dart';
-import '../../bloc/selection_cubit/selection_cubit.dart';
-import '../../bloc/selection_cubit/selection_state.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/students_grid.dart';
+import '../../../../../../config/theme/app_theme.dart';
+import '../../../../../../config/theme/colors.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../../injection_container.dart';
+import '../../../../../../sync_engine/domain/entities/student_entity.dart';
+import '../../../../domain/repository/student_repository.dart';
+import '../../../bloc/selection_cubit/selection_cubit.dart';
+import '../../../bloc/selection_cubit/selection_state.dart';
+import '../../../widgets/custom_app_bar.dart';
+import '../../../widgets/students_grid.dart';
 
 class StudentsSearchScreen extends StatefulWidget {
   final String query;

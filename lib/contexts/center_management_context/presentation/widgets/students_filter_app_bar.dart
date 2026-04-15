@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../config/theme/colors.dart';
 import '../../../../generated/l10n.dart';
-import '../screens/mobile_app_screens/students_list_screen.dart';
+import '../screens/mobile_app_screens/student_screens/students_overview_screen.dart';
 
 class StudentsFilterAppBar extends StatefulWidget
     implements PreferredSizeWidget {
@@ -49,7 +49,7 @@ class _StudentsFilterAppBarState extends State<StudentsFilterAppBar> {
                     reverseTransitionDuration: Duration(milliseconds: 300),
 
                     pageBuilder: (context, animation, secondaryAnimation) {
-                      return StudentsListScreen();
+                      return StudentsOverviewScreen();
                     },
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {

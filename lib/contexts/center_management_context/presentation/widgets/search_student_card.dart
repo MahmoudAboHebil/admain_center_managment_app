@@ -1,5 +1,5 @@
 import 'package:admain_center_managment_app/config/theme/colors.dart';
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_profile_screen.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/student_profile_screen.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

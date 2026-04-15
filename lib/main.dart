@@ -12,7 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'bloc_observer.dart';
 import 'config/theme/app_theme.dart';
-import 'contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
+import 'contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_overview_screen.dart';
 import 'core/enums/languages.dart';
 import 'core/internet_service/internet_bloc/internet_bloc.dart';
 import 'core/providers/language_provider.dart';
@@ -27,11 +27,12 @@ void main() async {
   await initializeDependencies();
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) {
         return ScreenUtilInit(
           builder: (context, child) => ProviderScope(child: MyApp()),
           designSize: Size(400, 857),
+          // designSize: Size(1920 ,1080),
         );
       }, // Wrap your app
     ),
@@ -68,7 +69,7 @@ class MyApp extends ConsumerWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        home: const StudentsListScreen(),
+        home: const StudentsOverviewScreen(),
       ),
     );
   }

@@ -15,6 +15,7 @@ class AppTheme {
   static const Color onSecondary = Color(0xFFF9F8FF);
   static const Color secondaryContainer = Color(0xFFDBE2F9);
   static const Color onSecondaryContainer = Color(0xFF4A5264);
+  static const Color secondaryFixed = Color(0xFFdbe2f9);
 
   // Tertiary
   static const Color tertiary = Color(0xFF685781);

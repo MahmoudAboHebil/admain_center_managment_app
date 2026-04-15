@@ -1,4 +1,4 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_overview_screen.dart';
 import 'package:admain_center_managment_app/core/constants/constants.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -7,20 +7,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../config/theme/app_theme.dart';
-import '../../../../../config/theme/colors.dart';
-import '../../../../../core/enums/division_enum.dart';
-import '../../../../../core/providers/language_provider.dart';
-import '../../../../../generated/l10n.dart';
-import '../../../../../injection_container.dart';
-import '../../../../../sync_engine/domain/entities/student_entity.dart';
-import '../../../domain/entities/study_level_entity.dart';
-import '../../../domain/repository/student_repository.dart';
-import '../../widgets/bento_card.dart';
-import '../../widgets/contact_row_card.dart';
-import '../../widgets/custom_app_bar.dart';
-import '../../widgets/section_header.dart';
-import '../../widgets/user_state_card.dart';
+import '../../../../../../config/theme/app_theme.dart';
+import '../../../../../../config/theme/colors.dart';
+import '../../../../../../core/enums/division_enum.dart';
+import '../../../../../../core/providers/language_provider.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../../injection_container.dart';
+import '../../../../../../sync_engine/domain/entities/student_entity.dart';
+import '../../../../domain/entities/study_level_entity.dart';
+import '../../../../domain/repository/student_repository.dart';
+import '../../../widgets/bento_card.dart';
+import '../../../widgets/contact_row_card.dart';
+import '../../../widgets/custom_app_bar.dart';
+import '../../../widgets/section_header.dart';
+import '../../../widgets/user_state_card.dart';
 import 'edit_student_screen.dart';
 
 class StudentProfileScreen extends ConsumerStatefulWidget {
@@ -605,7 +605,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                                             animation,
                                             secondaryAnimation,
                                           ) {
-                                            return StudentsListScreen();
+                                            return StudentsOverviewScreen();
                                           },
 
                                       transitionsBuilder:

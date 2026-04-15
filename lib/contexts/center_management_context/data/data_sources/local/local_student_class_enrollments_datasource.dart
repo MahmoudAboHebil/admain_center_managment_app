@@ -1,6 +1,6 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/data/data_sources/local/local_db_operations.dart';
-import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/student_collection.dart';
-import 'package:admain_center_managment_app/sync_engine/data/models/student_model.dart';
+import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/student_class_enrollments_collection.dart';
+import 'package:admain_center_managment_app/sync_engine/data/models/student_class_enrollments_model.dart';
 import 'package:dart_either/dart_either.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:isar/isar.dart';
@@ -22,14 +22,15 @@ import '../../../../../sync_engine/domain/use_cases/add_entity_local_usecase.dar
 import '../../../../../sync_engine/domain/use_cases/add_operation_local_usecase.dart';
 import '../../../../../sync_engine/domain/use_cases/push_single_operation_usecase.dart';
 
-class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
+class LocalStudentClassEnrollmentsDatasource
+    implements LocalDbOperations<StudentClassEnrollmentsModel> {
   final AddEntityLocalUseCase _addEntityLocalUseCase;
   final AddOperationLocalUseCase _addOperationLocalUseCase;
   final PushSingleOperationUseCase _pushSingleOperationUseCase;
   final QueueRepository _queueRepository;
   final SyncRepository _syncRepository;
   final TableRepository _tableRepository;
-  const LocalStudentDatasource(
+  const LocalStudentClassEnrollmentsDatasource(
     this._addEntityLocalUseCase,
     this._addOperationLocalUseCase,
     this._queueRepository,
@@ -38,14 +39,16 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
     this._tableRepository,
   );
   @override
-  Future<Either<Failure, SyncResponse?>> create(StudentModel model) async {
+  Future<Either<Failure, SyncResponse?>> create(
+    StudentClassEnrollmentsModel model,
+  ) async {
     final uuid = Uuid();
     final operation = Operation(
       id: uuid.v4(),
       entityId: model.entityId,
       centerId: model.centerId,
       action: OperationAction.create,
-      table: DBTable.students,
+      table: DBTable.enrollments,
       json: model.toJson(),
       version: 1,
       userRole: currentUserRole,
@@ -76,7 +79,7 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
 
       final result = await _addEntityLocalUseCase.call(
         AddEntityLocalUseCaseParams(
-          table: DBTable.students,
+          table: DBTable.enrollments,
           jsonEntity: null,
           entity: model.toEntity(),
         ),
@@ -97,7 +100,7 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
       final deviceId = deviceIdResult.getOrThrow();
       final sendResult = await _pushSingleOperationUseCase.call(
         PushSingleOperationUseCaseParams(
-          table: DBTable.students,
+          table: DBTable.enrollments,
           deviceId: deviceId,
           operation: operation,
         ),
@@ -119,7 +122,7 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
           sendData.isError != true) {
         final result = await _addEntityLocalUseCase.call(
           AddEntityLocalUseCaseParams(
-            table: DBTable.students,
+            table: DBTable.enrollments,
             jsonEntity: null,
             entity: model.toEntity(),
           ),
@@ -139,16 +142,18 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
     }
   }
 
-  Future<void> _updateEntity(StudentModel model) async {
+  Future<void> _updateEntity(StudentClassEnrollmentsModel model) async {
     final modelOne = model;
 
-    final oldCollection = await IsarService.isar.studentCollections
+    final oldCollection = await IsarService
+        .isar
+        .studentClassEnrollmentsCollections
         .filter()
         .entityIdEqualTo(modelOne.entityId)
         .findFirst();
 
     if (oldCollection != null) {
-      final newCollection = StudentCollection()
+      final newCollection = StudentClassEnrollmentsCollection()
         ..id = oldCollection.id
         ..entityId = oldCollection.entityId
         ..centerId = modelOne.centerId
@@ -158,43 +163,32 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
         ..version = modelOne.version
         ..createdAt = modelOne.createdAt.toUtc()
         ..updatedAt = modelOne.updatedAt.toUtc()
-        ..name = modelOne.name
-        ..studyLevelId = modelOne.studyLevelId
-        ..studentCode = modelOne.studentCode
-        ..gender = modelOne.gender.name
-        ..studentStatus = modelOne.studentStatus.name
-        ..email = modelOne.email
-        ..address = modelOne.address
-        ..phone = modelOne.phone
-        ..homePhone = modelOne.homePhone
-        ..parentPhone = modelOne.parentPhone
-        ..parentJob = modelOne.parentJob
-        ..schoolName = modelOne.schoolName
-        ..bookingDeposit = modelOne.bookingDeposit
-        ..studentClasses = modelOne.studentClasses
-        ..notes = modelOne.notes
-        ..paymentTypeEnum = modelOne.paymentTypeEnum?.name
-        ..divisionEnum = modelOne.divisionEnum?.name
-        ..birthDate = modelOne.birthDate?.toUtc();
+        ..studentId = modelOne.studentId
+        ..paymentType = modelOne.paymentType.name
+        ..classId = modelOne.classId;
 
       await IsarService.isar.writeTxn(() async {
-        await IsarService.isar.studentCollections.put(newCollection);
+        await IsarService.isar.studentClassEnrollmentsCollections.put(
+          newCollection,
+        );
       });
     } else {
       throw Exception(
-        'there is no record in db for ${model.entityId} at ${DBTable.students.name} table',
+        'there is no record in db for ${model.entityId} at ${DBTable.enrollments.name} table',
       );
     }
   }
 
   @override
-  Future<Either<Failure, SyncResponse?>> update(StudentModel newModel) async {
+  Future<Either<Failure, SyncResponse?>> update(
+    StudentClassEnrollmentsModel newModel,
+  ) async {
     try {
       final uuid = Uuid();
       final deviceIdResult = await _syncRepository.getDeviceId();
       final deviceId = deviceIdResult.getOrThrow();
 
-      StudentModel modelEdited = newModel.copyWith(
+      StudentClassEnrollmentsModel modelEdited = newModel.copyWith(
         byDevice: deviceId,
         byUser: currentUserId,
         updatedAt: DateTime.now().toUtc(),
@@ -204,7 +198,7 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
         entityId: modelEdited.entityId,
         centerId: modelEdited.centerId,
         action: OperationAction.update,
-        table: DBTable.students,
+        table: DBTable.enrollments,
         json: modelEdited.toJson(),
         version: modelEdited.version,
         userRole: currentUserRole,
@@ -237,7 +231,7 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
       } else {
         final sendResult = await _pushSingleOperationUseCase.call(
           PushSingleOperationUseCaseParams(
-            table: DBTable.students,
+            table: DBTable.enrollments,
             deviceId: deviceId,
             operation: operation,
           ),
@@ -273,12 +267,14 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
   }
 
   @override
-  Future<Either<Failure, SyncResponse?>> softDelete(StudentModel model) async {
+  Future<Either<Failure, SyncResponse?>> softDelete(
+    StudentClassEnrollmentsModel model,
+  ) async {
     try {
       final uuid = Uuid();
       final deviceIdResult = await _syncRepository.getDeviceId();
       final deviceId = deviceIdResult.getOrThrow();
-      StudentModel modelEdited = model.copyWith(
+      StudentClassEnrollmentsModel modelEdited = model.copyWith(
         isDeleted: true,
         byDevice: deviceId,
         byUser: currentUserId,
@@ -289,7 +285,7 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
         entityId: modelEdited.entityId,
         centerId: modelEdited.centerId,
         action: OperationAction.delete,
-        table: DBTable.students,
+        table: DBTable.enrollments,
         json: modelEdited.toJson(),
         version: modelEdited.version,
         userRole: currentUserRole,
@@ -317,14 +313,14 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
           );
         }
         await _tableRepository.deleteEntityCascadeNotNull(
-          DBTable.students,
+          DBTable.enrollments,
           modelEdited.entityId,
         );
         return Right(null);
       } else {
         final sendResult = await _pushSingleOperationUseCase.call(
           PushSingleOperationUseCaseParams(
-            table: DBTable.students,
+            table: DBTable.enrollments,
             deviceId: deviceId,
             operation: operation,
           ),
@@ -343,8 +339,8 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
         if (sendData.networkResponse is! InternalServerError &&
             sendData.isError != true) {
           await _tableRepository.deleteEntityCascadeNotNull(
-            DBTable.students,
-            model.entityId,
+            DBTable.enrollments,
+            modelEdited.entityId,
           );
           return Right(null);
         }
@@ -360,9 +356,10 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
   }
 
   @override
-  Either<Failure, Stream<List<StudentCollection>>> getCollectionsStream() {
+  Either<Failure, Stream<List<StudentClassEnrollmentsCollection>>>
+  getCollectionsStream() {
     try {
-      final stream = IsarService.isar.studentCollections
+      final stream = IsarService.isar.studentClassEnrollmentsCollections
           .filter()
           .isDeletedEqualTo(false)
           .sortByCreatedAtDesc()
@@ -371,51 +368,58 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
     } catch (e) {
       return Left(
         ProcessingFailure(
-          message: 'failed to get Stream for student Collections $e ',
+          message: 'failed to get Stream for enrollment Collections $e ',
         ),
       );
     }
   }
 
   @override
-  Future<Either<Failure, StudentModel?>> getModel(String modelId) async {
+  Future<Either<Failure, StudentClassEnrollmentsModel?>> getModel(
+    String entityID,
+  ) async {
     try {
-      final collection = await IsarService.isar.studentCollections
+      final collection = await IsarService
+          .isar
+          .studentClassEnrollmentsCollections
           .filter()
           .isDeletedEqualTo(false)
           .and()
-          .entityIdEqualTo(modelId)
+          .entityIdEqualTo(entityID)
           .findFirst();
       if (collection == null) return Right(null);
-      return Right(StudentModel.fromCollection(collection));
+      return Right(StudentClassEnrollmentsModel.fromCollection(collection));
     } catch (e) {
       return Left(
-        ProcessingFailure(message: 'failed to get this $modelId student  '),
+        ProcessingFailure(message: 'failed to get this $entityID class  '),
       );
     }
   }
 
   @override
-  Future<Either<Failure, List<StudentModel>>> getAllItemsNotArchived() async {
+  Future<Either<Failure, List<StudentClassEnrollmentsModel>>>
+  getAllItemsNotArchived() async {
     try {
-      List<StudentModel> items = [];
-      final collections = await IsarService.isar.studentCollections
+      List<StudentClassEnrollmentsModel> items = [];
+      final collections = await IsarService
+          .isar
+          .studentClassEnrollmentsCollections
           .filter()
           .isDeletedEqualTo(false)
           .findAll();
       for (var item in collections) {
-        items.add(StudentModel.fromCollection(item));
+        items.add(StudentClassEnrollmentsModel.fromCollection(item));
       }
       return Right(items);
     } catch (e) {
-      return Left(ProcessingFailure(message: 'failed to get students  '));
+      return Left(ProcessingFailure(message: 'failed to get enrollments '));
     }
   }
 
   @override
   Either<Failure, Stream<int>> watchCollectionsCount() {
     try {
-      final query = IsarService.isar.studentCollections
+      final query = IsarService.isar.studentClassEnrollmentsCollections
           .filter()
           .isDeletedEqualTo(false)
           .build();
@@ -427,35 +431,15 @@ class LocalStudentDatasource implements LocalDbOperations<StudentModel> {
     } catch (e) {
       return Left(
         ProcessingFailure(
-          message: 'failed to get Stream for student count $e ',
+          message: 'failed to get Stream for enrollments count $e ',
         ),
       );
     }
   }
 
   @override
-  Future<Either<Failure, List<StudentModel>>> getModelsNameStartWith(
-    String name,
-  ) async {
-    try {
-      final collections = await IsarService.isar.studentCollections
-          .filter()
-          .isDeletedEqualTo(false)
-          .and()
-          .nameStartsWith(name, caseSensitive: false)
-          .findAll();
-
-      final list = collections
-          .map((item) => StudentModel.fromCollection(item))
-          .toList();
-
-      return Right(list);
-    } catch (e) {
-      return Left(
-        ProcessingFailure(
-          message: 'failed to get Entities NameStartWith $name student  ',
-        ),
-      );
-    }
+  Future<Either<Failure, List<StudentClassEnrollmentsModel>>>
+  getModelsNameStartWith(String name) {
+    throw UnimplementedError();
   }
 }

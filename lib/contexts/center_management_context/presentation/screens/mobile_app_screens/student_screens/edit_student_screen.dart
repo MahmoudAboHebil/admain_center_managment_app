@@ -1,4 +1,4 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_overview_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/custom_app_bar.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/payment_option_card.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
@@ -9,23 +9,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../config/theme/app_theme.dart';
-import '../../../../../config/theme/colors.dart';
-import '../../../../../core/constants/constants.dart';
-import '../../../../../core/enums/division_enum.dart';
-import '../../../../../core/enums/gender_enum.dart';
-import '../../../../../core/enums/payment_type_enum.dart';
-import '../../../../../core/providers/language_provider.dart';
-import '../../../../../generated/l10n.dart';
-import '../../../../../injection_container.dart';
-import '../../../domain/entities/study_level_entity.dart';
-import '../../../domain/repository/student_repository.dart';
-import '../../widgets/build_custom_container.dart';
-import '../../widgets/custom_text_field.dart';
-import '../../widgets/gender_switch.dart';
-import '../../widgets/label_and_input.dart';
-import '../../widgets/section_header.dart';
-import '../../widgets/text_phone_widget.dart';
+import '../../../../../../config/theme/app_theme.dart';
+import '../../../../../../config/theme/colors.dart';
+import '../../../../../../core/constants/constants.dart';
+import '../../../../../../core/enums/division_enum.dart';
+import '../../../../../../core/enums/gender_enum.dart';
+import '../../../../../../core/enums/payment_type_enum.dart';
+import '../../../../../../core/providers/language_provider.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../../injection_container.dart';
+import '../../../../domain/entities/study_level_entity.dart';
+import '../../../../domain/repository/student_repository.dart';
+import '../../../widgets/build_custom_container.dart';
+import '../../../widgets/custom_text_field.dart';
+import '../../../widgets/gender_switch.dart';
+import '../../../widgets/label_and_input.dart';
+import '../../../widgets/section_header.dart';
+import '../../../widgets/text_phone_widget.dart';
 
 class EditStudentScreen extends ConsumerStatefulWidget {
   final StudentEntity studentEntity;
@@ -450,7 +450,7 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
 
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) {
-                                      return StudentsListScreen();
+                                      return StudentsOverviewScreen();
                                     },
 
                                 transitionsBuilder:

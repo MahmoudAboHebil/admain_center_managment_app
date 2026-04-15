@@ -7,9 +7,9 @@ abstract class LocalDbOperations<T> {
   Future<Either<Failure, SyncResponse?>> softDelete(T entity);
   Future<Either<Failure, SyncResponse?>> update(T newEntity);
   Future<Either<Failure, SyncResponse?>> create(T entity);
-  Future<Either<Failure, T?>> getEntity(String entityID);
-  Future<Either<Failure, List<T>>> getEntitiesNameStartWith(String name);
+  Future<Either<Failure, T?>> getModel(String entityID);
+  Future<Either<Failure, List<T>>> getModelsNameStartWith(String name);
   Either<Failure, Stream> getCollectionsStream();
-  Either<Failure, Stream> watchStudentsCount();
+  Either<Failure, Stream> watchCollectionsCount();
   Future<Either<Failure, List<T>>> getAllItemsNotArchived();
 }

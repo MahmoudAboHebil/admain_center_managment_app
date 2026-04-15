@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/colors.dart';
-import '../screens/mobile_app_screens/add_student_screen.dart';
+import '../screens/mobile_app_screens/student_screens/add_student_screen.dart';
 
 class AddStudentCartButton extends StatelessWidget {
   const AddStudentCartButton({super.key, required this.isDesktop});

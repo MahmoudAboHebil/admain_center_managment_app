@@ -1,27 +1,27 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_list_screen.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_overview_screen.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../config/theme/app_theme.dart';
-import '../../../../../config/theme/colors.dart';
-import '../../../../../core/constants/constants.dart';
-import '../../../../../core/enums/division_enum.dart';
-import '../../../../../core/enums/payment_type_enum.dart';
-import '../../../../../core/enums/student_status_enum.dart';
-import '../../../../../core/providers/language_provider.dart';
-import '../../../../../generated/l10n.dart';
-import '../../../../../injection_container.dart';
-import '../../../../../sync_engine/domain/entities/student_entity.dart';
-import '../../../domain/entities/filter_params.dart';
-import '../../../domain/entities/study_level_entity.dart';
-import '../../../domain/repository/student_repository.dart';
-import '../../widgets/build_section_title.dart';
-import '../../widgets/custom_user_status_card.dart';
-import '../../widgets/payment_toggle.dart';
-import '../../widgets/students_filter_app_bar.dart';
+import '../../../../../../config/theme/app_theme.dart';
+import '../../../../../../config/theme/colors.dart';
+import '../../../../../../core/constants/constants.dart';
+import '../../../../../../core/enums/division_enum.dart';
+import '../../../../../../core/enums/payment_type_enum.dart';
+import '../../../../../../core/enums/student_status_enum.dart';
+import '../../../../../../core/providers/language_provider.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../../injection_container.dart';
+import '../../../../../../sync_engine/domain/entities/student_entity.dart';
+import '../../../../domain/entities/filter_params.dart';
+import '../../../../domain/entities/study_level_entity.dart';
+import '../../../../domain/repository/student_repository.dart';
+import '../../../widgets/build_section_title.dart';
+import '../../../widgets/custom_user_status_card.dart';
+import '../../../widgets/payment_toggle.dart';
+import '../../../widgets/students_filter_app_bar.dart';
 
 class StudentFilterScreen extends ConsumerStatefulWidget {
   final FilterParams? initialParams;
@@ -257,7 +257,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                     reverseTransitionDuration: Duration(milliseconds: 300),
 
                     pageBuilder: (context, animation, secondaryAnimation) {
-                      return StudentsListScreen(
+                      return StudentsOverviewScreen(
                         filterDataList: filterDataList,
                         params: data,
                       );

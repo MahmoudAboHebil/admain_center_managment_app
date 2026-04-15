@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_filter_screen.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/student_filter_screen.dart';
 import 'package:admain_center_managment_app/core/enums/division_enum.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -9,42 +9,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../../config/theme/app_theme.dart';
-import '../../../../../config/theme/colors.dart';
-import '../../../../../core/helper/helper.dart';
-import '../../../../../core/providers/language_provider.dart';
-import '../../../../../generated/l10n.dart';
-import '../../../../../injection_container.dart';
-import '../../../../../sync_engine/domain/entities/student_entity.dart';
-import '../../../domain/entities/filter_params.dart';
-import '../../../domain/repository/student_repository.dart';
-import '../../bloc/selection_cubit/selection_cubit.dart';
-import '../../bloc/selection_cubit/selection_state.dart';
-import '../../widgets/filter_chip.dart';
-import '../../widgets/state_cart.dart';
-import '../../widgets/student_search_text_field.dart';
-import '../../widgets/students_grid.dart';
-import '../../widgets/top_appBar.dart';
-import 'add_student_screen.dart';
+import '../../../../../../config/theme/app_theme.dart';
+import '../../../../../../config/theme/colors.dart';
+import '../../../../../../core/helper/helper.dart';
+import '../../../../../../core/providers/language_provider.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../../injection_container.dart';
+import '../../../../../../sync_engine/domain/entities/student_entity.dart';
+import '../../../../domain/entities/filter_params.dart';
+import '../../../../domain/repository/student_repository.dart';
+import '../../../bloc/selection_cubit/selection_cubit.dart';
+import '../../../bloc/selection_cubit/selection_state.dart';
+import '../../../widgets/filter_chip.dart';
+import '../../../widgets/overview_screen_appBar.dart';
+import '../../../widgets/state_cart.dart';
+import '../../../widgets/student_search_text_field.dart';
+import '../student_screens/students_overview_screen.dart';
 
-Future<void> testInternet() async {
-  final res = await http.get(Uri.parse("https://google.com"));
-  print('ddddddddd ${res.statusCode}');
-}
-
-class StudentsListScreen extends ConsumerStatefulWidget {
+class ClassesOverviewScreen extends ConsumerStatefulWidget {
   final List<StudentEntity>? filterDataList;
   final FilterParams? params;
-  const StudentsListScreen({super.key, this.filterDataList, this.params});
+  const ClassesOverviewScreen({super.key, this.filterDataList, this.params});
 
   @override
-  ConsumerState<StudentsListScreen> createState() => _StudentsListScreenState();
+  ConsumerState<ClassesOverviewScreen> createState() =>
+      _StudentsListScreenState();
 }
 
-class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
+class _StudentsListScreenState extends ConsumerState<ClassesOverviewScreen> {
   final FocusNode searchFocusNode = FocusNode();
 
   late StreamSubscription subscription;
@@ -103,8 +97,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
           },
           child: Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: StudentsScreenAppBar(),
-            // extendBodyBehindAppBar: true,
+            appBar: OverviewScreenAppBar(label: S.of(context).classes),
             body: Stack(
               children: [
                 SingleChildScrollView(
@@ -129,57 +122,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                           InkWell(
                             borderRadius: BorderRadius.circular(12.r),
 
-                            onTap: () async {
-                              context.read<SelectionCubit>().clearSelection();
-                              searchFocusNode.unfocus();
-
-                              FocusScope.of(context).unfocus();
-
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  transitionDuration: Duration(
-                                    milliseconds: 300,
-                                  ),
-                                  reverseTransitionDuration: Duration(
-                                    milliseconds: 300,
-                                  ),
-
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) {
-                                        return StudentFilterScreen(
-                                          initialParams: widget.params,
-                                        );
-                                      },
-
-                                  transitionsBuilder:
-                                      (
-                                        context,
-                                        animation,
-                                        secondaryAnimation,
-                                        child,
-                                      ) {
-                                        final slide = Tween<Offset>(
-                                          begin: Offset(0, 1),
-                                          end: Offset.zero,
-                                        ).animate(animation);
-
-                                        final fade = Tween<double>(
-                                          begin: 0,
-                                          end: 1,
-                                        ).animate(animation);
-
-                                        return FadeTransition(
-                                          opacity: fade,
-                                          child: SlideTransition(
-                                            position: slide,
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                ),
-                              );
-                            },
+                            onTap: () {},
                             child: Container(
                               decoration: BoxDecoration(
                                 color: AppColors.primaryContainer.withOpacity(
@@ -718,10 +661,6 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                       ),
 
                       // List==================================
-                      StudentsGrid(
-                        isLoading: isFilterLoading,
-                        filterDataList: filterDataList,
-                      ),
                     ],
                   ),
                 ),
@@ -972,8 +911,30 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                     BottomNavigationBar(
                       onTap: (index) async {
                         context.read<SelectionCubit>().clearSelection();
+                        if (index == 0) {
+                          /* Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ClassesOverviewScreen(),
+                            ),
+                          );*/
+                        } else if (index == 1) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StudentsOverviewScreen(),
+                            ),
+                          );
+                        } else if (index == 2) {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => ClassesOverviewScreen(),
+                          //   ),
+                          // );
+                        }
                       },
-                      currentIndex: 1, // "الطلاب" active
+                      currentIndex: 2,
                       items: [
                         BottomNavigationBarItem(
                           icon: Icon(Icons.dashboard_outlined, size: 24.sp),
@@ -1006,56 +967,9 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: FloatingActionButton(
-                          onPressed: () {
-                            context.read<SelectionCubit>().clearSelection();
-                            searchFocusNode.unfocus();
-
-                            FocusScope.of(context).unfocus();
-                            print('dddddd${searchFocusNode.hasFocus}');
-
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                transitionDuration: Duration(milliseconds: 300),
-                                reverseTransitionDuration: Duration(
-                                  milliseconds: 300,
-                                ),
-
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) {
-                                      return AddStudentScreen();
-                                    },
-
-                                transitionsBuilder:
-                                    (
-                                      context,
-                                      animation,
-                                      secondaryAnimation,
-                                      child,
-                                    ) {
-                                      final slide = Tween<Offset>(
-                                        begin: Offset(0, 1),
-                                        end: Offset.zero,
-                                      ).animate(animation);
-
-                                      final fade = Tween<double>(
-                                        begin: 0,
-                                        end: 1,
-                                      ).animate(animation);
-
-                                      return FadeTransition(
-                                        opacity: fade,
-                                        child: SlideTransition(
-                                          position: slide,
-                                          child: child,
-                                        ),
-                                      );
-                                    },
-                              ),
-                            );
-                          },
+                          onPressed: () {},
                           backgroundColor: AppTheme.primary,
-                          child: Icon(Icons.person_add, size: 24.sp),
+                          child: Icon(Icons.add_card, size: 24.sp),
                         ),
                       ),
                     );
@@ -1065,33 +979,6 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class StudentsScreenAppBar extends StatefulWidget
-    implements PreferredSizeWidget {
-  const StudentsScreenAppBar({super.key});
-
-  @override
-  State<StudentsScreenAppBar> createState() => _StudentsScreenAppBarState();
-
-  @override
-  Size get preferredSize => Size.fromHeight(60);
-}
-
-class _StudentsScreenAppBarState extends State<StudentsScreenAppBar> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Column(
-        children: [
-          TopAppBar(isDesktop: false, label: S.of(context).studentsPageTitle),
-        ],
       ),
     );
   }

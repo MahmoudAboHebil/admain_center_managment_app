@@ -1,4 +1,4 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/students_search_screen.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_search_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/search_student_card.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:flutter/material.dart';
