@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../config/theme/app_theme.dart';
-import '../../../../config/theme/colors.dart';
 import '../../../../generated/l10n.dart';
 import '../screens/mobile_app_screens/student_screens/students_overview_screen.dart';
 
@@ -29,11 +28,9 @@ class _StudentsFilterAppBarState extends State<StudentsFilterAppBar> {
         height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.9),
+          color: AppTheme.surface.withOpacity(0.9),
           border: Border(
-            bottom: BorderSide(
-              color: AppColors.outlineVariant.withOpacity(0.1),
-            ),
+            bottom: BorderSide(color: AppTheme.outlineVariant.withOpacity(0.1)),
           ),
         ),
         child: Row(
@@ -80,7 +77,7 @@ class _StudentsFilterAppBarState extends State<StudentsFilterAppBar> {
               S.of(context).filterResults,
               style: TextStyle(
                 fontSize: 20.sp,
-                color: AppColors.primary,
+                color: AppTheme.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),

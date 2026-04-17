@@ -13,7 +13,6 @@ import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
-import '../../../../../../config/theme/colors.dart';
 import '../../../../../../core/helper/helper.dart';
 import '../../../../../../core/providers/language_provider.dart';
 import '../../../../../../generated/l10n.dart';
@@ -186,7 +185,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: AppColors.primaryContainer.withOpacity(
+                                color: AppTheme.primaryContainer.withOpacity(
                                   0.4,
                                 ),
                                 borderRadius: BorderRadius.circular(12.r),
@@ -218,13 +217,13 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                               final count = snapshot.data ?? 0;
                               return Expanded(
                                 child: StatCard(
-                                  lineColor: AppColors.primary,
+                                  lineColor: AppTheme.primary,
                                   isDesktop: false,
                                   label: S.of(context).totalStudents,
                                   value: isLoading
                                       ? '...'
                                       : Helper.formatNumber(count),
-                                  valueColor: AppColors.primary,
+                                  valueColor: AppTheme.primary,
                                 ),
                               );
                             },
@@ -233,11 +232,11 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
 
                           Expanded(
                             child: StatCard(
-                              lineColor: AppColors.tertiary,
+                              lineColor: AppTheme.tertiary,
                               isDesktop: false,
                               label: S.of(context).totalClasses,
                               value: Helper.formatNumber(20000),
-                              valueColor: AppColors.tertiary,
+                              valueColor: AppTheme.tertiary,
                             ),
                           ),
                         ],
@@ -274,7 +273,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                         children: [
                                           Icon(
                                             Icons.person_search_outlined,
-                                            color: AppColors.primary,
+                                            color: AppTheme.primary,
                                             size: 20.sp,
                                           ),
                                           SizedBox(width: 5),
@@ -282,7 +281,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                             S.of(context).resultsFound,
                                             style: TextStyle(
                                               fontSize: 13.sp,
-                                              color: AppColors.outline,
+                                              color: AppTheme.outline,
                                             ),
                                           ),
                                           SizedBox(width: 2),
@@ -292,7 +291,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                             style: TextStyle(
                                               fontSize: 13.sp,
 
-                                              color: AppColors.primary,
+                                              color: AppTheme.primary,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -307,7 +306,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                                 fontSize: 13.sp,
 
                                                 height: 1,
-                                                color: AppColors.outline,
+                                                color: AppTheme.outline,
                                               ),
                                             ),
                                           ),
@@ -753,7 +752,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                       vertical: 8,
                                       horizontal: 3,
                                     ),
-                                    color: AppColors.error.withOpacity(1),
+                                    color: AppTheme.error.withOpacity(1),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -888,8 +887,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                                 child:
                                                     CircularProgressIndicator(
                                                       strokeWidth: 2.5,
-                                                      color:
-                                                          AppColors.onPrimary,
+                                                      color: AppTheme.onPrimary,
                                                     ),
                                               )
                                             : SizedBox(),
@@ -900,7 +898,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                   Text(
                                     ' $totalNumber ',
                                     style: TextStyle(
-                                      color: AppColors.primary,
+                                      color: AppTheme.primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 17.sp,
                                     ),
@@ -908,7 +906,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                   Text(
                                     S.of(context).selected,
                                     style: TextStyle(
-                                      color: AppColors.primary,
+                                      color: AppTheme.primary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15.sp,
                                     ),

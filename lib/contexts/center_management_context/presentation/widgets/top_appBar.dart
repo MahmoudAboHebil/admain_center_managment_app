@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../config/theme/colors.dart';
+import '../../../../config/theme/app_theme.dart';
 
 class TopAppBar extends ConsumerWidget {
   const TopAppBar({
@@ -23,9 +23,9 @@ class TopAppBar extends ConsumerWidget {
       height: 60,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
-        color: AppColors.surface.withOpacity(0.9),
+        color: AppTheme.surface.withOpacity(0.9),
         border: Border(
-          bottom: BorderSide(color: AppColors.outlineVariant.withOpacity(0.1)),
+          bottom: BorderSide(color: AppTheme.outlineVariant.withOpacity(0.1)),
         ),
       ),
       child: Row(
@@ -37,7 +37,7 @@ class TopAppBar extends ConsumerWidget {
                 label,
                 style: TextStyle(
                   fontSize: 20.sp,
-                  color: AppColors.primary,
+                  color: AppTheme.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -48,12 +48,12 @@ class TopAppBar extends ConsumerWidget {
               Container(
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.surfaceContainerLow,
+                  color: AppTheme.surfaceContainerLow,
                 ),
                 child: IconButton(
                   icon: Icon(
                     Icons.notifications_outlined,
-                    color: AppColors.onSurfaceVariant,
+                    color: AppTheme.onSurfaceVariant,
                     size: 24.sp,
                   ),
                   onPressed: () async {

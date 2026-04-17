@@ -2,7 +2,7 @@ import 'package:admain_center_managment_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../config/theme/colors.dart';
+import '../../../../config/theme/app_theme.dart';
 import '../screens/mobile_app_screens/student_screens/add_student_screen.dart';
 
 class AddStudentCartButton extends StatelessWidget {
@@ -47,10 +47,10 @@ class AddStudentCartButton extends StatelessWidget {
         height: 100,
 
         decoration: BoxDecoration(
-          color: AppColors.surfaceContainerLow.withOpacity(0.5),
+          color: AppTheme.surfaceContainerLow.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: AppColors.outlineVariant.withOpacity(0.3),
+            color: AppTheme.outlineVariant.withOpacity(0.3),
             style: BorderStyle.solid,
           ), // In Flutter dashed border requires custom paint, using solid for now.
         ),
@@ -60,13 +60,13 @@ class AddStudentCartButton extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: const BoxDecoration(
-                color: AppColors.surfaceContainerLowest,
+                color: AppTheme.surfaceContainerLowest,
                 shape: BoxShape.circle,
                 boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
               ),
               child: Icon(
                 Icons.add,
-                color: AppColors.onSurfaceVariant,
+                color: AppTheme.onSurfaceVariant,
                 size: 24.sp,
               ),
             ),
@@ -74,7 +74,7 @@ class AddStudentCartButton extends StatelessWidget {
             Text(
               S.of(context).addNewStudent,
               style: TextStyle(
-                color: AppColors.onSurfaceVariant,
+                color: AppTheme.onSurfaceVariant,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
               ),

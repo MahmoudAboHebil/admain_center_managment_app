@@ -1,8 +1,9 @@
-import 'package:admain_center_managment_app/config/theme/colors.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/student_profile_screen.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../config/theme/app_theme.dart';
 
 class SearchStudentCard extends StatelessWidget {
   final double width;
@@ -64,12 +65,12 @@ class SearchStudentCard extends StatelessWidget {
               height: 33,
               width: 33,
               decoration: BoxDecoration(
-                color: AppColors.tertiary.withOpacity(0.2),
+                color: AppTheme.tertiary.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Text(
                 name[0],
-                style: TextStyle(color: AppColors.primary, fontSize: 13.sp),
+                style: TextStyle(color: AppTheme.primary, fontSize: 13.sp),
               ),
             ),
             SizedBox(width: 6),

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
-import '../../../../../../config/theme/colors.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../../injection_container.dart';
 import '../../../../../../sync_engine/domain/entities/student_entity.dart';
@@ -124,7 +123,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                               ),
                               fillColor: searchFocusNode.hasFocus
                                   ? Colors.white
-                                  : AppColors.surfaceContainerHigh.withOpacity(
+                                  : AppTheme.surfaceContainerHigh.withOpacity(
                                       0.3,
                                     ),
                               filled: true,
@@ -144,14 +143,14 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                       children: [
                         Icon(
                           Icons.person_search_outlined,
-                          color: AppColors.primary,
+                          color: AppTheme.primary,
                           size: 20.sp,
                         ),
                         SizedBox(width: 5),
                         Text(
                           S.of(context).resultsFound,
                           style: TextStyle(
-                            color: AppColors.outline,
+                            color: AppTheme.outline,
                             fontSize: 13.sp,
                           ),
                         ),
@@ -160,7 +159,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                           " ${searchData.length} ",
                           style: TextStyle(
                             fontSize: 13.sp,
-                            color: AppColors.primary,
+                            color: AppTheme.primary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -172,7 +171,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                             style: TextStyle(
                               height: 1,
                               fontSize: 13.sp,
-                              color: AppColors.outline,
+                              color: AppTheme.outline,
                             ),
                           ),
                         ),
@@ -212,7 +211,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                     vertical: 8,
                                     horizontal: 3,
                                   ),
-                                  color: AppColors.error.withOpacity(1),
+                                  color: AppTheme.error.withOpacity(1),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -347,7 +346,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                               width: 16,
                                               child: CircularProgressIndicator(
                                                 strokeWidth: 2.5,
-                                                color: AppColors.onPrimary,
+                                                color: AppTheme.onPrimary,
                                               ),
                                             )
                                           : SizedBox(),
@@ -358,7 +357,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                 Text(
                                   ' $totalNumber ',
                                   style: TextStyle(
-                                    color: AppColors.primary,
+                                    color: AppTheme.primary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17.sp,
                                   ),
@@ -366,7 +365,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                 Text(
                                   S.of(context).selected,
                                   style: TextStyle(
-                                    color: AppColors.primary,
+                                    color: AppTheme.primary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.sp,
                                   ),
@@ -408,7 +407,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                   child: Text(
                                     S.of(context).selectAll,
                                     style: TextStyle(
-                                      color: AppColors.outline,
+                                      color: AppTheme.outline,
                                       fontSize: 13.sp,
                                     ),
                                   ),
@@ -420,7 +419,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                                   child: Text(
                                     S.of(context).cancel,
                                     style: TextStyle(
-                                      color: AppColors.outline,
+                                      color: AppTheme.outline,
                                       fontSize: 13.sp,
                                     ),
                                   ),

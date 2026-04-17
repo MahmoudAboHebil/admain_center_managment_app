@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../config/theme/app_text_style.dart';
-import '../../../../../config/theme/colors.dart';
+import '../../../../../config/theme/app_theme.dart';
+import '../../../../../config/theme/typography.dart';
 
 class StudentGridSkeleton extends StatelessWidget {
   const StudentGridSkeleton();
@@ -52,9 +52,9 @@ class StudentGridSkeleton extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLowest,
+        color: AppTheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.ghostBorder),
+        border: Border.all(color: AppTheme.ghostBorder),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +85,7 @@ class StudentGridSkeleton extends StatelessWidget {
           Container(
             padding: const EdgeInsets.only(top: 16),
             decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.ghostBorder)),
+              border: Border(top: BorderSide(color: AppTheme.ghostBorder)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,10 +115,10 @@ class StudentGridSkeleton extends StatelessWidget {
   Widget _buildAddStudentPlaceholder() {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLow.withOpacity(0.3),
+        color: AppTheme.surfaceContainerLow.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.ghostBorder.withOpacity(0.4),
+          color: AppTheme.ghostBorder.withOpacity(0.4),
           width: 2,
         ),
       ),
@@ -132,13 +132,13 @@ class StudentGridSkeleton extends StatelessWidget {
               color: Colors.white.withOpacity(0.5),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.add, color: AppColors.outlineVariant),
+            child: const Icon(Icons.add, color: AppTheme.outlineVariant),
           ),
           const SizedBox(height: 12),
           Text(
             'إضافة طالب جديد',
-            style: AppTextStyles.bodyMd.copyWith(
-              color: AppColors.outlineVariant,
+            style: AppTypography.textTheme.bodyMedium?.copyWith(
+              color: AppTheme.outlineVariant,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -167,7 +167,7 @@ class _SkeletonBlock extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerHigh,
+        color: AppTheme.surfaceContainerHigh,
         borderRadius: isCircle ? null : BorderRadius.circular(radius),
         shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
       ),

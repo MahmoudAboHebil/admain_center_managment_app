@@ -1,7 +1,7 @@
-import 'package:admain_center_managment_app/config/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../config/theme/app_theme.dart';
 import '../../../../../generated/l10n.dart';
 
 class AppErrorWidget extends StatelessWidget {
@@ -47,8 +47,8 @@ class AppErrorWidget extends StatelessWidget {
                           await callBack!();
                         }
                       },
-                      color: AppColors.onPrimary,
-                      backgroundColor: AppColors.primary,
+                      color: AppTheme.onPrimary,
+                      backgroundColor: AppTheme.primary,
                       text: buttonText!,
                     ),
                   )
@@ -112,7 +112,7 @@ class _RectangleTextButtonState extends State<RectangleTextButton> {
           minimumSize: const Size(0, 0),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           backgroundColor: backgroundColor,
-          overlayColor: AppColors.surface,
+          overlayColor: AppTheme.surface,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: Stack(
@@ -143,7 +143,7 @@ class _RectangleTextButtonState extends State<RectangleTextButton> {
                 height: 24,
                 width: 24,
                 child: CircularProgressIndicator(
-                  color: AppColors.onPrimary,
+                  color: AppTheme.onPrimary,
                   strokeWidth: 3.sp,
                 ),
               ),

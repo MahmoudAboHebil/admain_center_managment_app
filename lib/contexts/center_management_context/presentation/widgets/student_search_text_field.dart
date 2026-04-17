@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../config/theme/colors.dart';
+import '../../../../config/theme/app_theme.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/enums/division_enum.dart';
 import '../../../../core/providers/language_provider.dart';
@@ -167,7 +167,7 @@ class _StudentSearchTextFieldState extends ConsumerState<StudentSearchTextField>
             contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
             fillColor: searchFocusNode.hasFocus
                 ? Colors.white
-                : AppColors.surfaceContainerHigh.withOpacity(0.3),
+                : AppTheme.surfaceContainerHigh.withOpacity(0.3),
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(100),
@@ -192,7 +192,7 @@ class _StudentSearchTextFieldState extends ConsumerState<StudentSearchTextField>
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.r),
-                color: AppColors.surfaceContainer,
+                color: AppTheme.surfaceContainer,
               ),
               width: widget.width,
               padding: EdgeInsets.only(bottom: 12),
@@ -334,12 +334,12 @@ class _StudentSearchTextFieldState extends ConsumerState<StudentSearchTextField>
                       topLeft: Radius.circular(0),
                       topRight: Radius.circular(0),
                     ),
-                    color: AppColors.primary,
+                    color: AppTheme.primary,
                   ),
                   child: Text(
                     S.of(context).showAllResults,
                     style: TextStyle(
-                      color: AppColors.onPrimary,
+                      color: AppTheme.onPrimary,
                       fontSize: 11.sp,
                     ),
                   ),

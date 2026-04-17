@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../config/theme/app_text_style.dart';
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../bloc/selection_cubit/selection_cubit.dart';
@@ -44,7 +43,6 @@ class _ClassesOverviewScreenState
                       Text(
                         'نظرة عامة',
                         style: TextStyle(
-                          fontFamily: AppTextStyles.bodyFont,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: AppTheme.onSurfaceVariant,
@@ -54,7 +52,6 @@ class _ClassesOverviewScreenState
                       Text(
                         'إدارة الفصول',
                         style: TextStyle(
-                          fontFamily: AppTextStyles.headlineFont,
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: AppTheme.onSurface,
@@ -141,7 +138,6 @@ class _ClassesOverviewScreenState
                     Text(
                       'هل ترغب في تنظيم فصل جديد؟',
                       style: TextStyle(
-                        fontFamily: AppTextStyles.headlineFont,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.onSurfaceVariant,
@@ -152,7 +148,6 @@ class _ClassesOverviewScreenState
                       'قم بإضافة فصولك الدراسية وتعيين المعلمين والطلاب بسهولة',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontFamily: AppTextStyles.bodyFont,
                         fontSize: 14,
                         color: AppTheme.onSurfaceVariant.withOpacity(0.7),
                       ),
@@ -177,7 +172,6 @@ class _ClassesOverviewScreenState
                       child: Text(
                         'إضافة فصل الآن',
                         style: TextStyle(
-                          fontFamily: AppTextStyles.bodyFont,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -301,7 +295,6 @@ class _ClassesOverviewScreenState
                           Text(
                             studentsCount,
                             style: TextStyle(
-                              fontFamily: AppTextStyles.bodyFont,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: AppTheme.onSurface,
@@ -316,7 +309,6 @@ class _ClassesOverviewScreenState
                 Text(
                   title,
                   style: TextStyle(
-                    fontFamily: AppTextStyles.headlineFont,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.onSurface,
@@ -334,7 +326,6 @@ class _ClassesOverviewScreenState
                     Text(
                       teacher,
                       style: TextStyle(
-                        fontFamily: AppTextStyles.bodyFont,
                         fontSize: 14,
                         color: AppTheme.onSurfaceVariant,
                       ),
@@ -380,7 +371,6 @@ class _ClassesOverviewScreenState
                 Text(
                   'آخر تحديث: $lastUpdate',
                   style: TextStyle(
-                    fontFamily: AppTextStyles.bodyFont,
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: AppTheme.onSurfaceVariant,
@@ -471,7 +461,6 @@ class _ClassesOverviewScreenState
           Text(
             label,
             style: TextStyle(
-              fontFamily: AppTextStyles.bodyFont,
               fontSize: 10,
               fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
               color: isActive ? AppTheme.primary : AppTheme.onSurfaceVariant,

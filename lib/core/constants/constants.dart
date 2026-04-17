@@ -27,7 +27,7 @@ final List<StudyLevelEntity> studyLevels = [
   // ===== KG =====
   StudyLevelEntity(
     entityId: "c444a00b-13e3-4b05-9f5e-6b327016ad4a",
-    arabicName: "الصف الدراسية",
+    arabicName: "الصف الدراسي",
     englishName: "Study Level",
     educationSystem: EducationSystem.General,
     order: 0,

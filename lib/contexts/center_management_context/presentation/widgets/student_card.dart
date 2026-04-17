@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../config/theme/colors.dart';
+import '../../../../config/theme/app_theme.dart';
 import '../../../../core/providers/language_provider.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../injection_container.dart';
@@ -151,36 +151,34 @@ class _StudentCardState extends ConsumerState<StudentCard> {
                       ),
                     ],
                     color: isSelected
-                        ? AppColors.primary.withOpacity(0.05)
-                        : AppColors.surfaceContainerLowest,
+                        ? AppTheme.primary.withOpacity(0.05)
+                        : AppTheme.surfaceContainerLowest,
                     borderRadius: BorderRadius.circular(12),
                     border: isSelected
                         ? BoxBorder.fromSTEB(
                             top: BorderSide(
-                              color: AppColors.primary,
+                              color: AppTheme.primary,
                               width: 1.5,
                             ),
                             end: BorderSide(
-                              color: AppColors.primary,
+                              color: AppTheme.primary,
                               width: 1.5,
                             ),
                             bottom: BorderSide(
-                              color: AppColors.primary,
+                              color: AppTheme.primary,
                               width: 1.5,
                             ),
                             start: BorderSide(
-                              color: AppColors.primary,
+                              color: AppTheme.primary,
                               width: 5,
                             ),
                           )
                         : Border.all(
                             width: isSelected ? 1.5 : 1,
                             color: isSelected
-                                ? AppColors.primary
+                                ? AppTheme.primary
                                 : (isHover
-                                      ? AppColors.outlineVariant.withOpacity(
-                                          0.3,
-                                        )
+                                      ? AppTheme.outlineVariant.withOpacity(0.3)
                                       : const Color(
                                           0xFFAFB1BC,
                                         ).withOpacity(0.15)),
@@ -471,7 +469,7 @@ class _StudentCardState extends ConsumerState<StudentCard> {
                 width: 150.w,
                 padding: const EdgeInsets.symmetric(vertical: 3),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceContainerLowest,
+                  color: AppTheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: Color(0xFFAFB1BC).withOpacity(0.15),
@@ -620,8 +618,8 @@ class _StudentCardState extends ConsumerState<StudentCard> {
 
                     TextButton(
                       style: ButtonStyle(
-                        shadowColor: WidgetStatePropertyAll(AppColors.onError),
-                        overlayColor: WidgetStatePropertyAll(AppColors.onError),
+                        shadowColor: WidgetStatePropertyAll(AppTheme.onError),
+                        overlayColor: WidgetStatePropertyAll(AppTheme.onError),
                         padding: WidgetStatePropertyAll(
                           EdgeInsets.symmetric(vertical: 10),
                         ),
@@ -712,13 +710,13 @@ class _StudentCardState extends ConsumerState<StudentCard> {
                               child: Icon(
                                 Icons.delete_outline,
                                 size: 15.sp,
-                                color: AppColors.error,
+                                color: AppTheme.error,
                               ),
                             ),
                             Text(
                               S.of(context).deleteStudent,
                               style: TextStyle(
-                                color: AppColors.error,
+                                color: AppTheme.error,
                                 fontSize: 11.sp,
                               ),
                             ),

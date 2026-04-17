@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../config/theme/colors.dart';
+import '../../../../config/theme/app_theme.dart';
 import '../../../../generated/l10n.dart';
 
 class AddNote extends StatelessWidget {
@@ -15,10 +15,10 @@ class AddNote extends StatelessWidget {
         height: 120,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: AppColors.surfaceContainerLow.withOpacity(0.5),
+          color: AppTheme.surfaceContainerLow.withOpacity(0.5),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: AppColors.outlineVariant.withOpacity(0.3),
+            color: AppTheme.outlineVariant.withOpacity(0.3),
             style: BorderStyle.solid,
           ), // In Flutter dashed border requires custom paint, using solid for now.
         ),
@@ -29,13 +29,13 @@ class AddNote extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: const BoxDecoration(
-                color: AppColors.surfaceContainerLowest,
+                color: AppTheme.surfaceContainerLowest,
                 shape: BoxShape.circle,
                 boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
               ),
               child: Icon(
                 Icons.add,
-                color: AppColors.onSurfaceVariant,
+                color: AppTheme.onSurfaceVariant,
                 size: 24.sp,
               ),
             ),
@@ -44,7 +44,7 @@ class AddNote extends StatelessWidget {
               S.of(context).addNewStudent,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColors.onSurfaceVariant,
+                color: AppTheme.onSurfaceVariant,
                 fontWeight: FontWeight.bold,
                 fontSize: 11.sp,
               ),

@@ -1,4 +1,3 @@
-import 'package:admain_center_managment_app/config/theme/colors.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -21,6 +20,14 @@ class ParsedPhone {
 }
 
 class Helper {
+  static Future<TimeOfDay?> pickTime(BuildContext context) async {
+    TimeOfDay? selectedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    return selectedTime;
+  }
+
   static Future<String?> showCustomDialog(
     BuildContext context,
     String? initialValue,
@@ -44,7 +51,7 @@ class Helper {
               child: Text(
                 label,
                 style: TextStyle(
-                  color: AppColors.primary,
+                  color: AppTheme.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -108,7 +115,7 @@ class Helper {
               child: Text(
                 label,
                 style: TextStyle(
-                  color: AppColors.primary,
+                  color: AppTheme.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -195,7 +202,7 @@ class Helper {
                 Text(
                   label,
                   style: TextStyle(
-                    color: AppColors.primary,
+                    color: AppTheme.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../config/theme/colors.dart';
+import '../../../../config/theme/app_theme.dart';
 import '../../../../config/theme/typography.dart';
 
 class StatCard extends StatelessWidget {
@@ -52,10 +52,10 @@ class StatCard extends StatelessWidget {
                       offset: Offset(0, 2),
                     ),
                   ],
-                  color: AppColors.surfaceContainerLowest,
+                  color: AppTheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.outlineVariant.withOpacity(0.15),
+                    color: AppTheme.outlineVariant.withOpacity(0.15),
                   ),
                 ),
                 child: Column(
@@ -65,7 +65,7 @@ class StatCard extends StatelessWidget {
                     Text(
                       label,
                       style: TextStyle(
-                        color: AppColors.onSurfaceVariant,
+                        color: AppTheme.onSurfaceVariant,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                       ),

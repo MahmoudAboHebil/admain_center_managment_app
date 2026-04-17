@@ -10,7 +10,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
-import '../../../../../../config/theme/colors.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../core/enums/division_enum.dart';
 import '../../../../../../core/enums/gender_enum.dart';
@@ -567,7 +566,7 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
                             width: 16,
                             child: CircularProgressIndicator(
                               strokeWidth: 2.5,
-                              color: AppColors.onPrimary,
+                              color: AppTheme.onPrimary,
                             ),
                           )
                         : SizedBox(),
@@ -607,11 +606,11 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: isOpenDivision ? AppColors.surfaceContainerLow : null,
+        color: isOpenDivision ? AppTheme.surfaceContainerLow : null,
         border: Border.all(
           color: !isOpenDivision
               ? Colors.transparent
-              : AppColors.outlineVariant.withOpacity(0.2),
+              : AppTheme.outlineVariant.withOpacity(0.2),
           width: 1.2,
         ),
       ),
@@ -625,12 +624,12 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
               curve: Curves.easeInOut,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               decoration: BoxDecoration(
-                color: AppColors.surfaceContainerLow,
+                color: AppTheme.surfaceContainerLow,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: isOpenDivision
                       ? Colors.transparent
-                      : AppColors.outlineVariant.withOpacity(0.2),
+                      : AppTheme.outlineVariant.withOpacity(0.2),
                   width: 1.2,
                 ),
               ),
@@ -671,7 +670,7 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
                   curve: Curves.easeInOut,
                   padding: const EdgeInsets.symmetric(vertical: 0),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceContainerLow,
+                    color: AppTheme.surfaceContainerLow,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(8),
                       bottomRight: Radius.circular(8),
@@ -703,7 +702,7 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
                                   Container(
                                     width: double.infinity,
                                     height: 1,
-                                    color: AppColors.outlineVariant.withOpacity(
+                                    color: AppTheme.outlineVariant.withOpacity(
                                       0.2,
                                     ),
                                   ),
@@ -717,7 +716,7 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
                                     child: Text(
                                       isArabic ? item.arabic : item.english,
                                       style: TextStyle(
-                                        color: AppColors.onSurface.withOpacity(
+                                        color: AppTheme.onSurface.withOpacity(
                                           0.7,
                                         ),
                                         fontSize: 12.sp,
@@ -747,11 +746,11 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: isOpenStudy ? AppColors.surfaceContainerLow : null,
+        color: isOpenStudy ? AppTheme.surfaceContainerLow : null,
         border: Border.all(
           color: !isOpenStudy
               ? Colors.transparent
-              : AppColors.outlineVariant.withOpacity(0.2),
+              : AppTheme.outlineVariant.withOpacity(0.2),
           width: 1.2,
         ),
       ),
@@ -765,12 +764,12 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
               curve: Curves.easeInOut,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               decoration: BoxDecoration(
-                color: AppColors.surfaceContainerLow,
+                color: AppTheme.surfaceContainerLow,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: isOpenStudy
                       ? Colors.transparent
-                      : AppColors.outlineVariant.withOpacity(0.2),
+                      : AppTheme.outlineVariant.withOpacity(0.2),
                   width: 1.2,
                 ),
               ),
@@ -811,7 +810,7 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
                   curve: Curves.easeInOut,
                   padding: const EdgeInsets.symmetric(vertical: 0),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceContainerLow,
+                    color: AppTheme.surfaceContainerLow,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(8),
                       bottomRight: Radius.circular(8),
@@ -839,9 +838,7 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
                               Container(
                                 width: double.infinity,
                                 height: 1,
-                                color: AppColors.outlineVariant.withOpacity(
-                                  0.2,
-                                ),
+                                color: AppTheme.outlineVariant.withOpacity(0.2),
                               ),
                               Container(
                                 width: double.infinity,
@@ -853,7 +850,7 @@ class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
                                 child: Text(
                                   isArabic ? item.arabicName : item.englishName,
                                   style: TextStyle(
-                                    color: AppColors.onSurface.withOpacity(0.7),
+                                    color: AppTheme.onSurface.withOpacity(0.7),
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.normal,
                                   ),

@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
-import '../../../../../../config/theme/colors.dart';
 import '../../../../../../core/enums/division_enum.dart';
 import '../../../../../../core/providers/language_provider.dart';
 import '../../../../../../generated/l10n.dart';
@@ -546,7 +545,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: AppColors.primaryDim,
+                          backgroundColor: AppTheme.primaryDim,
                           padding: EdgeInsets.symmetric(vertical: 10),
                         ),
                         icon: Text(
@@ -686,7 +685,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: AppColors.error.withOpacity(1),
+                          backgroundColor: AppTheme.error.withOpacity(1),
                           padding: EdgeInsets.symmetric(vertical: 10),
                         ),
                         icon: Stack(
@@ -706,7 +705,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                                     width: 16,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2.5,
-                                      color: AppColors.onPrimary,
+                                      color: AppTheme.onPrimary,
                                     ),
                                   )
                                 : SizedBox(),

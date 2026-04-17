@@ -1,4 +1,3 @@
-import 'package:admain_center_managment_app/config/theme/colors.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/entities/study_level_entity.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/error_widgets/app_error_widget.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/student_card.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 
+import '../../../../config/theme/app_theme.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/enums/division_enum.dart';
 import '../../../../core/enums/payment_type_enum.dart';
@@ -157,7 +157,7 @@ class _StudentsGridState extends ConsumerState<StudentsGrid> {
       final divString = isArabic ? div?.arabic : div?.english;
       Widget myWidget = _buildStudentCard(
         student: e,
-        sideColor: item.$1 % 2 == 0 ? AppColors.primary : AppColors.secondary,
+        sideColor: item.$1 % 2 == 0 ? AppTheme.primary : AppTheme.secondary,
         level: (div == null)
             ? levelString ?? ''
             : '${levelString ?? ''} • ${divString}',
@@ -201,7 +201,7 @@ class _StudentsGridState extends ConsumerState<StudentsGrid> {
       final divString = isArabic ? div?.arabic : div?.english;
       Widget myWidget = _buildStudentCard(
         student: StudentModel.fromCollection(e).toEntity(),
-        sideColor: item.$1 % 2 == 0 ? AppColors.primary : AppColors.secondary,
+        sideColor: item.$1 % 2 == 0 ? AppTheme.primary : AppTheme.secondary,
         level: (div == null)
             ? levelString ?? ''
             : '${levelString ?? ''} • ${divString}',
