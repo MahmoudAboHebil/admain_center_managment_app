@@ -7,24 +7,36 @@ import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../core/enums/division_enum.dart';
 import '../../../../../../core/enums/languages.dart';
+import '../../../../../../core/providers/create_class_data_provider.dart';
 import '../../../../../../core/providers/language_provider.dart';
 import '../../../../domain/entities/study_level_entity.dart';
 
 class CreateClassStepOneScreen extends ConsumerStatefulWidget {
-  const CreateClassStepOneScreen({super.key});
+  const CreateClassStepOneScreen({
+    super.key,
+    required TextEditingController placeController,
+    required TextEditingController nameController,
+  }) : _placeController = placeController,
+       _nameController = nameController;
 
+  final TextEditingController _placeController;
+  final TextEditingController _nameController;
   @override
   ConsumerState<CreateClassStepOneScreen> createState() =>
       _CreateClassStepOneScreenState();
 }
 
 class _CreateClassStepOneScreenState
-    extends ConsumerState<CreateClassStepOneScreen> {
+    extends ConsumerState<CreateClassStepOneScreen>
+    with AutomaticKeepAliveClientMixin {
   int selectedSemester = 0;
   bool isOpenStudy = false;
   bool isOpenDivision = false;
   late StudyLevelEntity selectedStudyLevel;
   late DivisionEnum selectedDivision;
+
+  @override
+  bool get wantKeepAlive => true;
   @override
   void initState() {
     super.initState();
@@ -35,6 +47,7 @@ class _CreateClassStepOneScreenState
   }
 
   void selectStudy(StudyLevelEntity item) {
+    ref.read(createClassDataProvider.notifier).updateLevelId(item);
     setState(() {
       selectedStudyLevel = item;
       isOpenStudy = false;
@@ -42,6 +55,7 @@ class _CreateClassStepOneScreenState
   }
 
   void selectDivision(DivisionEnum item) {
+    ref.read(createClassDataProvider.notifier).updateDivisionEnum(item);
     setState(() {
       selectedDivision = item;
       isOpenDivision = false;
@@ -102,7 +116,10 @@ class _CreateClassStepOneScreenState
           // Class Name
           _buildLabel('اسم الفصل'),
           const SizedBox(height: 8),
-          _buildTextField(hint: 'مثال: رياضيات متقدمة - المجموعة أ'),
+          _buildTextField(
+            controller: widget._nameController,
+            hint: 'مثال: رياضيات متقدمة - المجموعة أ',
+          ),
           const SizedBox(height: 24),
 
           // Level Grid
@@ -124,6 +141,9 @@ class _CreateClassStepOneScreenState
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
+                      ref
+                          .read(createClassDataProvider.notifier)
+                          .updateSemester(0);
                       setState(() {
                         selectedSemester = 0;
                       });
@@ -163,6 +183,9 @@ class _CreateClassStepOneScreenState
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
+                      ref
+                          .read(createClassDataProvider.notifier)
+                          .updateSemester(1);
                       setState(() {
                         selectedSemester = 1;
                       });
@@ -210,7 +233,11 @@ class _CreateClassStepOneScreenState
           const SizedBox(height: 24),
           _buildLabel('رقم القاعة'),
           const SizedBox(height: 8),
-          _buildTextField(hint: 'مثال: 104', icon: Icons.meeting_room_outlined),
+          _buildTextField(
+            controller: widget._placeController,
+            hint: 'مثال: 104',
+            icon: Icons.meeting_room_outlined,
+          ),
           const SizedBox(height: 32),
 
           // Visual Asset Card
@@ -282,14 +309,21 @@ class _CreateClassStepOneScreenState
     );
   }
 
-  Widget _buildTextField({required String hint, IconData? icon}) {
+  Widget _buildTextField({
+    required String hint,
+    IconData? icon,
+    required TextEditingController controller,
+    Function(String value)? onChange,
+  }) {
     return TextField(
+      controller: controller,
+      onChanged: onChange,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(color: AppTheme.outline.withOpacity(0.6)),
         prefixIcon: icon != null ? Icon(icon, color: AppTheme.outline) : null,
         filled: true,
-        fillColor: AppTheme.surfaceContainerHigh,
+        fillColor: AppTheme.surfaceContainerHigh.withOpacity(0.8),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
@@ -299,8 +333,8 @@ class _CreateClassStepOneScreenState
           borderSide: const BorderSide(color: AppTheme.primary, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
+          horizontal: 14,
+          vertical: 14,
         ),
       ),
     );

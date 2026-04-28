@@ -20,10 +20,13 @@ class ParsedPhone {
 }
 
 class Helper {
-  static Future<TimeOfDay?> pickTime(BuildContext context) async {
+  static Future<TimeOfDay?> pickTime(
+    BuildContext context,
+    TimeOfDay? initialValue,
+  ) async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: initialValue ?? TimeOfDay.now(),
     );
     return selectedTime;
   }

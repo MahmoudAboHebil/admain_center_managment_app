@@ -12,7 +12,8 @@ class CreateClassStepTwoScreen extends StatefulWidget {
       _CreateClassStepTwoScreenState();
 }
 
-class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen> {
+class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen>
+    with AutomaticKeepAliveClientMixin {
   final List<String> days = [
     'السبت',
     'الأحد',
@@ -22,10 +23,22 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen> {
     'الخميس',
   ];
   final Set<int> selectedDays = {0, 2};
-  Map<int, Map<String, TimeOfDay>> selectedDaysData = {0: {}, 2: {}};
+  Map<int, Map<String, DateTime>> selectedDaysData = {0: {}, 2: {}};
+
+  @override
+  bool get wantKeepAlive => true;
+
+  bool isSameDay(DateTime? start, DateTime? end) {
+    if (start == null || end == null) return true;
+    return start.year == end.year &&
+        start.month == end.month &&
+        start.day == end.day;
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Stack(
       children: [
         SingleChildScrollView(
@@ -78,7 +91,7 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen> {
                         final time = timeEntry.value;
 
                         return Text(
-                          '$dayIndex) $key // ${time.format(context)}',
+                          '$dayIndex) $key // ${time.toIso8601String()}',
                         );
                       });
                     }).toList(),
@@ -175,7 +188,13 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen> {
                     (day) => TimeSlotCard(
                       key: ValueKey(day),
                       dayIndex: day,
-                      dayString: days[day],
+                      dayString:
+                          !isSameDay(
+                            selectedDaysData[day]?["start"],
+                            selectedDaysData[day]?["end"],
+                          )
+                          ? "${days[day]} - ${days[day + 1]}"
+                          : days[day],
                       onTapEnd: (timeOfDay) {
                         setState(() {
                           final dayData = selectedDaysData[day] ?? {};
@@ -285,7 +304,7 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen> {
   }
 }
 
-class TimeSlotCard extends StatelessWidget {
+class TimeSlotCard extends StatefulWidget {
   const TimeSlotCard({
     super.key,
     required this.dayIndex,
@@ -295,71 +314,207 @@ class TimeSlotCard extends StatelessWidget {
   });
   final int dayIndex;
   final String dayString;
-  final Function(TimeOfDay) onTapStart;
-  final Function(TimeOfDay) onTapEnd;
+  final Function(DateTime) onTapStart;
+  final Function(DateTime) onTapEnd;
+
+  @override
+  State<TimeSlotCard> createState() => _TimeSlotCardState();
+}
+
+class _TimeSlotCardState extends State<TimeSlotCard> {
+  DateTime? startTime;
+  DateTime? endTime;
+  bool startError = false;
+  bool endError = false;
+  String? error;
+  DateTime combine(DateTime date, TimeOfDay time) {
+    return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  DateTime normalizeEnd(DateTime start, DateTime end) {
+    if (end.isBefore(start)) {
+      return end.add(Duration(days: 1));
+    }
+    return end;
+  }
+
+  bool isValidTimeRange({required DateTime start, required DateTime end}) {
+    final startMinutes = start.hour * 60 + start.minute;
+    final endMinutes = end.hour * 60 + end.minute;
+
+    // same time is not allowed
+    if (startMinutes == endMinutes) {
+      return false;
+    }
+
+    return true; // everything else is valid
+  }
+
+  bool validationStart() {
+    bool isOk = true;
+    if (endTime == null) {
+      endError = true;
+      // error = 'يجب تحديد وقت الانتهاء';
+      isOk = false;
+    } else {
+      if (!isValidTimeRange(start: startTime!, end: endTime!)) {
+        endError = true;
+        error = "Start and end time cannot be the same.";
+        isOk = false;
+      } else {
+        endError = false;
+        startError = false;
+
+        error = null;
+        isOk = true;
+      }
+    }
+
+    setState(() {});
+
+    return isOk;
+  }
+
+  bool validationEnd() {
+    bool isOk = true;
+    if (startTime == null) {
+      startError = true;
+      // error = 'يجب تحديد وقت البدء';
+      isOk = false;
+    } else {
+      if (!isValidTimeRange(start: startTime!, end: endTime!)) {
+        endError = true;
+        error = "Start and end time cannot be the same.";
+        isOk = false;
+      } else {
+        endError = false;
+        startError = false;
+        error = null;
+        isOk = true;
+      }
+    }
+    setState(() {});
+    return isOk;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.outlineVariant.withOpacity(0.15)),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 8,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: AppTheme.primary,
-                      borderRadius: BorderRadius.circular(4),
+    return PressableButton(
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppTheme.outlineVariant.withOpacity(0.15)),
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: AppTheme.primary,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Text(
-                    dayString,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(width: 12),
+                    Text(
+                      widget.dayString,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                  ],
+                ),
+                const Icon(Icons.schedule, color: AppTheme.outlineVariant),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: TimePickerField(
+                    // key: UniqueKey(),
+                    label: 'وقت البدء',
+                    day: widget.dayIndex,
+                    isError: startError,
+                    value: startTime != null
+                        ? TimeOfDay(
+                            hour: startTime!.hour,
+                            minute: startTime!.minute,
+                          )
+                        : null,
+                    isStart: true,
+                    onTap: (start) {
+                      DateTime newDate = combine(DateTime.now(), start);
+                      startTime = newDate;
+                      validationStart();
+                      widget.onTapStart(newDate);
+                      if (endTime != null) {
+                        final DateTime newDate = normalizeEnd(
+                          startTime!,
+                          endTime!,
+                        );
+                        endTime = newDate;
+                        print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+                        print(endTime);
+                        widget.onTapEnd(newDate);
+                        setState(() {});
+                      }
+                    },
                   ),
-                ],
-              ),
-              const Icon(Icons.schedule, color: AppTheme.outlineVariant),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: TimePickerField(
-                  // key: UniqueKey(),
-                  label: 'وقت البدء',
-                  day: dayIndex,
-                  isStart: true,
-                  onTap: onTapStart,
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TimePickerField(
+                    // key: UniqueKey(),
+                    label: 'وقت الانتهاء',
+                    day: widget.dayIndex,
+                    isError: endError,
+                    value: endTime != null
+                        ? TimeOfDay(
+                            hour: endTime!.hour,
+                            minute: endTime!.minute,
+                          )
+                        : null,
+                    isStart: false,
+                    onTap: (end) {
+                      final DateTime newDate;
+                      if (startTime == null) {
+                        newDate = combine(DateTime.now(), end);
+                      } else {
+                        newDate = normalizeEnd(
+                          startTime!,
+                          combine(DateTime.now(), end),
+                        );
+                        print('dddddddddddddd');
+                        print(newDate);
+                      }
+                      endTime = newDate;
+                      validationEnd();
+                      widget.onTapEnd(newDate);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            if (error != null)
+              Padding(
+                padding: EdgeInsets.only(top: 14),
+                child: Text(
+                  error!,
+                  style: const TextStyle(fontSize: 12, color: AppTheme.error),
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: TimePickerField(
-                  // key: UniqueKey(),
-                  label: 'وقت الانتهاء',
-                  day: dayIndex,
-                  isStart: false,
-                  onTap: onTapEnd,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -374,12 +529,14 @@ class TimePickerField extends StatefulWidget {
     required this.isStart,
     this.enable = true,
     required this.onTap,
+    required this.isError,
   });
   final String label;
   final TimeOfDay? value;
   final int day;
   final bool isStart;
   final bool enable;
+  final bool isError;
   final Function(TimeOfDay) onTap;
 
   @override
@@ -409,7 +566,7 @@ class _TimePickerFieldState extends State<TimePickerField> {
         const SizedBox(height: 8),
         PressableButton(
           onTap: () async {
-            final selectedTime = await Helper.pickTime(context);
+            final selectedTime = await Helper.pickTime(context, myValue);
 
             if (selectedTime == null || !mounted) return;
 
@@ -423,6 +580,7 @@ class _TimePickerFieldState extends State<TimePickerField> {
             decoration: BoxDecoration(
               color: AppTheme.surfaceContainerHigh,
               borderRadius: BorderRadius.circular(8),
+              border: widget.isError ? Border.all(color: AppTheme.error) : null,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

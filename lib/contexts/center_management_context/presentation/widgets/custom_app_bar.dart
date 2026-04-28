@@ -8,7 +8,13 @@ import '../bloc/selection_cubit/selection_cubit.dart';
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String label;
   final Widget? leadingWidget;
-  const CustomAppBar({super.key, required this.label, this.leadingWidget});
+  final VoidCallback? leavingCallback;
+  const CustomAppBar({
+    super.key,
+    required this.label,
+    this.leadingWidget,
+    this.leavingCallback,
+  });
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -21,7 +27,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        widget.leavingCallback?.call();
+      },
       child: Container(
         height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 16),
