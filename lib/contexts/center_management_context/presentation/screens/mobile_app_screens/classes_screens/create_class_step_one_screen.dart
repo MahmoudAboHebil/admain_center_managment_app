@@ -43,7 +43,7 @@ class _CreateClassStepOneScreenState
     selectedStudyLevel = studyLevels.firstWhere(
       (element) => element.order == 0,
     );
-    selectedDivision = DivisionEnum.Division;
+    selectedDivision = DivisionEnum.generalDivision;
   }
 
   void selectStudy(StudyLevelEntity item) {
@@ -231,11 +231,11 @@ class _CreateClassStepOneScreenState
           DivisionDropDown(language == Language.ar),
           // Room Number
           const SizedBox(height: 24),
-          _buildLabel('رقم القاعة'),
+          _buildLabel('المكان'),
           const SizedBox(height: 8),
           _buildTextField(
             controller: widget._placeController,
-            hint: 'مثال: 104',
+            hint: 'مثال: قاعه 104 ',
             icon: Icons.meeting_room_outlined,
           ),
           const SizedBox(height: 32),

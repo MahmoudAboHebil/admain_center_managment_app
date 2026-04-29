@@ -1,6 +1,7 @@
 enum DivisionEnum {
   all('الكل', 'All'),
   Division('الشعبة', 'Division'),
+  generalDivision('عام', 'General'),
   literarySection(' ادبي', "Literary"),
   scientificMathematicsSection(' علمي رياضة', "Scientific Mathematics"),
   scientificBiologySection(' علمي علوم', "Scientific Biology"),

@@ -1,11 +1,13 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/create_class_step_one_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/create_class_step_two_screen.dart';
 import 'package:admain_center_managment_app/core/providers/create_class_data_provider.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/providers/language_provider.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../widgets/custom_app_bar.dart';
 
 class CreateClassScreen extends ConsumerStatefulWidget {
@@ -27,6 +29,31 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
     Future.microtask(() {
       ref.read(createClassDataProvider.notifier).clearData();
     });
+  }
+
+  bool isEqual(DateTime a, DateTime b) {
+    return a.year == b.year &&
+        a.month == b.month &&
+        a.day == b.day &&
+        a.hour == b.hour &&
+        a.minute == b.minute;
+  }
+
+  String? isValidClassTimes() {
+    final data = ref.read(createClassDataProvider).selectedDaysData;
+    if (data == null || data.isEmpty) {
+      return "من فضلك قم بتحديد وقت البداية ووقت النهاية لجميع الأيام التي تم اختيارها.";
+    }
+    for (var item in data.entries) {
+      DateTime? startData = item.value["start"];
+      DateTime? endData = item.value["end"];
+      if (startData == null || endData == null) {
+        return "من فضلك قم بتحديد وقت البداية ووقت النهاية لجميع الأيام التي تم اختيارها.";
+      } else if (isEqual(startData, endData)) {
+        return "وقت البداية ووقت الانتهاء لا يمكن أن يكونا متساويين.";
+      }
+    }
+    return null;
   }
 
   @override
@@ -175,16 +202,78 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
                   padding: const EdgeInsets.all(24),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (currentIndex == 0) {
-                        _controller.nextPage(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
+                      final data = ref.read(createClassDataProvider);
+                      if (_nameController.text.trim().isEmpty) {
+                        if (currentIndex == 1) {
+                          _controller.previousPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: AwesomeSnackbarContent(
+                              inMaterialBanner: true,
+                              title: S.of(context).unCompleteDetails,
+                              message: "اسم الفصل مطلوب.",
+                              contentType: ContentType.failure,
+                            ),
+
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                        );
+                      } else if (_placeController.text.trim().isEmpty) {
+                        if (currentIndex == 1) {
+                          _controller.previousPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: AwesomeSnackbarContent(
+                              inMaterialBanner: true,
+                              title: S.of(context).unCompleteDetails,
+                              message: "مكان الفصل مطلوب.",
+                              contentType: ContentType.failure,
+                            ),
+
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                        );
+                      } else if (isValidClassTimes() != null) {
+                        if (currentIndex == 0) {
+                          _controller.nextPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: AwesomeSnackbarContent(
+                              inMaterialBanner: true,
+                              title: S.of(context).informationNotCorrect,
+                              message: isValidClassTimes()!,
+                              contentType: ContentType.failure,
+                            ),
+
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
                         );
                       } else {
-                        final data = ref.read(createClassDataProvider);
-                        print('name : ${_nameController.text}');
-                        print('place : ${_placeController.text}');
-                        print(data);
+                        if (currentIndex == 0) {
+                          _controller.nextPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        } else {
+                          print('name : ${_nameController.text}');
+                          print('place : ${_placeController.text}');
+                          print(data);
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(

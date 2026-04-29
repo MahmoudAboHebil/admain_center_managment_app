@@ -1,26 +1,30 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
 import 'package:admain_center_managment_app/core/helper/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
+import '../../../../../../core/providers/create_class_data_provider.dart';
 
-class CreateClassStepTwoScreen extends StatefulWidget {
+class CreateClassStepTwoScreen extends ConsumerStatefulWidget {
   const CreateClassStepTwoScreen({super.key});
 
   @override
-  State<CreateClassStepTwoScreen> createState() =>
+  ConsumerState<CreateClassStepTwoScreen> createState() =>
       _CreateClassStepTwoScreenState();
 }
 
-class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen>
+class _CreateClassStepTwoScreenState
+    extends ConsumerState<CreateClassStepTwoScreen>
     with AutomaticKeepAliveClientMixin {
   final List<String> days = [
-    'السبت',
-    'الأحد',
     'الاثنين',
     'الثلاثاء',
     'الأربعاء',
     'الخميس',
+    'الجمعة'
+        'السبت',
+    'الأحد',
   ];
   final Set<int> selectedDays = {0, 2};
   Map<int, Map<String, DateTime>> selectedDaysData = {0: {}, 2: {}};
@@ -38,7 +42,6 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return Stack(
       children: [
         SingleChildScrollView(
@@ -130,6 +133,10 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen>
                               selectedDaysData[dayIndex] = {};
                             }
                           });
+                          ref
+                              .read(createClassDataProvider.notifier)
+                              .updateSelectedDaysData(selectedDaysData);
+
                           print(selectedDaysData);
                         },
                         child: AnimatedContainer(
@@ -204,6 +211,10 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen>
                             'end': timeOfDay,
                           };
                         });
+                        ref
+                            .read(createClassDataProvider.notifier)
+                            .updateSelectedDaysData(selectedDaysData);
+
                         print(selectedDaysData);
                       },
                       onTapStart: (timeOfDay) {
@@ -216,6 +227,9 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen>
                           };
                         });
                         print(selectedDaysData);
+                        ref
+                            .read(createClassDataProvider.notifier)
+                            .updateSelectedDaysData(selectedDaysData);
                       },
                     ),
                   )
@@ -236,7 +250,7 @@ class _CreateClassStepTwoScreenState extends State<CreateClassStepTwoScreen>
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'يمكنك تعديل هذه المواعيد لاحقاً من قسم إعدادات الفصل الدراسي في لوحة التحكم.',
+                        'إذا كان وقت الانتهاء قبل وقت البداية، فسيتم اعتبار الحصة ممتدة لليوم التالي تلقائيًا.',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppTheme.onSecondaryContainer,
@@ -359,7 +373,7 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
     } else {
       if (!isValidTimeRange(start: startTime!, end: endTime!)) {
         endError = true;
-        error = "Start and end time cannot be the same.";
+        error = "وقت البداية ووقت الانتهاء لا يمكن أن يكونا متساويين.";
         isOk = false;
       } else {
         endError = false;
@@ -384,7 +398,7 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
     } else {
       if (!isValidTimeRange(start: startTime!, end: endTime!)) {
         endError = true;
-        error = "Start and end time cannot be the same.";
+        error = "وقت البداية ووقت الانتهاء لا يمكن أن يكونا متساويين.";
         isOk = false;
       } else {
         endError = false;
@@ -395,6 +409,39 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
     }
     setState(() {});
     return isOk;
+  }
+
+  String getClassDuration({required DateTime? start, required DateTime? end}) {
+    if (start == null || end == null) return "";
+    int startMinutes = start.hour * 60 + start.minute;
+    int endMinutes = end.hour * 60 + end.minute;
+
+    // handle crossing midnight
+    if (endMinutes < startMinutes) {
+      endMinutes += 24 * 60;
+    }
+
+    int totalMinutes = endMinutes - startMinutes;
+
+    int hours = totalMinutes ~/ 60;
+    int minutes = totalMinutes % 60;
+
+    return formatDuration(hours, minutes);
+  }
+
+  String formatDuration(int hours, int minutes) {
+    final buffer = StringBuffer();
+
+    if (hours > 0) {
+      buffer.write('${hours}h');
+    }
+
+    if (minutes > 0) {
+      if (hours > 0) buffer.write(' ');
+      buffer.write('${minutes}m');
+    }
+
+    return buffer.toString();
   }
 
   @override
@@ -409,9 +456,10 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
           border: Border.all(color: AppTheme.outlineVariant.withOpacity(0.15)),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -433,6 +481,15 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                     ),
                   ],
                 ),
+                Spacer(),
+                Text(
+                  getClassDuration(start: startTime, end: endTime),
+                  style: TextStyle(
+                    color: AppTheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 5),
                 const Icon(Icons.schedule, color: AppTheme.outlineVariant),
               ],
             ),

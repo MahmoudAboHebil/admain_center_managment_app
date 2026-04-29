@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../contexts/center_management_context/domain/entities/study_level_entity.dart';
@@ -14,7 +13,7 @@ class CreateClassData {
   final StudyLevelEntity? levelId;
   final int semester;
   final DivisionEnum? divisionEnum;
-  final Map<int, Map<String, TimeOfDay>>? selectedDaysData;
+  final Map<int, Map<String, DateTime>>? selectedDaysData;
 
   @override
   String toString() {
@@ -29,11 +28,13 @@ class CreateClassData {
     StudyLevelEntity? levelId,
     int? semester,
     DivisionEnum? divisionEnum,
+    Map<int, Map<String, DateTime>>? selectedDaysData,
   }) {
     return CreateClassData(
       levelId: levelId ?? this.levelId,
       semester: semester ?? this.semester,
       divisionEnum: divisionEnum ?? this.divisionEnum,
+      selectedDaysData: selectedDaysData ?? this.selectedDaysData,
     );
   }
 }
@@ -59,6 +60,12 @@ class CreateClassDataNotifier extends AutoDisposeNotifier<CreateClassData> {
 
   void updateDivisionEnum(DivisionEnum divisionEnum) {
     state = state.copyWith(divisionEnum: divisionEnum);
+  }
+
+  void updateSelectedDaysData(
+    Map<int, Map<String, DateTime>> selectedDaysData,
+  ) {
+    state = state.copyWith(selectedDaysData: selectedDaysData);
   }
 }
 
