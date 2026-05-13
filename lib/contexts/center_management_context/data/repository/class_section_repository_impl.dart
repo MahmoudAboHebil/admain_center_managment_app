@@ -17,11 +17,15 @@ class ClassSectionRepositoryImpl implements ClassSectionRepository {
     ClassSectionEntity entity,
   ) async {
     try {
+      print('10================================>');
+
       final result = await _datasource.create(
         ClassSectionModel.fromEntity(entity),
       );
       return result;
     } catch (e) {
+      print('11================================>$e');
+
       return Left(
         ProcessingFailure(
           message: "creating class section  has failed =>${e.toString()}",

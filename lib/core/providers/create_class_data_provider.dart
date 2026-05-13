@@ -8,9 +8,11 @@ class CreateClassData {
     this.levelId,
     this.semester = 0,
     this.divisionEnum,
-    this.selectedDaysData,
+    this.isUserVisitSecondScreen = false,
+    this.selectedDaysData = const {0: {}, 2: {}},
   });
   final StudyLevelEntity? levelId;
+  final bool isUserVisitSecondScreen;
   final int semester;
   final DivisionEnum? divisionEnum;
   final Map<int, Map<String, DateTime>>? selectedDaysData;
@@ -29,12 +31,15 @@ class CreateClassData {
     int? semester,
     DivisionEnum? divisionEnum,
     Map<int, Map<String, DateTime>>? selectedDaysData,
+    bool? isUserVisitSecondScreen,
   }) {
     return CreateClassData(
       levelId: levelId ?? this.levelId,
       semester: semester ?? this.semester,
       divisionEnum: divisionEnum ?? this.divisionEnum,
       selectedDaysData: selectedDaysData ?? this.selectedDaysData,
+      isUserVisitSecondScreen:
+          isUserVisitSecondScreen ?? this.isUserVisitSecondScreen,
     );
   }
 }
@@ -56,6 +61,10 @@ class CreateClassDataNotifier extends AutoDisposeNotifier<CreateClassData> {
 
   void updateSemester(int semester) {
     state = state.copyWith(semester: semester);
+  }
+
+  void updateIsUserVisitSecondScreen(bool value) {
+    state = state.copyWith(isUserVisitSecondScreen: value);
   }
 
   void updateDivisionEnum(DivisionEnum divisionEnum) {

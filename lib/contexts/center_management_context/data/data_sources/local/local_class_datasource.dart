@@ -76,7 +76,7 @@ class LocalClassDatasource implements LocalDbOperations<ClassModel> {
 
       final result = await _addEntityLocalUseCase.call(
         AddEntityLocalUseCaseParams(
-          table: DBTable.students,
+          table: DBTable.classes,
           jsonEntity: null,
           entity: model.toEntity(),
         ),

@@ -22,8 +22,8 @@ class _CreateClassStepTwoScreenState
     'الثلاثاء',
     'الأربعاء',
     'الخميس',
-    'الجمعة'
-        'السبت',
+    'الجمعة',
+    'السبت',
     'الأحد',
   ];
   final Set<int> selectedDays = {0, 2};
@@ -31,6 +31,16 @@ class _CreateClassStepTwoScreenState
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref
+          .read(createClassDataProvider.notifier)
+          .updateIsUserVisitSecondScreen(true);
+    });
+  }
 
   bool isSameDay(DateTime? start, DateTime? end) {
     if (start == null || end == null) return true;

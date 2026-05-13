@@ -1,8 +1,14 @@
 import 'dart:collection';
 
+import 'package:admain_center_managment_app/sync_engine/data/datasource/sync_class_datasource.dart';
+import 'package:admain_center_managment_app/sync_engine/data/datasource/sync_class_section_datasource.dart';
 import 'package:admain_center_managment_app/sync_engine/data/datasource/sync_student_datasource.dart';
 import 'package:admain_center_managment_app/sync_engine/data/datasource/sync_table_datasource.dart';
+import 'package:admain_center_managment_app/sync_engine/data/models/class_model.dart';
+import 'package:admain_center_managment_app/sync_engine/data/models/class_section_model.dart';
 import 'package:admain_center_managment_app/sync_engine/data/models/student_model.dart';
+import 'package:admain_center_managment_app/sync_engine/domain/entities/class_entity.dart';
+import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:dart_either/dart_either.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -26,6 +32,10 @@ class TableRepositoryImpl implements TableRepository {
   SyncTableDatasource _getTableDataSource(DBTable table) {
     if (table == DBTable.students) {
       return SyncStudentDatasource();
+    } else if (table == DBTable.classes) {
+      return SyncClassDatasource();
+    } else if (table == DBTable.class_sections) {
+      return SyncClassSectionDatasource();
     } else {
       throw Exception(
         'there is not datasource file for this ${table.name} table',
@@ -39,6 +49,10 @@ class TableRepositoryImpl implements TableRepository {
   ) {
     if (table == DBTable.students) {
       return StudentModel.fromJson(jsonModel);
+    } else if (table == DBTable.classes) {
+      return ClassModel.fromJson(jsonModel);
+    } else if (table == DBTable.class_sections) {
+      return ClassSectionModel.fromJson(jsonModel);
     } else {
       throw Exception('there is not model file for this ${table.name} table');
     }
@@ -50,6 +64,13 @@ class TableRepositoryImpl implements TableRepository {
   ) {
     if (table == DBTable.students) {
       return {};
+    } else if (table == DBTable.classes) {
+      return {};
+    } else if (table == DBTable.class_sections) {
+      final model = _getTableModel(table, operation.json) as ClassSectionModel;
+      return {
+        DBTable.classes: [model.classId],
+      };
     } else {
       return {};
     }
@@ -61,6 +82,10 @@ class TableRepositoryImpl implements TableRepository {
   ) {
     if (table == DBTable.students) {
       return StudentModel.fromEntity(entity as StudentEntity);
+    } else if (table == DBTable.classes) {
+      return ClassModel.fromEntity(entity as ClassEntity);
+    } else if (table == DBTable.class_sections) {
+      return ClassSectionModel.fromEntity(entity as ClassSectionEntity);
     } else {
       throw Exception('there is not model  for this ${table.name} table');
     }

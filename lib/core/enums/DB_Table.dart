@@ -37,5 +37,18 @@ const Map<DBTable, Map<String, List<DBTable>>> tabelRelationsNotNull = {
   DBTable.Center: {"forward": [], "backword": []},
   DBTable.StudentLevel: {"forward": [], "backword": []},
   DBTable.students: {"forward": [], "backword": []},
+  DBTable.classes: {
+    "forward": [DBTable.class_sections],
+    "backword": [],
+  },
+
+  DBTable.class_sections: {
+    "forward": [],
+    "backword": [DBTable.classes],
+  },
 };
-const List<DBTable> arrangedSyncTables = [DBTable.students];
+const List<DBTable> arrangedSyncTables = [
+  DBTable.students,
+  DBTable.classes,
+  DBTable.class_sections,
+];

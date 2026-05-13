@@ -1,5 +1,10 @@
+import 'package:admain_center_managment_app/contexts/center_management_context/data/data_sources/local/local_class_datasource.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/data/data_sources/local/local_class_section_datasource.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/data/data_sources/local/local_student_datasource.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/data/repository/class_repository_impl.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/data/repository/class_section_repository_impl.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/data/repository/student_repository_impl.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/class_repository.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/student_repository.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/bloc/selection_cubit/selection_cubit.dart';
 import 'package:admain_center_managment_app/sync_engine/data/datasource/local_queue_datasource.dart';
@@ -23,6 +28,7 @@ import 'package:admain_center_managment_app/sync_engine/domain/use_cases/sync_ta
 import 'package:admain_center_managment_app/sync_engine/presentation/blocs/sync_bloc/sync_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import 'contexts/center_management_context/domain/repository/class_section_repository.dart';
 import 'core/internet_service/internet_bloc/internet_bloc.dart';
 
 final sl = GetIt.instance;
@@ -110,6 +116,36 @@ Future<void> initializeDependencies() async {
 
   sl.registerSingleton<StudentRepository>(
     StudentRepositoryImpl(sl<LocalStudentDatasource>()),
+  );
+
+  sl.registerSingleton<LocalClassDatasource>(
+    LocalClassDatasource(
+      sl<AddEntityLocalUseCase>(),
+      sl<AddOperationLocalUseCase>(),
+      sl<QueueRepository>(),
+      sl<SyncRepository>(),
+      sl<PushSingleOperationUseCase>(),
+      sl<TableRepository>(),
+    ),
+  );
+
+  sl.registerSingleton<ClassRepository>(
+    ClassRepositoryImpl(sl<LocalClassDatasource>()),
+  );
+
+  sl.registerSingleton<LocalClassSectionDatasource>(
+    LocalClassSectionDatasource(
+      sl<AddEntityLocalUseCase>(),
+      sl<AddOperationLocalUseCase>(),
+      sl<QueueRepository>(),
+      sl<SyncRepository>(),
+      sl<PushSingleOperationUseCase>(),
+      sl<TableRepository>(),
+    ),
+  );
+
+  sl.registerSingleton<ClassSectionRepository>(
+    ClassSectionRepositoryImpl(sl<LocalClassSectionDatasource>()),
   );
 
   //Blocs
