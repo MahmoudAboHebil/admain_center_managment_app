@@ -368,6 +368,31 @@ class LocalClassSectionDatasource
     }
   }
 
+  Future<Either<Failure, List<ClassSectionModel>>> getClassSections(
+    String classId,
+  ) async {
+    try {
+      List<ClassSectionModel> items = [];
+      final collections = await IsarService.isar.classSectionCollections
+          .filter()
+          .isDeletedEqualTo(false)
+          .and()
+          .classIdEqualTo(classId)
+          .sortByCreatedAtDesc()
+          .findAll();
+      for (var item in collections) {
+        items.add(ClassSectionModel.fromCollection(item));
+      }
+      print('dddddddddddddda');
+      print(items);
+      return Right(items);
+    } catch (e) {
+      return Left(
+        ProcessingFailure(message: 'failed to get classes sections '),
+      );
+    }
+  }
+
   @override
   Future<Either<Failure, ClassSectionModel?>> getModel(String entityID) async {
     try {

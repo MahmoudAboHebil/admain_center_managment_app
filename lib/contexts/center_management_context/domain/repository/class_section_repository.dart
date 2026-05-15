@@ -28,4 +28,7 @@ abstract class ClassSectionRepository {
   Either<Failure, Stream<int>> watchClassSectionsCount();
 
   Future<Either<Failure, List<ClassSectionEntity>>> getAllItemsNotArchived();
+  Future<Either<Failure, List<ClassSectionEntity>>> getClassSections(
+    String classId,
+  );
 }

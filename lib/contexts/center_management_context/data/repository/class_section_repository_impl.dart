@@ -168,4 +168,27 @@ class ClassSectionRepositoryImpl implements ClassSectionRepository {
     // TODO: implement watchClassSectionsCount
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, List<ClassSectionEntity>>> getClassSections(
+    String classId,
+  ) async {
+    try {
+      final result = await _datasource.getClassSections(classId);
+      return result.fold(
+        ifLeft: (value) {
+          return Left(value);
+        },
+        ifRight: (mainList) {
+          var list = <ClassSectionEntity>[];
+          for (var item in mainList) {
+            list.add(item.toEntity());
+          }
+          return Right(list);
+        },
+      );
+    } catch (e) {
+      return Left(ProcessingFailure(message: "failed to get classes sections"));
+    }
+  }
 }

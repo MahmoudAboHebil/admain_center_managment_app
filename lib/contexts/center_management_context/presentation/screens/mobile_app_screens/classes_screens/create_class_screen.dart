@@ -1,5 +1,6 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/class_repository.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/class_section_repository.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/classes_overview_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/create_class_step_one_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/create_class_step_two_screen.dart';
 import 'package:admain_center_managment_app/core/enums/division_enum.dart';
@@ -385,7 +386,10 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
 
           if (response == null) {
             await _createClassSections(classId);
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ClassesOverviewScreen()),
+            );
             _showSuccess("Class is created");
           } else {
             _showError(
