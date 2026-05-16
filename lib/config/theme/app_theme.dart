@@ -9,6 +9,7 @@ class AppTheme {
   static const Color primaryContainer = Color(0xFFB0C7F9);
   static const Color onPrimaryContainer = Color(0xFF29406A);
   static const Color primaryFixedDim = Color(0xFFA2B9EA);
+  static const Color onPrimaryFixed = Color(0xFF122B54);
 
   // Secondary
   static const Color secondary = Color(0xFF575F72);

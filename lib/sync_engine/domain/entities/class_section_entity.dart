@@ -38,9 +38,10 @@ class ClassSectionEntity extends StandardTableRecord with EquatableMixin {
     day,
     classId,
   ];
+
   @override
   String toString() {
-    return entityId;
+    return '{startOn: $startOn, endOn: $endOn, day: $day}';
   }
 
   ClassSectionEntity copyWith({

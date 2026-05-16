@@ -1,3 +1,5 @@
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/class_profile_screen.dart';
+import 'package:admain_center_managment_app/sync_engine/domain/entities/class_entity.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +10,7 @@ import '../../domain/repository/class_section_repository.dart';
 class ClassCard extends StatefulWidget {
   const ClassCard({
     super.key,
-    required this.entityId,
+    required this.entity,
     required this.title,
     required this.studentsCount,
     required this.icon,
@@ -24,7 +26,7 @@ class ClassCard extends StatefulWidget {
   final Color iconBgColor;
   final String studyLevel;
   final String location;
-  final String entityId;
+  final ClassEntity entity;
 
   @override
   State<ClassCard> createState() => _ClassCardState();
@@ -35,7 +37,7 @@ class _ClassCardState extends State<ClassCard> {
   Future<void> fetchData() async {
     try {
       final result = await sl<ClassSectionRepository>().getClassSections(
-        widget.entityId,
+        widget.entity.entityId,
       );
       result.fold(
         ifLeft: (e) {},
@@ -76,7 +78,18 @@ class _ClassCardState extends State<ClassCard> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ClassProfileScreen(
+                  entity: widget.entity,
+                  sections: sectionsList ?? [],
+                  studyLevel: widget.studyLevel,
+                ),
+              ),
+            );
+          },
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.all(20),

@@ -3,6 +3,7 @@ import 'package:admain_center_managment_app/contexts/center_management_context/p
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/error_widgets/app_error_widget.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:admain_center_managment_app/core/isar_local_database/isar/collections/class_collection.dart';
+import 'package:admain_center_managment_app/sync_engine/data/models/class_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
@@ -140,7 +141,7 @@ class _StudentsGridState extends ConsumerState<ClassesGrid> {
                       ? 'الفصل الدراسى الاول'
                       : 'الفصل الدراسى الثانى'),
         location: e.room,
-        entityId: e.entityId,
+        entity: ClassModel.fromCollection(e).toEntity(),
       );
       myWidgetsList.add(myWidget);
     }
