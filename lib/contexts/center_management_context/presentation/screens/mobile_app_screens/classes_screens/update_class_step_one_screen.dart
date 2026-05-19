@@ -1,3 +1,4 @@
+import 'package:admain_center_managment_app/sync_engine/domain/entities/class_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,25 +12,27 @@ import '../../../../../../core/providers/create_class_data_provider.dart';
 import '../../../../../../core/providers/language_provider.dart';
 import '../../../../domain/entities/study_level_entity.dart';
 
-class CreateClassStepOneScreen extends ConsumerStatefulWidget {
-  const CreateClassStepOneScreen({
+class UpdateClassStepOneScreen extends ConsumerStatefulWidget {
+  final ClassEntity entity;
+  const UpdateClassStepOneScreen({
     super.key,
     required TextEditingController placeController,
     required TextEditingController nameController,
+    required this.entity,
   }) : _placeController = placeController,
        _nameController = nameController;
 
   final TextEditingController _placeController;
   final TextEditingController _nameController;
   @override
-  ConsumerState<CreateClassStepOneScreen> createState() =>
+  ConsumerState<UpdateClassStepOneScreen> createState() =>
       _CreateClassStepOneScreenState();
 }
 
 class _CreateClassStepOneScreenState
-    extends ConsumerState<CreateClassStepOneScreen>
+    extends ConsumerState<UpdateClassStepOneScreen>
     with AutomaticKeepAliveClientMixin {
-  int selectedSemester = 0;
+  late int selectedSemester;
   bool isOpenStudy = false;
   bool isOpenDivision = false;
   late StudyLevelEntity selectedStudyLevel;
@@ -41,9 +44,11 @@ class _CreateClassStepOneScreenState
   void initState() {
     super.initState();
     selectedStudyLevel = studyLevels.firstWhere(
-      (element) => element.order == 0,
+      (element) => element.entityId == widget.entity.studyLevelId,
+      orElse: () => studyLevels.firstWhere((element) => element.order == 0),
     );
-    selectedDivision = DivisionEnum.generalDivision;
+    selectedDivision = widget.entity.divisionEnum;
+    selectedSemester = widget.entity.semester;
   }
 
   void selectStudy(StudyLevelEntity item) {
@@ -98,7 +103,7 @@ class _CreateClassStepOneScreenState
               ),
               const SizedBox(height: 4),
               const Text(
-                'إنشاء فصل جديد',
+                "تعديل بيانات الفصل",
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
@@ -109,7 +114,7 @@ class _CreateClassStepOneScreenState
           ),
           const SizedBox(height: 8),
           const Text(
-            'أضف المعلومات الأساسية لتعريف الفصل الدراسي الجديد.',
+            "قم بتحديث المعلومات الأساسية للفصل الدراسي.",
             style: TextStyle(fontSize: 14, color: AppTheme.onSurfaceVariant),
           ),
           const SizedBox(height: 32),

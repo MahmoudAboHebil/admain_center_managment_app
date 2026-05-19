@@ -1,4 +1,5 @@
 import 'package:admain_center_managment_app/config/theme/app_theme.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/update_class_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_entity.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
@@ -35,7 +36,11 @@ class ClassProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _HeroClassCard(entity: entity, studyLevel: studyLevel),
+              _HeroClassCard(
+                entity: entity,
+                studyLevel: studyLevel,
+                sections: sections,
+              ),
               SizedBox(height: 24),
               _QuickActions(),
               SizedBox(height: 24),
@@ -51,8 +56,13 @@ class ClassProfileScreen extends StatelessWidget {
 }
 
 class _HeroClassCard extends StatelessWidget {
-  const _HeroClassCard({required this.entity, required this.studyLevel});
+  const _HeroClassCard({
+    required this.entity,
+    required this.studyLevel,
+    required this.sections,
+  });
   final ClassEntity entity;
+  final List<ClassSectionEntity> sections;
   final String studyLevel;
 
   @override
@@ -146,7 +156,17 @@ class _HeroClassCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateClassScreen(
+                                  entity: entity,
+                                  sections: sections,
+                                ),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white.withOpacity(0.2),
                             foregroundColor: Colors.white,

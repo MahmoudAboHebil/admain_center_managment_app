@@ -1,21 +1,23 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
 import 'package:admain_center_managment_app/core/helper/helper.dart';
+import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/providers/create_class_data_provider.dart';
 
-class CreateClassStepTwoScreen extends ConsumerStatefulWidget {
-  const CreateClassStepTwoScreen({super.key});
+class UpdateClassStepTwoScreen extends ConsumerStatefulWidget {
+  const UpdateClassStepTwoScreen({required this.entities, super.key});
+  final List<ClassSectionEntity> entities;
 
   @override
-  ConsumerState<CreateClassStepTwoScreen> createState() =>
+  ConsumerState<UpdateClassStepTwoScreen> createState() =>
       _CreateClassStepTwoScreenState();
 }
 
 class _CreateClassStepTwoScreenState
-    extends ConsumerState<CreateClassStepTwoScreen>
+    extends ConsumerState<UpdateClassStepTwoScreen>
     with AutomaticKeepAliveClientMixin {
   final List<String> days = [
     'الاثنين',
@@ -26,8 +28,8 @@ class _CreateClassStepTwoScreenState
     'السبت',
     'الأحد',
   ];
-  final Set<int> selectedDays = {0, 2};
-  Map<int, Map<String, DateTime>> selectedDaysData = {0: {}, 2: {}};
+  Set<int> selectedDays = {};
+  Map<int, Map<String, DateTime>> selectedDaysData = {};
 
   @override
   bool get wantKeepAlive => true;
@@ -35,10 +37,19 @@ class _CreateClassStepTwoScreenState
   @override
   void initState() {
     super.initState();
+    for (var item in widget.entities) {
+      selectedDays.add(item.day);
+      selectedDaysData[item.day] = {};
+      selectedDaysData[item.day]?["start"] = item.startOn.toLocal();
+      selectedDaysData[item.day]?["end"] = item.endOn.toLocal();
+    }
     Future.microtask(() {
       ref
           .read(createClassDataProvider.notifier)
           .updateIsUserVisitSecondScreen(true);
+      ref
+          .read(createClassDataProvider.notifier)
+          .updateSelectedDaysData(selectedDaysData);
     });
   }
 
@@ -203,6 +214,8 @@ class _CreateClassStepTwoScreenState
               ...selectedDays
                   .map(
                     (day) => TimeSlotCard(
+                      startTime: selectedDaysData[day]?["start"]?.toLocal(),
+                      endTime: selectedDaysData[day]?["end"]?.toLocal(),
                       key: ValueKey(day),
                       dayIndex: day,
                       dayString:
@@ -248,27 +261,38 @@ class _CreateClassStepTwoScreenState
               const SizedBox(height: 16),
               // Informational Banner
               Container(
-                padding: const EdgeInsets.all(16),
+                height: 135,
                 decoration: BoxDecoration(
-                  color: AppTheme.secondaryContainer.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(12),
+                  image: const DecorationImage(
+                    image: AssetImage("assets/editImage.png"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.info, color: AppTheme.primary, size: 20),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'إذا كان وقت الانتهاء قبل وقت البداية، فسيتم اعتبار الحصة ممتدة لليوم التالي تلقائيًا.',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppTheme.onSecondaryContainer,
-                          height: 1.5,
-                        ),
-                      ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        AppTheme.primary.withOpacity(0.8),
+                        Colors.transparent,
+                      ],
                     ),
-                  ],
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  alignment: Alignment.bottomRight,
+                  child: const Text(
+                    'تأكد من مراجعة تفاصيل القاعة والجداول الزمنية قبل الحفظ لتجنب التضارب الدراسي.',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      height: 1.5,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -286,22 +310,33 @@ class TimeSlotCard extends StatefulWidget {
     required this.onTapStart,
     required this.onTapEnd,
     required this.dayString,
+    this.startTime,
+    this.endTime,
   });
   final int dayIndex;
   final String dayString;
   final Function(DateTime) onTapStart;
   final Function(DateTime) onTapEnd;
+  final DateTime? startTime;
+  final DateTime? endTime;
 
   @override
   State<TimeSlotCard> createState() => _TimeSlotCardState();
 }
 
 class _TimeSlotCardState extends State<TimeSlotCard> {
-  DateTime? startTime;
-  DateTime? endTime;
+  late DateTime? startTime;
+  late DateTime? endTime;
   bool startError = false;
   bool endError = false;
   String? error;
+  @override
+  void initState() {
+    super.initState();
+    startTime = widget.startTime;
+    endTime = widget.endTime;
+  }
+
   DateTime combine(DateTime date, TimeOfDay time) {
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
   }
@@ -476,6 +511,10 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                       validationStart();
                       widget.onTapStart(newDate);
                       if (endTime != null) {
+                        endTime = DateTime.now().copyWith(
+                          minute: endTime!.minute,
+                          hour: endTime!.hour,
+                        );
                         final DateTime newDate = normalizeEnd(
                           startTime!,
                           endTime!,
@@ -508,6 +547,11 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                       if (startTime == null) {
                         newDate = combine(DateTime.now(), end);
                       } else {
+                        startTime = DateTime.now().copyWith(
+                          minute: startTime!.minute,
+                          hour: startTime!.hour,
+                        );
+
                         newDate = normalizeEnd(
                           startTime!,
                           combine(DateTime.now(), end),
