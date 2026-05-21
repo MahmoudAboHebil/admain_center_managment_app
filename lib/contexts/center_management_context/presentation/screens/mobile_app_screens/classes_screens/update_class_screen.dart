@@ -1,4 +1,4 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/class_section_repository.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_sections_useCases/create_class_section_useCase.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/update_class_step_one_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/update_class_step_two_screen.dart';
 import 'package:admain_center_managment_app/core/providers/create_class_data_provider.dart';
@@ -12,11 +12,15 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/constants/constants.dart';
+import '../../../../../../core/enums/division_enum.dart';
 import '../../../../../../core/providers/language_provider.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../../injection_container.dart';
 import '../../../../../../sync_engine/domain/repository/sync_repository.dart';
+import '../../../../domain/usecases/classes_sections_useCases/delete_class_sections_useCase.dart';
+import '../../../../domain/usecases/classes_useCases/update_class_useCase.dart';
 import '../../../widgets/custom_app_bar.dart';
+import 'classes_overview_screen.dart';
 
 class UpdateClassScreen extends ConsumerStatefulWidget {
   final ClassEntity entity;
@@ -307,7 +311,10 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
                               curve: Curves.easeInOut,
                             );
                           } else {
-                            await _createClass();
+                            await _updateClass(
+                              widget.entity.entityId,
+                              widget.sections,
+                            );
                           }
                         }
                       } catch (e) {
@@ -363,7 +370,10 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
     );
   }
 
-  Future<void> _createClass() async {
+  Future<void> _updateClass(
+    String classId,
+    List<ClassSectionEntity> oldSections,
+  ) async {
     if (isLoading) return;
 
     setState(() => isLoading = true);
@@ -377,23 +387,11 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
       print("semester : ${data.semester}");
       print("level  : ${data.levelId ?? studyLevels.first}");
       print("sections  : ${data.selectedDaysData}");
-      await Future.delayed(Duration(seconds: 2));
-      /*
-      final data = ref.read(createClassDataProvider);
-      final uuid = Uuid();
       final deviceIdResult = await sl<SyncRepository>().getDeviceId();
       final deviceId = deviceIdResult.getOrThrow();
-
-      final classId = uuid.v4();
-      print('================================>1 ');
-      final newEntity = ClassEntity(
-        entityId: classId,
-        centerId: currentCenter.entityId,
+      final updatedEntity = widget.entity.copyWith(
         byUser: currentUserId,
         byDevice: deviceId,
-        isDeleted: false,
-        version: 1,
-        createdAt: DateTime.now().toUtc(),
         updatedAt: DateTime.now().toUtc(),
         name: _nameController.text.trim(),
         room: _placeController.text.trim(),
@@ -401,27 +399,21 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
         semester: data.semester,
         studyLevelId: data.levelId?.entityId ?? studyLevels.first.entityId,
       );
-      print('================================>2 ');
-
-      final addResult = await sl<ClassRepository>().createClass(newEntity);
-      print('================================>3');
-
-      await addResult.fold(
-        ifLeft: (failuer) {
-          print('================================> $failuer');
-
+      final updateResult = await sl<UpdateClassUseCase>().call(
+        UpdateClassUseCaseParams(updatedEntity),
+      );
+      await updateResult.fold(
+        ifLeft: (f) {
           _showError(S.of(context).wrongHappened, S.of(context).tryAgainLater);
         },
         ifRight: (response) async {
-          print('4================================> $response');
-
           if (response == null) {
-            await _createClassSections(classId);
+            await _updateClassSections(classId, oldSections);
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => ClassesOverviewScreen()),
             );
-            _showSuccess("Class is created");
+            _showSuccess("Class is updated");
           } else {
             _showError(
               S.of(context).wrongHappened,
@@ -430,8 +422,6 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
           }
         },
       );
-
-       */
     } catch (_) {
       _showError(S.of(context).wrongHappened, S.of(context).tryAgainLater);
     } finally {
@@ -441,57 +431,70 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
     }
   }
 
-  Future<void> _createClassSections(String classId) async {
+  Future<void> _updateClassSections(
+    String classId,
+    List<ClassSectionEntity> oldSections,
+  ) async {
+    final Uuid uuid = Uuid();
     final data = ref.read(createClassDataProvider);
-    final uuid = Uuid();
     final deviceIdResult = await sl<SyncRepository>().getDeviceId();
     final deviceId = deviceIdResult.getOrThrow();
-    print('5================================> ');
-    print(data.selectedDaysData!.entries);
-    for (final item in data.selectedDaysData!.entries) {
-      final sectionId = uuid.v4();
-
-      final newSection = ClassSectionEntity(
-        entityId: sectionId,
-        centerId: currentCenter.entityId,
-        byUser: currentUserId,
-        byDevice: deviceId,
-        isDeleted: false,
-        version: 1,
-        createdAt: DateTime.now().toUtc(),
-        updatedAt: DateTime.now().toUtc(),
-        startOn: item.value["start"]!.toUtc(),
-        endOn: item.value["end"]!.toUtc(),
-        day: item.key,
-        classId: classId,
-      );
-      print('12================================> ');
-
-      final result = await sl<ClassSectionRepository>().createClassSection(
-        newSection,
-      );
-      print('6================================> ');
-
-      result.fold(
-        ifLeft: (value) {
-          print('7================================> $value');
-
+    print('cccccccccccccccccccccccccccccccccc');
+    print(oldSections);
+    final deleteResult = await sl<DeleteClassSectionsUseCase>().call(
+      DeleteClassSectionsUseCaseParams(oldSections),
+    );
+    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    print(deleteResult);
+    await deleteResult.fold(
+      ifLeft: (value) {
+        _showError(S.of(context).wrongHappened, S.of(context).tryAgainLater);
+        throw Exception("Failed updating class");
+      },
+      ifRight: (value) async {
+        if (value != null) {
           _showError(S.of(context).wrongHappened, S.of(context).tryAgainLater);
           throw Exception("Failed creating section");
-        },
-        ifRight: (value) {
-          print('7================================> $value');
-
-          if (value != null) {
-            _showError(
-              S.of(context).wrongHappened,
-              S.of(context).tryAgainLater,
-            );
-            throw Exception("Failed creating section");
-          }
-        },
-      );
-    }
+        }
+        for (final item in data.selectedDaysData!.entries) {
+          final newSection = ClassSectionEntity(
+            entityId: uuid.v4(),
+            centerId: currentCenter.entityId,
+            byUser: currentUserId,
+            byDevice: deviceId,
+            isDeleted: false,
+            version: 1,
+            createdAt: DateTime.now().toUtc(),
+            updatedAt: DateTime.now().toUtc(),
+            startOn: item.value["start"]!.toUtc(),
+            endOn: item.value["end"]!.toUtc(),
+            day: item.key,
+            classId: classId,
+          );
+          final result = await sl<CreateClassSectionUseCase>().call(
+            CreateClassSectionUseCaseParams(newSection),
+          );
+          await result.fold(
+            ifLeft: (value) {
+              _showError(
+                S.of(context).wrongHappened,
+                S.of(context).tryAgainLater,
+              );
+              throw Exception("Failed creating section");
+            },
+            ifRight: (value) {
+              if (value != null) {
+                _showError(
+                  S.of(context).wrongHappened,
+                  S.of(context).tryAgainLater,
+                );
+                throw Exception("Failed creating section");
+              }
+            },
+          );
+        }
+      },
+    );
   }
 
   String? _validateInputs() {

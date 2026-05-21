@@ -6,6 +6,10 @@ import 'package:admain_center_managment_app/contexts/center_management_context/d
 import 'package:admain_center_managment_app/contexts/center_management_context/data/repository/student_repository_impl.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/class_repository.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/student_repository.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_sections_useCases/create_class_section_useCase.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_sections_useCases/delete_class_sections_useCase.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_sections_useCases/update_class_section_useCase.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_useCases/update_class_useCase.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/bloc/selection_cubit/selection_cubit.dart';
 import 'package:admain_center_managment_app/sync_engine/data/datasource/local_queue_datasource.dart';
 import 'package:admain_center_managment_app/sync_engine/data/datasource/sync_datasource.dart';
@@ -144,8 +148,21 @@ Future<void> initializeDependencies() async {
     ),
   );
 
+  sl.registerSingleton<UpdateClassUseCase>(
+    UpdateClassUseCase(repository: sl<ClassRepository>()),
+  );
+
   sl.registerSingleton<ClassSectionRepository>(
     ClassSectionRepositoryImpl(sl<LocalClassSectionDatasource>()),
+  );
+  sl.registerSingleton<UpdateClassSectionUseCase>(
+    UpdateClassSectionUseCase(repository: sl<ClassSectionRepository>()),
+  );
+  sl.registerSingleton<DeleteClassSectionsUseCase>(
+    DeleteClassSectionsUseCase(repository: sl<ClassSectionRepository>()),
+  );
+  sl.registerSingleton<CreateClassSectionUseCase>(
+    CreateClassSectionUseCase(repository: sl<ClassSectionRepository>()),
   );
 
   //Blocs

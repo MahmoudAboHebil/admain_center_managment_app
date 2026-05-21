@@ -223,7 +223,7 @@ class _CreateClassStepTwoScreenState
                             selectedDaysData[day]?["start"],
                             selectedDaysData[day]?["end"],
                           )
-                          ? "${days[day]} - ${days[day + 1]}"
+                          ? "${days[day]} - ${days[(day + 1 >= days.length) ? 0 : (day + 1)]}"
                           : days[day],
                       onTapEnd: (timeOfDay) {
                         setState(() {

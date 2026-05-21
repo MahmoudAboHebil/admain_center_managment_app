@@ -307,7 +307,7 @@ class LocalClassSectionDatasource
             ),
           );
         }
-        await _tableRepository.deleteEntityCascadeNotNull(
+        final result = await _tableRepository.deleteEntityCascadeNotNull(
           DBTable.class_sections,
           modelEdited.entityId,
         );
@@ -383,8 +383,6 @@ class LocalClassSectionDatasource
       for (var item in collections) {
         items.add(ClassSectionModel.fromCollection(item));
       }
-      print('dddddddddddddda');
-      print(items);
       return Right(items);
     } catch (e) {
       return Left(

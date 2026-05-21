@@ -40,7 +40,7 @@ class ClassSectionRepositoryImpl implements ClassSectionRepository {
   ) async {
     try {
       final result = await _datasource.getModel(entityId);
-      result.fold(
+      return result.fold(
         ifLeft: (value) {
           return Left(value);
         },
@@ -48,7 +48,6 @@ class ClassSectionRepositoryImpl implements ClassSectionRepository {
           return Right(value?.toEntity());
         },
       );
-      return Right(null);
     } catch (e) {
       return Left(
         ProcessingFailure(

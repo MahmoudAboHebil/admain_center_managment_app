@@ -60,7 +60,7 @@ class StudentRepositoryImpl implements StudentRepository {
   Future<Either<Failure, StudentEntity?>> getStudent(String entityId) async {
     try {
       final result = await _datasource.getModel(entityId);
-      result.fold(
+      return result.fold(
         ifLeft: (value) {
           return Left(value);
         },
@@ -68,7 +68,6 @@ class StudentRepositoryImpl implements StudentRepository {
           return Right(value?.toEntity());
         },
       );
-      return Right(null);
     } catch (e) {
       return Left(
         ProcessingFailure(
@@ -172,19 +171,18 @@ class StudentRepositoryImpl implements StudentRepository {
   ) async {
     try {
       final result = await _datasource.getModelsNameStartWith(name);
-      result.fold(
+      return result.fold(
         ifLeft: (value) {
           return Left(value);
         },
         ifRight: (mainList) {
-          var list = [];
+          var list = <StudentEntity>[];
           for (var item in mainList) {
             list.add(item.toEntity());
           }
           return Right(list);
         },
       );
-      return Right([]);
     } catch (e) {
       return Left(
         ProcessingFailure(message: "failed to  getEntities NameStartWith"),

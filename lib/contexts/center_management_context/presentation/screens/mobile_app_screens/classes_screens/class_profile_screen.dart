@@ -293,7 +293,8 @@ class _ScheduleSection extends StatelessWidget {
     if (isSameDay) {
       return days[entity.day];
     } else {
-      return "${days[entity.day]} - ${days[entity.day + 1]}";
+      var day = entity.day;
+      return "${days[day]} - ${days[(day + 1 >= days.length) ? 0 : (day + 1)]}";
     }
   }
 
