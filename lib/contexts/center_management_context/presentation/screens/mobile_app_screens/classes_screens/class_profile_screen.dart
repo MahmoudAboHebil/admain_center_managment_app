@@ -1,11 +1,16 @@
 import 'package:admain_center_managment_app/config/theme/app_theme.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_useCases/delete_class_useCase.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/update_class_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_entity.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../generated/l10n.dart';
+import '../../../../../../injection_container.dart';
 import '../../../widgets/custom_app_bar.dart';
+import 'classes_overview_screen.dart';
 
 class ClassProfileScreen extends StatelessWidget {
   const ClassProfileScreen({
@@ -55,7 +60,7 @@ class ClassProfileScreen extends StatelessWidget {
   }
 }
 
-class _HeroClassCard extends StatelessWidget {
+class _HeroClassCard extends StatefulWidget {
   const _HeroClassCard({
     required this.entity,
     required this.studyLevel,
@@ -65,6 +70,12 @@ class _HeroClassCard extends StatelessWidget {
   final List<ClassSectionEntity> sections;
   final String studyLevel;
 
+  @override
+  State<_HeroClassCard> createState() => _HeroClassCardState();
+}
+
+class _HeroClassCardState extends State<_HeroClassCard> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -97,7 +108,7 @@ class _HeroClassCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  entity.name,
+                  widget.entity.name,
                   style: TextStyle(
                     fontFamily: 'Manrope',
                     fontWeight: FontWeight.w800,
@@ -108,7 +119,7 @@ class _HeroClassCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  studyLevel,
+                  widget.studyLevel,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 14,
@@ -133,7 +144,7 @@ class _HeroClassCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        entity.room,
+                        widget.entity.room,
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w500,
@@ -161,8 +172,8 @@ class _HeroClassCard extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => UpdateClassScreen(
-                                  entity: entity,
-                                  sections: sections,
+                                  entity: widget.entity,
+                                  sections: widget.sections,
                                 ),
                               ),
                             );
@@ -189,7 +200,28 @@ class _HeroClassCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            await _deleteClass(widget.entity);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: AwesomeSnackbarContent(
+                                  inMaterialBanner: true,
+                                  title: S.of(context).wrongHappened,
+                                  message: S.of(context).tryAgainLater,
+                                  contentType: ContentType.failure,
+                                ),
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                              ),
+                            );
+                          } finally {
+                            if (mounted) {
+                              setState(() => isLoading = false);
+                            }
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.error.withOpacity(0.2),
                           foregroundColor: Colors.white,
@@ -200,7 +232,26 @@ class _HeroClassCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Icon(Icons.delete, size: 20),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          clipBehavior: Clip.none,
+                          children: [
+                            Opacity(
+                              opacity: isLoading ? 0 : 1,
+                              child: const Icon(Icons.delete, size: 20),
+                            ),
+                            isLoading
+                                ? SizedBox(
+                                    height: 16,
+                                    width: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.5,
+                                      color: AppTheme.onPrimary,
+                                    ),
+                                  )
+                                : SizedBox(),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -210,6 +261,41 @@ class _HeroClassCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _deleteClass(ClassEntity entity) async {
+    if (isLoading) return;
+    setState(() => isLoading = true);
+    final result = await sl<DeleteClassUseCase>().call(
+      DeleteClassUseCaseParams(entity),
+    );
+    result.fold(
+      ifLeft: (e) {
+        throw Exception("Delete has failed");
+      },
+      ifRight: (response) {
+        if (response == null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ClassesOverviewScreen()),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: AwesomeSnackbarContent(
+                inMaterialBanner: true,
+                title: S.of(context).success,
+                message: "Class is deleted",
+                contentType: ContentType.success,
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+          );
+        } else {
+          throw Exception("Delete has failed");
+        }
+      },
     );
   }
 }
