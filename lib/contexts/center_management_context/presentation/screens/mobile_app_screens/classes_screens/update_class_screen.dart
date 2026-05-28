@@ -380,13 +380,6 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
 
     try {
       final data = ref.read(createClassDataProvider);
-
-      print("name : ${_nameController.text.trim()}");
-      print("place : ${_placeController.text.trim()}");
-      print("division : ${data.divisionEnum}");
-      print("semester : ${data.semester}");
-      print("level  : ${data.levelId ?? studyLevels.first}");
-      print("sections  : ${data.selectedDaysData}");
       final deviceIdResult = await sl<SyncRepository>().getDeviceId();
       final deviceId = deviceIdResult.getOrThrow();
       final updatedEntity = widget.entity.copyWith(
@@ -439,13 +432,9 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
     final data = ref.read(createClassDataProvider);
     final deviceIdResult = await sl<SyncRepository>().getDeviceId();
     final deviceId = deviceIdResult.getOrThrow();
-    print('cccccccccccccccccccccccccccccccccc');
-    print(oldSections);
     final deleteResult = await sl<DeleteClassSectionsUseCase>().call(
       DeleteClassSectionsUseCaseParams(oldSections),
     );
-    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-    print(deleteResult);
     await deleteResult.fold(
       ifLeft: (value) {
         _showError(S.of(context).wrongHappened, S.of(context).tryAgainLater);
@@ -453,7 +442,6 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
       },
       ifRight: (value) async {
         if (value != null) {
-          _showError(S.of(context).wrongHappened, S.of(context).tryAgainLater);
           throw Exception("Failed creating section");
         }
         for (final item in data.selectedDaysData!.entries) {
@@ -476,18 +464,10 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
           );
           await result.fold(
             ifLeft: (value) {
-              _showError(
-                S.of(context).wrongHappened,
-                S.of(context).tryAgainLater,
-              );
               throw Exception("Failed creating section");
             },
             ifRight: (value) {
               if (value != null) {
-                _showError(
-                  S.of(context).wrongHappened,
-                  S.of(context).tryAgainLater,
-                );
                 throw Exception("Failed creating section");
               }
             },

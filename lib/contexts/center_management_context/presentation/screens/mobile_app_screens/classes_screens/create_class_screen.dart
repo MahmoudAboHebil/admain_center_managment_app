@@ -1,5 +1,4 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/class_repository.dart';
-import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/class_section_repository.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_useCases/create_class_useCase.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/classes_overview_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/create_class_step_one_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/create_class_step_two_screen.dart';
@@ -19,6 +18,7 @@ import '../../../../../../core/providers/language_provider.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../../injection_container.dart';
 import '../../../../../../sync_engine/domain/repository/sync_repository.dart';
+import '../../../../domain/usecases/classes_sections_useCases/create_class_section_useCase.dart';
 import '../../../widgets/custom_app_bar.dart';
 
 class CreateClassScreen extends ConsumerStatefulWidget {
@@ -352,9 +352,7 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
       final uuid = Uuid();
       final deviceIdResult = await sl<SyncRepository>().getDeviceId();
       final deviceId = deviceIdResult.getOrThrow();
-
       final classId = uuid.v4();
-      print('================================>1 ');
       final newEntity = ClassEntity(
         entityId: classId,
         centerId: currentCenter.entityId,
@@ -370,20 +368,16 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
         semester: data.semester,
         studyLevelId: data.levelId?.entityId ?? studyLevels.first.entityId,
       );
-      print('================================>2 ');
 
-      final addResult = await sl<ClassRepository>().createClass(newEntity);
-      print('================================>3');
+      final addResult = await sl<CreateClassUseCase>().call(
+        CreateClassUseCaseParams(newEntity),
+      );
 
       await addResult.fold(
         ifLeft: (failuer) {
-          print('================================> $failuer');
-
           _showError(S.of(context).wrongHappened, S.of(context).tryAgainLater);
         },
         ifRight: (response) async {
-          print('4================================> $response');
-
           if (response == null) {
             await _createClassSections(classId);
             Navigator.pushReplacement(
@@ -413,11 +407,8 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
     final uuid = Uuid();
     final deviceIdResult = await sl<SyncRepository>().getDeviceId();
     final deviceId = deviceIdResult.getOrThrow();
-    print('5================================> ');
-    print(data.selectedDaysData!.entries);
     for (final item in data.selectedDaysData!.entries) {
       final sectionId = uuid.v4();
-
       final newSection = ClassSectionEntity(
         entityId: sectionId,
         centerId: currentCenter.entityId,
@@ -432,28 +423,16 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
         day: item.key,
         classId: classId,
       );
-      print('12================================> ');
 
-      final result = await sl<ClassSectionRepository>().createClassSection(
-        newSection,
+      final result = await sl<CreateClassSectionUseCase>().call(
+        CreateClassSectionUseCaseParams(newSection),
       );
-      print('6================================> ');
-
       result.fold(
         ifLeft: (value) {
-          print('7================================> $value');
-
-          _showError(S.of(context).wrongHappened, S.of(context).tryAgainLater);
           throw Exception("Failed creating section");
         },
         ifRight: (value) {
-          print('7================================> $value');
-
           if (value != null) {
-            _showError(
-              S.of(context).wrongHappened,
-              S.of(context).tryAgainLater,
-            );
             throw Exception("Failed creating section");
           }
         },

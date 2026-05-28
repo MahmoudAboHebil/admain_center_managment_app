@@ -9,6 +9,7 @@ import 'package:admain_center_managment_app/contexts/center_management_context/d
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_sections_useCases/create_class_section_useCase.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_sections_useCases/delete_class_sections_useCase.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_sections_useCases/update_class_section_useCase.dart';
+import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_useCases/create_class_useCase.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_useCases/update_class_useCase.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/bloc/selection_cubit/selection_cubit.dart';
 import 'package:admain_center_managment_app/sync_engine/data/datasource/local_queue_datasource.dart';
@@ -150,6 +151,9 @@ Future<void> initializeDependencies() async {
 
   sl.registerSingleton<UpdateClassUseCase>(
     UpdateClassUseCase(repository: sl<ClassRepository>()),
+  );
+  sl.registerSingleton<CreateClassUseCase>(
+    CreateClassUseCase(repository: sl<ClassRepository>()),
   );
 
   sl.registerSingleton<ClassSectionRepository>(
