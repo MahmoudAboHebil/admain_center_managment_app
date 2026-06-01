@@ -2,6 +2,7 @@ import 'package:admain_center_managment_app/contexts/center_management_context/p
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_entity.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../../../../injection_container.dart';
@@ -95,10 +96,12 @@ class _ClassCardState extends State<ClassCard> {
             padding: const EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,8 +141,8 @@ class _ClassCardState extends State<ClassCard> {
                                 const SizedBox(width: 6),
                                 Text(
                                   widget.studentsCount,
-                                  style: const TextStyle(
-                                    fontSize: 12,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.onSurface,
                                   ),
@@ -152,8 +155,8 @@ class _ClassCardState extends State<ClassCard> {
                       const SizedBox(height: 16),
                       Text(
                         widget.title,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                           color: AppTheme.onSurface,
                           height: 1.2,
@@ -162,8 +165,8 @@ class _ClassCardState extends State<ClassCard> {
                       const SizedBox(height: 4),
                       Text(
                         widget.studyLevel,
-                        style: const TextStyle(
-                          fontSize: 12,
+                        style: TextStyle(
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
                           color: AppTheme.primary,
                           height: 1.2,
@@ -240,16 +243,16 @@ class _ClassCardState extends State<ClassCard> {
             children: [
               Text(
                 label,
-                style: const TextStyle(
-                  fontSize: 10,
+                style: TextStyle(
+                  fontSize: 10.sp,
                   fontWeight: FontWeight.w500,
                   color: AppTheme.onSurfaceVariant,
                 ),
               ),
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 12,
+                style: TextStyle(
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.onSurface,
                 ),

@@ -6,6 +6,7 @@ import 'package:admain_center_managment_app/sync_engine/domain/entities/class_en
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../generated/l10n.dart';
 import '../../../../../../injection_container.dart';
@@ -27,32 +28,34 @@ class ClassProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: AppTheme.surface,
-        appBar: CustomAppBar(label: "تفاصيل الفصل الدراسى"),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppTheme.surface,
+          appBar: CustomAppBar(label: "تفاصيل الفصل الدراسى"),
 
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            top: 10,
-            bottom: 30,
-            left: 16,
-            right: 16,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _HeroClassCard(
-                entity: entity,
-                studyLevel: studyLevel,
-                sections: sections,
-              ),
-              SizedBox(height: 24),
-              _QuickActions(),
-              SizedBox(height: 24),
-              _ScheduleSection(sections: sections),
-              SizedBox(height: 24),
-              _StudentsListSection(),
-            ],
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.only(
+              top: 10,
+              bottom: 30,
+              left: 16,
+              right: 16,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _HeroClassCard(
+                  entity: entity,
+                  studyLevel: studyLevel,
+                  sections: sections,
+                ),
+                SizedBox(height: 24),
+                _QuickActions(),
+                SizedBox(height: 24),
+                _ScheduleSection(sections: sections),
+                SizedBox(height: 24),
+                _StudentsListSection(),
+              ],
+            ),
           ),
         ),
       ),
@@ -96,10 +99,7 @@ class _HeroClassCardState extends State<_HeroClassCard> {
           Positioned.fill(
             child: Opacity(
               opacity: 0.1,
-              child: Image.network(
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuDnOyuug_nzhSVAjYq_GwbEprVBh6bApor5c3fWXFB2ULpWxZSL2sLXd6wUSXFH5fArHf1HPcyxrR-ArOg58hzIfT2MxebH3wReiGzbifuqxMNOSQ_ZMxw2yem5xTrm3-j-0kJ7n4y93Cv_Zkzbf8KZcwlJFJZ9kk5WQcYK3ZnYjEddGCtPriTFFbD_oa2QdbSgLaUgEd86sp0dPS76D5wH254tSSgCFrmCUmRpZFReLC0wBfOxNGmVDqjZN9byJSW0Hs24IsZrvBVI',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset("assets/cover.png", fit: BoxFit.cover),
             ),
           ),
           Padding(
@@ -112,7 +112,7 @@ class _HeroClassCardState extends State<_HeroClassCard> {
                   style: TextStyle(
                     fontFamily: 'Manrope',
                     fontWeight: FontWeight.w800,
-                    fontSize: 24,
+                    fontSize: 22.sp,
                     color: AppTheme.onPrimary,
                     letterSpacing: -0.5,
                   ),
@@ -122,7 +122,7 @@ class _HeroClassCardState extends State<_HeroClassCard> {
                   widget.studyLevel,
                   style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     color: AppTheme.primaryContainer,
                   ),
                 ),
@@ -148,14 +148,14 @@ class _HeroClassCardState extends State<_HeroClassCard> {
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           color: AppTheme.onPrimary,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.only(top: 16),
                   decoration: BoxDecoration(
@@ -182,18 +182,18 @@ class _HeroClassCardState extends State<_HeroClassCard> {
                             backgroundColor: Colors.white.withOpacity(0.2),
                             foregroundColor: Colors.white,
                             elevation: 0,
-                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           icon: const Icon(Icons.edit, size: 18),
-                          label: const Text(
+                          label: Text(
                             'تعديل التفاصيل',
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontSize: 14.sp,
                             ),
                           ),
                         ),
@@ -315,18 +315,18 @@ class _QuickActions extends StatelessWidget {
               foregroundColor: AppTheme.onPrimary,
               elevation: 8,
               shadowColor: AppTheme.primary.withOpacity(0.4),
-              padding: const EdgeInsets.symmetric(vertical: 19),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
             icon: const Icon(Icons.person_add, size: 20),
-            label: const Text(
+            label: Text(
               'إضافة طالب',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 14.sp,
               ),
             ),
           ),
@@ -340,18 +340,18 @@ class _QuickActions extends StatelessWidget {
               foregroundColor: AppTheme.onSecondaryContainer,
               elevation: 2,
               shadowColor: Colors.black.withOpacity(0.1),
-              padding: const EdgeInsets.symmetric(vertical: 19),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
             icon: const Icon(Icons.how_to_reg, size: 20),
-            label: const Text(
+            label: Text(
               'تسجيل الحضور',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.bold,
-                fontSize: 14,
+                fontSize: 14.sp,
               ),
             ),
           ),
@@ -409,12 +409,12 @@ class _ScheduleSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'الجدول الزمني',
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 18.sp,
                 color: AppTheme.onSurface,
               ),
             ),
@@ -424,11 +424,11 @@ class _ScheduleSection extends StatelessWidget {
                 color: AppTheme.surfaceContainer,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Text(
-                '3 جلسات أسبوعياً',
+              child: Text(
+                '${sections.length} جلسات أسبوعياً',
                 style: TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   color: AppTheme.onSurfaceVariant,
                 ),
               ),
@@ -471,7 +471,7 @@ class _ScheduleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return PressableButton(
       child: Container(
-        width: 150,
+        width: 158,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: AppTheme.surfaceContainerLowest,
@@ -483,17 +483,17 @@ class _ScheduleCard extends StatelessWidget {
           children: [
             Text(
               day,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 13,
+                fontSize: 13.sp,
                 color: AppTheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 4),
             Text(
               time,
-              style: const TextStyle(
-                fontSize: 13,
+              style: TextStyle(
+                fontSize: 13.sp,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.bold,
                 color: AppTheme.primary,
@@ -516,13 +516,13 @@ class _StudentsListSection extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             Text(
               'الطلاب المسجلون',
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 18.sp,
                 color: AppTheme.onSurface,
               ),
             ),
@@ -531,7 +531,7 @@ class _StudentsListSection extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w600,
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: AppTheme.primary,
               ),
             ),
@@ -644,7 +644,7 @@ class _StudentItem extends StatelessWidget {
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               color: avatarTextColor ?? Colors.black,
                             ),
                           )
@@ -656,18 +656,18 @@ class _StudentItem extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           color: AppTheme.onSurface,
                         ),
                       ),
                       Text(
                         'رقم أكاديمي: $id',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Inter',
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: AppTheme.onSurfaceVariant,
                         ),
                       ),
@@ -691,7 +691,7 @@ class _StudentItem extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.bold,
-                    fontSize: 10,
+                    fontSize: 10.sp,
                     color: isActive ? Colors.green.shade700 : AppTheme.error,
                   ),
                 ),

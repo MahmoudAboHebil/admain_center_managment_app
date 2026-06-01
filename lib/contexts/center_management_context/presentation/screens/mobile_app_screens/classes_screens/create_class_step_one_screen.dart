@@ -88,19 +88,19 @@ class _CreateClassStepOneScreenState
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'المرحلة الاولى',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
                   color: AppTheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 4),
-              const Text(
+              Text(
                 'إنشاء فصل جديد',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   fontWeight: FontWeight.w800,
                   color: Colors.black,
                 ),
@@ -108,9 +108,9 @@ class _CreateClassStepOneScreenState
             ],
           ),
           const SizedBox(height: 8),
-          const Text(
+          Text(
             'أضف المعلومات الأساسية لتعريف الفصل الدراسي الجديد.',
-            style: TextStyle(fontSize: 14, color: AppTheme.onSurfaceVariant),
+            style: TextStyle(fontSize: 14.sp, color: AppTheme.onSurfaceVariant),
           ),
           const SizedBox(height: 32),
 
@@ -170,7 +170,7 @@ class _CreateClassStepOneScreenState
                         child: Text(
                           'الاول',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                             color: selectedSemester == 0
                                 ? AppTheme.primary
@@ -212,7 +212,7 @@ class _CreateClassStepOneScreenState
                         child: Text(
                           'الثانى',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                             color: selectedSemester == 1
                                 ? AppTheme.primary
@@ -254,11 +254,11 @@ class _CreateClassStepOneScreenState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'الهوية الأساسية',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           color: AppTheme.primary,
                         ),
                       ),
@@ -266,7 +266,7 @@ class _CreateClassStepOneScreenState
                       Text(
                         'تأكد من دقة البيانات الأساسية قبل الانتقال لجدولة المواعيد.',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           color: AppTheme.onPrimaryContainer.withOpacity(0.8),
                         ),
                       ),
@@ -301,9 +301,9 @@ class _CreateClassStepOneScreenState
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w600,
-          fontSize: 14,
+          fontSize: 14.sp,
           color: AppTheme.onSurface,
         ),
       ),

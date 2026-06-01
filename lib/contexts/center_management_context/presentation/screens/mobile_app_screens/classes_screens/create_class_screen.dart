@@ -10,6 +10,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:dart_either/dart_either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
@@ -107,7 +108,7 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
                           Text(
                             'الخطوة 1 من 2',
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
                               color: AppTheme.primary,
                             ),
@@ -116,7 +117,7 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
                             duration: Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                             style: TextStyle(
-                              fontSize: currentIndex == 1 ? 13 : 12,
+                              fontSize: (currentIndex == 1 ? 13 : 12).sp,
                               fontWeight: currentIndex == 1
                                   ? FontWeight.bold
                                   : FontWeight.normal,
@@ -210,7 +211,7 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
                       ],
                     ),
                   ),
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(20),
                   child: ElevatedButton(
                     onPressed: () async {
                       try {
@@ -311,6 +312,7 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primary,
                       foregroundColor: Colors.white,
+                      padding: EdgeInsets.zero,
                       minimumSize: const Size(double.infinity, 56),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -474,23 +476,23 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
 
   Widget addButtonContent() {
     Widget subWidget = (currentIndex == 0)
-        ? const Row(
+        ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'التالي: تحديد المواعيد',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
               ),
               SizedBox(width: 8),
               Icon(Icons.arrow_forward),
             ],
           )
-        : const Row(
+        : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'إضافة حصة',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
               ),
               SizedBox(width: 8),
               Icon(Icons.check_circle, size: 20),

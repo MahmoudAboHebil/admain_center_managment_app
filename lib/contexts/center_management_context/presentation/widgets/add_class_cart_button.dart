@@ -1,5 +1,6 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../screens/mobile_app_screens/classes_screens/create_class_screen.dart';
@@ -11,7 +12,8 @@ class AddClassCartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PressableButton(
       child: Container(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(28),
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: AppTheme.surfaceContainerLow.withOpacity(0.3),
           borderRadius: BorderRadius.circular(24),
@@ -23,6 +25,8 @@ class AddClassCartButton extends StatelessWidget {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               width: 64,
@@ -45,23 +49,23 @@ class AddClassCartButton extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'هل ترغب في تنظيم فصل جديد؟',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 17.sp,
                 color: AppTheme.onSurface,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'قم بإضافة فصولك الدراسية وتعيين المعلمين والطلاب بسهولة',
+            Text(
+              'قم بإضافة فصولك الدراسية وتعيين الطلاب بسهولة',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 14,
+                fontSize: 13.sp,
                 color: AppTheme.onSurfaceVariant,
               ),
             ),
@@ -85,12 +89,12 @@ class AddClassCartButton extends StatelessWidget {
                   side: BorderSide(color: AppTheme.primary.withOpacity(0.2)),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 'إضافة فصل الآن',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 13.sp,
                 ),
               ),
             ),

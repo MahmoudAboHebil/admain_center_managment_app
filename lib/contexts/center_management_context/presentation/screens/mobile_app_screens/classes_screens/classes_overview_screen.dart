@@ -215,12 +215,12 @@ class _SectionHeader extends StatelessWidget {
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               'نظرة عامة',
               style: TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 14,
+                fontSize: 14.sp,
                 color: AppTheme.onSurfaceVariant,
               ),
             ),
@@ -230,7 +230,7 @@ class _SectionHeader extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
-                fontSize: 28,
+                fontSize: 28.sp,
                 color: AppTheme.onSurface,
                 letterSpacing: -0.5,
               ),
@@ -308,10 +308,10 @@ class _StatCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w500,
-                fontSize: 11,
+                fontSize: 12.sp,
                 color: AppTheme.onSurfaceVariant,
               ),
             ),
@@ -321,7 +321,7 @@ class _StatCard extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
-                fontSize: 24,
+                fontSize: 24.sp,
                 color: color,
               ),
             ),

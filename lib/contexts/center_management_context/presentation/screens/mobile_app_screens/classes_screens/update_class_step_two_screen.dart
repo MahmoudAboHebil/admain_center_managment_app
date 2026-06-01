@@ -3,6 +3,7 @@ import 'package:admain_center_managment_app/core/helper/helper.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/providers/create_class_data_provider.dart';
@@ -79,56 +80,56 @@ class _CreateClassStepTwoScreenState
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'المرحلة الثانية',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
                       color: AppTheme.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
+                  Text(
                     'تحديد الأوقات',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.w800,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: selectedDaysData.entries
-                        .map((e) => Text("  ${days[e.key]}  "))
-                        .toList(),
-                  ),
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: selectedDaysData.entries.expand((dayEntry) {
-                      final dayIndex = dayEntry.key;
-                      final times = dayEntry.value;
-
-                      return times.entries.map((timeEntry) {
-                        final key = timeEntry.key;
-                        final time = timeEntry.value;
-
-                        return Text(
-                          '$dayIndex) $key // ${time.toIso8601String()}',
-                        );
-                      });
-                    }).toList(),
-                  ),
+                  // const SizedBox(height: 4),
+                  // Row(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: selectedDaysData.entries
+                  //       .map((e) => Text("  ${days[e.key]}  "))
+                  //       .toList(),
+                  // ),
+                  //
+                  // Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: selectedDaysData.entries.expand((dayEntry) {
+                  //     final dayIndex = dayEntry.key;
+                  //     final times = dayEntry.value;
+                  //
+                  //     return times.entries.map((timeEntry) {
+                  //       final key = timeEntry.key;
+                  //       final time = timeEntry.value;
+                  //
+                  //       return Text(
+                  //         '$dayIndex) $key // ${time.toIso8601String()}',
+                  //       );
+                  //     });
+                  //   }).toList(),
+                  // ),
                 ],
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 26),
 
               // Day Selection Section
-              const Text(
+              Text(
                 'اختر أيام الأسبوع',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.onSurfaceVariant,
                 ),
@@ -184,7 +185,7 @@ class _CreateClassStepTwoScreenState
                           child: Text(
                             day,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
                               color: isSelected
                                   ? Colors.white
@@ -200,10 +201,10 @@ class _CreateClassStepTwoScreenState
               const SizedBox(height: 32),
 
               // Time Slots Grid
-              const Text(
+              Text(
                 'تفاصيل الحصص',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.onSurfaceVariant,
                 ),
@@ -283,11 +284,11 @@ class _CreateClassStepTwoScreenState
                   ),
                   padding: const EdgeInsets.all(16),
                   alignment: Alignment.bottomRight,
-                  child: const Text(
+                  child: Text(
                     'تأكد من مراجعة تفاصيل القاعة والجداول الزمنية قبل الحفظ لتجنب التضارب الدراسي.',
                     style: TextStyle(
                       fontFamily: 'Inter',
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
                       height: 1.5,
@@ -470,8 +471,8 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                     const SizedBox(width: 12),
                     Text(
                       widget.dayString,
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: TextStyle(
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -572,7 +573,7 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                 padding: EdgeInsets.only(top: 14),
                 child: Text(
                   error!,
-                  style: const TextStyle(fontSize: 12, color: AppTheme.error),
+                  style: TextStyle(fontSize: 12.sp, color: AppTheme.error),
                 ),
               ),
           ],
@@ -620,10 +621,7 @@ class _TimePickerFieldState extends State<TimePickerField> {
       children: [
         Text(
           widget.label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: AppTheme.onSurfaceVariant,
-          ),
+          style: TextStyle(fontSize: 12.sp, color: AppTheme.onSurfaceVariant),
         ),
         const SizedBox(height: 8),
         PressableButton(
@@ -649,8 +647,8 @@ class _TimePickerFieldState extends State<TimePickerField> {
               children: [
                 Text(
                   myValue == null ? '--' : myValue!.format(context),
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: AppTheme.onSurface,
                   ),
