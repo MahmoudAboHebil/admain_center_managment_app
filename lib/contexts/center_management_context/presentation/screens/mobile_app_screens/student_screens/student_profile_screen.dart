@@ -20,7 +20,7 @@ import '../../../widgets/contact_row_card.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/section_header.dart';
 import '../../../widgets/user_state_card.dart';
-import 'edit_student_screen.dart';
+import 'update_student_screen.dart';
 
 class StudentProfileScreen extends ConsumerStatefulWidget {
   final StudentEntity student;
@@ -59,7 +59,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                   reverseTransitionDuration: Duration(milliseconds: 300),
 
                   pageBuilder: (context, animation, secondaryAnimation) {
-                    return EditStudentScreen(studentEntity: widget.student);
+                    return UpdateStudentScreen(studentEntity: widget.student);
                   },
 
                   transitionsBuilder:
@@ -510,7 +510,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
 
                               pageBuilder:
                                   (context, animation, secondaryAnimation) {
-                                    return EditStudentScreen(
+                                    return UpdateStudentScreen(
                                       studentEntity: widget.student,
                                     );
                                   },

@@ -11,8 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'bloc_observer.dart';
+import 'config/route/app_route_provider.dart';
 import 'config/theme/app_theme.dart';
-import 'contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_overview_screen.dart';
 import 'core/enums/languages.dart';
 import 'core/internet_service/internet_bloc/internet_bloc.dart';
 import 'core/providers/language_provider.dart';
@@ -27,7 +27,7 @@ void main() async {
   await initializeDependencies();
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) {
         return ScreenUtilInit(
           builder: (context, child) => ProviderScope(child: MyApp()),
@@ -45,6 +45,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final languageState = ref.watch(languageProvider);
+    final appRouteProv = ref.watch(appRouteProvider);
 
     return MultiBlocProvider(
       providers: [
@@ -58,7 +59,7 @@ class MyApp extends ConsumerWidget {
           create: (BuildContext context) => sl<SelectionCubit>(),
         ),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         locale: Locale(languageState.value?.name ?? Language.en.name),
@@ -69,7 +70,7 @@ class MyApp extends ConsumerWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        home: const StudentsOverviewScreen(),
+        routerConfig: appRouteProv,
       ),
     );
   }

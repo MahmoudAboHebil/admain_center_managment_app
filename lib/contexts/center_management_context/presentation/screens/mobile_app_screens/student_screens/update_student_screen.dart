@@ -26,15 +26,15 @@ import '../../../widgets/label_and_input.dart';
 import '../../../widgets/section_header.dart';
 import '../../../widgets/text_phone_widget.dart';
 
-class EditStudentScreen extends ConsumerStatefulWidget {
+class UpdateStudentScreen extends ConsumerStatefulWidget {
   final StudentEntity studentEntity;
-  const EditStudentScreen({super.key, required this.studentEntity});
+  const UpdateStudentScreen({super.key, required this.studentEntity});
 
   @override
-  ConsumerState<EditStudentScreen> createState() => _EditStudentScreenState();
+  ConsumerState<UpdateStudentScreen> createState() => _EditStudentScreenState();
 }
 
-class _EditStudentScreenState extends ConsumerState<EditStudentScreen> {
+class _EditStudentScreenState extends ConsumerState<UpdateStudentScreen> {
   final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   late String? studentPhone;
   late String? studentName;
