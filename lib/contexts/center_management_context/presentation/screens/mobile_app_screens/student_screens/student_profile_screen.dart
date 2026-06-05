@@ -1,10 +1,11 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_overview_screen.dart';
+import 'package:admain_center_managment_app/config/route/route.dart';
 import 'package:admain_center_managment_app/core/constants/constants.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
@@ -20,7 +21,6 @@ import '../../../widgets/contact_row_card.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/section_header.dart';
 import '../../../widgets/user_state_card.dart';
-import 'update_student_screen.dart';
 
 class StudentProfileScreen extends ConsumerStatefulWidget {
   final StudentEntity student;
@@ -52,35 +52,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
           label: S.of(context).studentProfile,
           leadingWidget: MaterialButton(
             onPressed: () async {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  transitionDuration: Duration(milliseconds: 300),
-                  reverseTransitionDuration: Duration(milliseconds: 300),
-
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                    return UpdateStudentScreen(studentEntity: widget.student);
-                  },
-
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                        final slide = Tween<Offset>(
-                          begin: Offset(1, 0),
-                          end: Offset.zero,
-                        ).animate(animation);
-
-                        final fade = Tween<double>(
-                          begin: 0.0,
-                          end: 1.0,
-                        ).animate(animation);
-
-                        return FadeTransition(
-                          opacity: fade,
-                          child: SlideTransition(position: slide, child: child),
-                        );
-                      },
-                ),
-              );
+              context.pushNamed(RouteName.updateStudent, extra: widget.student);
             },
             elevation: 0,
             hoverElevation: 0,
@@ -500,47 +472,9 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                       color: AppTheme.surface.withOpacity(0.95),
                       child: ElevatedButton.icon(
                         onPressed: () async {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              transitionDuration: Duration(milliseconds: 300),
-                              reverseTransitionDuration: Duration(
-                                milliseconds: 300,
-                              ),
-
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                    return UpdateStudentScreen(
-                                      studentEntity: widget.student,
-                                    );
-                                  },
-
-                              transitionsBuilder:
-                                  (
-                                    context,
-                                    animation,
-                                    secondaryAnimation,
-                                    child,
-                                  ) {
-                                    final slide = Tween<Offset>(
-                                      begin: Offset(1, 0),
-                                      end: Offset.zero,
-                                    ).animate(animation);
-
-                                    final fade = Tween<double>(
-                                      begin: 0.0,
-                                      end: 1.0,
-                                    ).animate(animation);
-
-                                    return FadeTransition(
-                                      opacity: fade,
-                                      child: SlideTransition(
-                                        position: slide,
-                                        child: child,
-                                      ),
-                                    );
-                                  },
-                            ),
+                          context.pushNamed(
+                            RouteName.updateStudent,
+                            extra: widget.student,
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -588,52 +522,7 @@ class _StudentProfileScreenState extends ConsumerState<StudentProfileScreen> {
                               },
                               ifRight: (response) {
                                 if (response == null) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: Duration(
-                                        milliseconds: 300,
-                                      ),
-                                      reverseTransitionDuration: Duration(
-                                        milliseconds: 300,
-                                      ),
-
-                                      pageBuilder:
-                                          (
-                                            context,
-                                            animation,
-                                            secondaryAnimation,
-                                          ) {
-                                            return StudentsOverviewScreen();
-                                          },
-
-                                      transitionsBuilder:
-                                          (
-                                            context,
-                                            animation,
-                                            secondaryAnimation,
-                                            child,
-                                          ) {
-                                            final slide = Tween<Offset>(
-                                              begin: Offset(1, 0),
-                                              end: Offset.zero,
-                                            ).animate(animation);
-
-                                            final fade = Tween<double>(
-                                              begin: 0.0,
-                                              end: 1.0,
-                                            ).animate(animation);
-
-                                            return FadeTransition(
-                                              opacity: fade,
-                                              child: SlideTransition(
-                                                position: slide,
-                                                child: child,
-                                              ),
-                                            );
-                                          },
-                                    ),
-                                  );
+                                  context.goNamed(RouteName.studentsOverview);
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

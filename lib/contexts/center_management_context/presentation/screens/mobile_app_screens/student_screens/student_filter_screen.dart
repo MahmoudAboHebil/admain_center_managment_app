@@ -1,10 +1,11 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_overview_screen.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../../../config/route/route_name.dart';
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../core/enums/division_enum.dart';
@@ -249,41 +250,9 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
                 if (!mounted) return;
                 await getFilterData(data);
                 await Future.delayed(Duration(milliseconds: 400));
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  PageRouteBuilder(
-                    transitionDuration: Duration(milliseconds: 300),
-                    reverseTransitionDuration: Duration(milliseconds: 300),
-
-                    pageBuilder: (context, animation, secondaryAnimation) {
-                      return StudentsOverviewScreen(
-                        filterDataList: filterDataList,
-                        params: data,
-                      );
-                    },
-
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                          final slide = Tween<Offset>(
-                            begin: Offset(1, 0),
-                            end: Offset.zero,
-                          ).animate(animation);
-
-                          final fade = Tween<double>(
-                            begin: 0.0,
-                            end: 1.0,
-                          ).animate(animation);
-
-                          return FadeTransition(
-                            opacity: fade,
-                            child: SlideTransition(
-                              position: slide,
-                              child: child,
-                            ),
-                          );
-                        },
-                  ),
-                  (route) => false,
+                context.goNamed(
+                  RouteName.studentsOverview,
+                  extra: {'filterDataList': filterDataList, 'params': data},
                 );
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -391,6 +360,7 @@ class _StudentFilterScreenState extends ConsumerState<StudentFilterScreen> {
               }
               return studyCon && divisionCon && statesCon && paymentCon;
             }).toList();
+
             setState(() {
               filterDataList = newData;
             });

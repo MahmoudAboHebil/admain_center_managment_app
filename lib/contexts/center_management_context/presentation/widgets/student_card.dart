@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../config/route/route_name.dart';
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/providers/language_provider.dart';
 import '../../../../generated/l10n.dart';
@@ -14,8 +16,6 @@ import '../../../../injection_container.dart';
 import '../../domain/repository/student_repository.dart';
 import '../bloc/selection_cubit/selection_cubit.dart';
 import '../bloc/selection_cubit/selection_state.dart';
-import '../screens/mobile_app_screens/student_screens/student_profile_screen.dart';
-import '../screens/mobile_app_screens/student_screens/update_student_screen.dart';
 
 class StudentCard extends ConsumerStatefulWidget {
   final StudentEntity student;
@@ -75,35 +75,7 @@ class _StudentCardState extends ConsumerState<StudentCard> {
               .state
               .isSelectionMode;
           if (!isSelectedMode) {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                transitionDuration: Duration(milliseconds: 300),
-                reverseTransitionDuration: Duration(milliseconds: 300),
-
-                pageBuilder: (context, animation, secondaryAnimation) {
-                  return StudentProfileScreen(student: widget.student);
-                },
-
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                      final slide = Tween<Offset>(
-                        begin: Offset(1, 0),
-                        end: Offset.zero,
-                      ).animate(animation);
-
-                      final fade = Tween<double>(
-                        begin: 0.0,
-                        end: 1.0,
-                      ).animate(animation);
-
-                      return FadeTransition(
-                        opacity: fade,
-                        child: SlideTransition(position: slide, child: child),
-                      );
-                    },
-              ),
-            );
+            context.pushNamed(RouteName.studentProfile, extra: widget.student);
           } else {
             context.read<SelectionCubit>().toggleSelection(
               widget.student.entityId,
@@ -336,55 +308,9 @@ class _StudentCardState extends ConsumerState<StudentCard> {
                                   TextButton(
                                     onPressed: !isSelectedMode
                                         ? () {
-                                            Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                transitionDuration: Duration(
-                                                  milliseconds: 300,
-                                                ),
-                                                reverseTransitionDuration:
-                                                    Duration(milliseconds: 300),
-
-                                                pageBuilder:
-                                                    (
-                                                      context,
-                                                      animation,
-                                                      secondaryAnimation,
-                                                    ) {
-                                                      return UpdateStudentScreen(
-                                                        studentEntity:
-                                                            widget.student,
-                                                      );
-                                                    },
-
-                                                transitionsBuilder:
-                                                    (
-                                                      context,
-                                                      animation,
-                                                      secondaryAnimation,
-                                                      child,
-                                                    ) {
-                                                      final slide =
-                                                          Tween<Offset>(
-                                                            begin: Offset(1, 0),
-                                                            end: Offset.zero,
-                                                          ).animate(animation);
-
-                                                      final fade =
-                                                          Tween<double>(
-                                                            begin: 0.0,
-                                                            end: 1.0,
-                                                          ).animate(animation);
-
-                                                      return FadeTransition(
-                                                        opacity: fade,
-                                                        child: SlideTransition(
-                                                          position: slide,
-                                                          child: child,
-                                                        ),
-                                                      );
-                                                    },
-                                              ),
+                                            context.pushNamed(
+                                              RouteName.updateStudent,
+                                              extra: widget.student,
                                             );
                                           }
                                         : null,
@@ -491,47 +417,9 @@ class _StudentCardState extends ConsumerState<StudentCard> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            transitionDuration: Duration(milliseconds: 300),
-                            reverseTransitionDuration: Duration(
-                              milliseconds: 300,
-                            ),
-
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) {
-                                  return StudentProfileScreen(
-                                    student: widget.student,
-                                  );
-                                },
-
-                            transitionsBuilder:
-                                (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  final slide = Tween<Offset>(
-                                    begin: Offset(1, 0),
-                                    end: Offset.zero,
-                                  ).animate(animation);
-
-                                  final fade = Tween<double>(
-                                    begin: 0.0,
-                                    end: 1.0,
-                                  ).animate(animation);
-
-                                  return FadeTransition(
-                                    opacity: fade,
-                                    child: SlideTransition(
-                                      position: slide,
-                                      child: child,
-                                    ),
-                                  );
-                                },
-                          ),
+                        context.pushNamed(
+                          RouteName.studentProfile,
+                          extra: widget.student,
                         );
 
                         _overlayEntry?.remove();

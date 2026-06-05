@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:admain_center_managment_app/config/route/route.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/repository/class_repository.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/classes_grid.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
@@ -15,10 +16,7 @@ import '../../../../../../core/providers/language_provider.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../../injection_container.dart';
 import '../../../../domain/repository/student_repository.dart';
-import '../../../bloc/selection_cubit/selection_cubit.dart';
 import '../../../widgets/overview_screen_appBar.dart';
-import '../student_screens/students_overview_screen.dart';
-import 'create_class_screen.dart';
 
 class ClassesOverviewScreen extends ConsumerStatefulWidget {
   const ClassesOverviewScreen({super.key});
@@ -145,56 +143,6 @@ class _StudentsListScreenState extends ConsumerState<ClassesOverviewScreen> {
                     ],
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    BottomNavigationBar(
-                      onTap: (index) async {
-                        context.read<SelectionCubit>().clearSelection();
-                        if (index == 0) {
-                          /* Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClassesOverviewScreen(),
-                            ),
-                          );*/
-                        } else if (index == 1) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StudentsOverviewScreen(),
-                            ),
-                          );
-                        } else if (index == 2) {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => ClassesOverviewScreen(),
-                          //   ),
-                          // );
-                        }
-                      },
-                      currentIndex: 2,
-                      items: [
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.dashboard_outlined, size: 24.sp),
-                          activeIcon: Icon(Icons.dashboard, size: 24.sp),
-                          label: S.of(context).dashboard,
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.group_outlined, size: 24.sp),
-                          activeIcon: Icon(Icons.group, size: 24.sp),
-                          label: S.of(context).theStudents,
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.class_outlined, size: 24.sp),
-                          activeIcon: Icon(Icons.class_, size: 24.sp),
-                          label: S.of(context).classes,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
@@ -253,10 +201,7 @@ class _SectionHeader extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateClassScreen()),
-                );
+                context.pushNamed(RouteName.createClass);
               },
               borderRadius: BorderRadius.circular(14),
               child: const Padding(

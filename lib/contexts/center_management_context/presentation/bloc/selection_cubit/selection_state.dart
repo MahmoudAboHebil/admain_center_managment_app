@@ -13,4 +13,9 @@ class SelectionState {
       isSelectionMode: isSelectionMode ?? this.isSelectionMode,
     );
   }
+
+  @override
+  String toString() {
+    return 'SelectionState{ $isSelectionMode}';
+  }
 }

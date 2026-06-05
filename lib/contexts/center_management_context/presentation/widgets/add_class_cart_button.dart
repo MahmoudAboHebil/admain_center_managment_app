@@ -1,9 +1,10 @@
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../config/route/route_name.dart';
 import '../../../../config/theme/app_theme.dart';
-import '../screens/mobile_app_screens/classes_screens/create_class_screen.dart';
 
 class AddClassCartButton extends StatelessWidget {
   const AddClassCartButton({super.key});
@@ -72,10 +73,7 @@ class AddClassCartButton extends StatelessWidget {
             const SizedBox(height: 24),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateClassScreen()),
-                );
+                context.pushNamed(RouteName.createClass);
               },
               style: TextButton.styleFrom(
                 backgroundColor: AppTheme.primary.withOpacity(0.1),

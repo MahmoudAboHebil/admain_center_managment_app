@@ -147,19 +147,18 @@ class StudentRepositoryImpl implements StudentRepository {
   Future<Either<Failure, List<StudentEntity>>> getAllItemsNotArchived() async {
     try {
       final result = await _datasource.getAllItemsNotArchived();
-      result.fold(
+      return result.fold(
         ifLeft: (value) {
           return Left(value);
         },
         ifRight: (mainList) {
-          var list = [];
+          var list = <StudentEntity>[];
           for (var item in mainList) {
             list.add(item.toEntity());
           }
           return Right(list);
         },
       );
-      return Right([]);
     } catch (e) {
       return Left(ProcessingFailure(message: "failed to get Students"));
     }

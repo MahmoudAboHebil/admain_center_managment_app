@@ -1,8 +1,9 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/student_profile_screen.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/student_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../config/route/route_name.dart';
 import '../../../../config/theme/app_theme.dart';
 
 class SearchStudentCard extends StatelessWidget {
@@ -25,35 +26,7 @@ class SearchStudentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 300),
-            reverseTransitionDuration: Duration(milliseconds: 300),
-
-            pageBuilder: (context, animation, secondaryAnimation) {
-              return StudentProfileScreen(student: studentEntity);
-            },
-
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-                  final slide = Tween<Offset>(
-                    begin: Offset(1, 0),
-                    end: Offset.zero,
-                  ).animate(animation);
-
-                  final fade = Tween<double>(
-                    begin: 0.0,
-                    end: 1.0,
-                  ).animate(animation);
-
-                  return FadeTransition(
-                    opacity: fade,
-                    child: SlideTransition(position: slide, child: child),
-                  );
-                },
-          ),
-        );
+        context.pushNamed(RouteName.studentProfile, extra: studentEntity);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0.0),

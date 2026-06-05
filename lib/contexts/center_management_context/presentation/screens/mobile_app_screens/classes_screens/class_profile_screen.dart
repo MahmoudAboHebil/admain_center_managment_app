@@ -1,17 +1,17 @@
+import 'package:admain_center_managment_app/config/route/route.dart';
 import 'package:admain_center_managment_app/config/theme/app_theme.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_useCases/delete_class_useCase.dart';
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/update_class_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/pressable_button.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_entity.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../../generated/l10n.dart';
 import '../../../../../../injection_container.dart';
 import '../../../widgets/custom_app_bar.dart';
-import 'classes_overview_screen.dart';
 
 class ClassProfileScreen extends StatelessWidget {
   const ClassProfileScreen({
@@ -168,14 +168,12 @@ class _HeroClassCardState extends State<_HeroClassCard> {
                       Expanded(
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UpdateClassScreen(
-                                  entity: widget.entity,
-                                  sections: widget.sections,
-                                ),
-                              ),
+                            context.pushNamed(
+                              RouteName.updateClass,
+                              extra: {
+                                'entity': widget.entity,
+                                'sections': widget.sections,
+                              },
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -276,9 +274,9 @@ class _HeroClassCardState extends State<_HeroClassCard> {
       },
       ifRight: (response) {
         if (response == null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => ClassesOverviewScreen()),
+          context.goNamed(
+            RouteName.classesOverview,
+            extra: {'refreshId': DateTime.now().millisecondsSinceEpoch},
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

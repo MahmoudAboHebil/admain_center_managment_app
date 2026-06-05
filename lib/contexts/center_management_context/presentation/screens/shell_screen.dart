@@ -9,10 +9,8 @@ import '../../../../core/providers/nav_bar_provider.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 class ShellScreen extends ConsumerStatefulWidget {
-  static ShellScreen builder(BuildContext buildContext, GoRouterState state) =>
-      ShellScreen();
-  const ShellScreen({super.key, this.child});
-  final Widget? child;
+  const ShellScreen({super.key, required this.navigationShell});
+  final StatefulNavigationShell navigationShell;
   @override
   ConsumerState<ShellScreen> createState() => _ShellScreenState();
 }
@@ -76,8 +74,8 @@ class _ShellScreenState extends ConsumerState<ShellScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(child: widget.child!),
-              const BottomNavBar(),
+              Expanded(child: widget.navigationShell),
+              BottomNavBar(navigationShell: widget.navigationShell),
             ],
           ),
         ),

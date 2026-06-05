@@ -9,8 +9,10 @@ import 'package:dart_either/dart_either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../../../config/route/route_name.dart';
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/constants/constants.dart';
 import '../../../../../../core/enums/division_enum.dart';
@@ -21,7 +23,6 @@ import '../../../../../../sync_engine/domain/repository/sync_repository.dart';
 import '../../../../domain/usecases/classes_sections_useCases/delete_class_sections_useCase.dart';
 import '../../../../domain/usecases/classes_useCases/update_class_useCase.dart';
 import '../../../widgets/custom_app_bar.dart';
-import 'classes_overview_screen.dart';
 
 class UpdateClassScreen extends ConsumerStatefulWidget {
   final ClassEntity entity;
@@ -404,9 +405,9 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
         ifRight: (response) async {
           if (response == null) {
             await _updateClassSections(classId, oldSections);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => ClassesOverviewScreen()),
+            context.goNamed(
+              RouteName.classesOverview,
+              extra: {'refreshId': DateTime.now().millisecondsSinceEpoch},
             );
             _showSuccess("Class is updated");
           } else {

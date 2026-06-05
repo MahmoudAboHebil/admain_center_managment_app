@@ -1,9 +1,10 @@
 import 'package:admain_center_managment_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../config/route/route_name.dart';
 import '../../../../config/theme/app_theme.dart';
-import '../screens/mobile_app_screens/student_screens/add_student_screen.dart';
 
 class AddStudentCartButton extends StatelessWidget {
   const AddStudentCartButton({super.key, required this.isDesktop});
@@ -13,35 +14,7 @@ class AddStudentCartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 300),
-            reverseTransitionDuration: Duration(milliseconds: 300),
-
-            pageBuilder: (context, animation, secondaryAnimation) {
-              return AddStudentScreen();
-            },
-
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-                  final slide = Tween<Offset>(
-                    begin: Offset(0, 1),
-                    end: Offset.zero,
-                  ).animate(animation);
-
-                  final fade = Tween<double>(
-                    begin: 0,
-                    end: 1,
-                  ).animate(animation);
-
-                  return FadeTransition(
-                    opacity: fade,
-                    child: SlideTransition(position: slide, child: child),
-                  );
-                },
-          ),
-        );
+        context.pushNamed(RouteName.addStudent);
       },
       child: Container(
         height: 100,

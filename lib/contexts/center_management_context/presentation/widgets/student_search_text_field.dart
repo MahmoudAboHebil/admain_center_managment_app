@@ -1,10 +1,11 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/students_search_screen.dart';
+import 'package:admain_center_managment_app/config/route/route.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/widgets/search_student_card.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../../../../core/constants/constants.dart';
@@ -287,40 +288,12 @@ class _StudentSearchTextFieldState extends ConsumerState<StudentSearchTextField>
                 onPressed: () {
                   if ((filterDataList.length >= 4)) {
                     context.read<SelectionCubit>().clearSelection();
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        transitionDuration: Duration(milliseconds: 300),
-                        reverseTransitionDuration: Duration(milliseconds: 300),
-
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                          return StudentsSearchScreen(
-                            query: searchController.text,
-                            initialData: filterDataList,
-                          );
-                        },
-
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                              final slide = Tween<Offset>(
-                                begin: Offset(1, 0),
-                                end: Offset.zero,
-                              ).animate(animation);
-
-                              final fade = Tween<double>(
-                                begin: 0.0,
-                                end: 1.0,
-                              ).animate(animation);
-
-                              return FadeTransition(
-                                opacity: fade,
-                                child: SlideTransition(
-                                  position: slide,
-                                  child: child,
-                                ),
-                              );
-                            },
-                      ),
+                    context.pushNamed(
+                      RouteName.studentsSearch,
+                      extra: {
+                        'query': searchController.text,
+                        'initialData': filterDataList,
+                      },
                     );
                   }
                 },

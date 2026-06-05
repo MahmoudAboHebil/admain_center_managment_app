@@ -1,5 +1,5 @@
+import 'package:admain_center_managment_app/config/route/route.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/domain/usecases/classes_useCases/create_class_useCase.dart';
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/classes_overview_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/create_class_step_one_screen.dart';
 import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/create_class_step_two_screen.dart';
 import 'package:admain_center_managment_app/core/enums/division_enum.dart';
@@ -11,6 +11,7 @@ import 'package:dart_either/dart_either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
@@ -382,9 +383,10 @@ class _CreateClassScreenState extends ConsumerState<CreateClassScreen> {
         ifRight: (response) async {
           if (response == null) {
             await _createClassSections(classId);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => ClassesOverviewScreen()),
+
+            context.goNamed(
+              RouteName.classesOverview,
+              extra: {'refreshId': DateTime.now().millisecondsSinceEpoch},
             );
             _showSuccess("Class is created");
           } else {

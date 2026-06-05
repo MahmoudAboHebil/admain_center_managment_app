@@ -1,9 +1,10 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/add_student_screen.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../../../config/route/route_name.dart';
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../../injection_container.dart';
@@ -471,47 +472,7 @@ class _StudentsSearchScreenState extends State<StudentsSearchScreen> {
                       child: FloatingActionButton(
                         onPressed: () {
                           context.read<SelectionCubit>().clearSelection();
-
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              transitionDuration: Duration(milliseconds: 300),
-                              reverseTransitionDuration: Duration(
-                                milliseconds: 300,
-                              ),
-
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                    return AddStudentScreen();
-                                  },
-
-                              transitionsBuilder:
-                                  (
-                                    context,
-                                    animation,
-                                    secondaryAnimation,
-                                    child,
-                                  ) {
-                                    final slide = Tween<Offset>(
-                                      begin: Offset(0, 1),
-                                      end: Offset.zero,
-                                    ).animate(animation);
-
-                                    final fade = Tween<double>(
-                                      begin: 0,
-                                      end: 1,
-                                    ).animate(animation);
-
-                                    return FadeTransition(
-                                      opacity: fade,
-                                      child: SlideTransition(
-                                        position: slide,
-                                        child: child,
-                                      ),
-                                    );
-                                  },
-                            ),
-                          );
+                          context.pushNamed(RouteName.addStudent);
                         },
                         backgroundColor: AppTheme.primary,
                         child: Icon(Icons.person_add, size: 24.sp),

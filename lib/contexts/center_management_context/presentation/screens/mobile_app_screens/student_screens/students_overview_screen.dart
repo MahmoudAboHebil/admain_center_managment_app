@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/student_screens/student_filter_screen.dart';
 import 'package:admain_center_managment_app/core/enums/division_enum.dart';
 import 'package:admain_center_managment_app/core/enums/languages.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -8,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
+import '../../../../../../config/route/route_name.dart';
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/helper/helper.dart';
 import '../../../../../../core/providers/language_provider.dart';
@@ -27,8 +28,6 @@ import '../../../widgets/overview_screen_appBar.dart';
 import '../../../widgets/state_cart.dart';
 import '../../../widgets/student_search_text_field.dart';
 import '../../../widgets/students_grid.dart';
-import '../classes_screens/classes_overview_screen.dart';
-import 'add_student_screen.dart';
 
 Future<void> testInternet() async {
   final res = await http.get(Uri.parse("https://google.com"));
@@ -135,52 +134,10 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                             onTap: () async {
                               context.read<SelectionCubit>().clearSelection();
                               searchFocusNode.unfocus();
-
                               FocusScope.of(context).unfocus();
-
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  transitionDuration: Duration(
-                                    milliseconds: 300,
-                                  ),
-                                  reverseTransitionDuration: Duration(
-                                    milliseconds: 300,
-                                  ),
-
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) {
-                                        return StudentFilterScreen(
-                                          initialParams: widget.params,
-                                        );
-                                      },
-
-                                  transitionsBuilder:
-                                      (
-                                        context,
-                                        animation,
-                                        secondaryAnimation,
-                                        child,
-                                      ) {
-                                        final slide = Tween<Offset>(
-                                          begin: Offset(0, 1),
-                                          end: Offset.zero,
-                                        ).animate(animation);
-
-                                        final fade = Tween<double>(
-                                          begin: 0,
-                                          end: 1,
-                                        ).animate(animation);
-
-                                        return FadeTransition(
-                                          opacity: fade,
-                                          child: SlideTransition(
-                                            position: slide,
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                ),
+                              context.pushNamed(
+                                RouteName.studentFilterScreen,
+                                extra: widget.params,
                               );
                             },
                             child: Container(
@@ -368,66 +325,9 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                                               searchFocusNode.unfocus();
 
                                               FocusScope.of(context).unfocus();
-
-                                              Navigator.push(
-                                                context,
-                                                PageRouteBuilder(
-                                                  transitionDuration: Duration(
-                                                    milliseconds: 300,
-                                                  ),
-                                                  reverseTransitionDuration:
-                                                      Duration(
-                                                        milliseconds: 300,
-                                                      ),
-
-                                                  pageBuilder:
-                                                      (
-                                                        context,
-                                                        animation,
-                                                        secondaryAnimation,
-                                                      ) {
-                                                        return StudentFilterScreen(
-                                                          initialParams:
-                                                              widget.params,
-                                                        );
-                                                      },
-
-                                                  transitionsBuilder:
-                                                      (
-                                                        context,
-                                                        animation,
-                                                        secondaryAnimation,
-                                                        child,
-                                                      ) {
-                                                        final slide =
-                                                            Tween<Offset>(
-                                                              begin: Offset(
-                                                                0,
-                                                                1,
-                                                              ),
-                                                              end: Offset.zero,
-                                                            ).animate(
-                                                              animation,
-                                                            );
-
-                                                        final fade =
-                                                            Tween<double>(
-                                                              begin: 0,
-                                                              end: 1,
-                                                            ).animate(
-                                                              animation,
-                                                            );
-
-                                                        return FadeTransition(
-                                                          opacity: fade,
-                                                          child:
-                                                              SlideTransition(
-                                                                position: slide,
-                                                                child: child,
-                                                              ),
-                                                        );
-                                                      },
-                                                ),
+                                              context.pushNamed(
+                                                RouteName.studentFilterScreen,
+                                                extra: widget.params,
                                               );
                                             },
                                           ),
@@ -464,65 +364,9 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
 
                                               FocusScope.of(context).unfocus();
 
-                                              Navigator.push(
-                                                context,
-                                                PageRouteBuilder(
-                                                  transitionDuration: Duration(
-                                                    milliseconds: 300,
-                                                  ),
-                                                  reverseTransitionDuration:
-                                                      Duration(
-                                                        milliseconds: 300,
-                                                      ),
-
-                                                  pageBuilder:
-                                                      (
-                                                        context,
-                                                        animation,
-                                                        secondaryAnimation,
-                                                      ) {
-                                                        return StudentFilterScreen(
-                                                          initialParams:
-                                                              widget.params,
-                                                        );
-                                                      },
-
-                                                  transitionsBuilder:
-                                                      (
-                                                        context,
-                                                        animation,
-                                                        secondaryAnimation,
-                                                        child,
-                                                      ) {
-                                                        final slide =
-                                                            Tween<Offset>(
-                                                              begin: Offset(
-                                                                0,
-                                                                1,
-                                                              ),
-                                                              end: Offset.zero,
-                                                            ).animate(
-                                                              animation,
-                                                            );
-
-                                                        final fade =
-                                                            Tween<double>(
-                                                              begin: 0,
-                                                              end: 1,
-                                                            ).animate(
-                                                              animation,
-                                                            );
-
-                                                        return FadeTransition(
-                                                          opacity: fade,
-                                                          child:
-                                                              SlideTransition(
-                                                                position: slide,
-                                                                child: child,
-                                                              ),
-                                                        );
-                                                      },
-                                                ),
+                                              context.pushNamed(
+                                                RouteName.studentFilterScreen,
+                                                extra: widget.params,
                                               );
                                             },
                                           ),
@@ -555,65 +399,9 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
 
                                               FocusScope.of(context).unfocus();
 
-                                              Navigator.push(
-                                                context,
-                                                PageRouteBuilder(
-                                                  transitionDuration: Duration(
-                                                    milliseconds: 300,
-                                                  ),
-                                                  reverseTransitionDuration:
-                                                      Duration(
-                                                        milliseconds: 300,
-                                                      ),
-
-                                                  pageBuilder:
-                                                      (
-                                                        context,
-                                                        animation,
-                                                        secondaryAnimation,
-                                                      ) {
-                                                        return StudentFilterScreen(
-                                                          initialParams:
-                                                              widget.params,
-                                                        );
-                                                      },
-
-                                                  transitionsBuilder:
-                                                      (
-                                                        context,
-                                                        animation,
-                                                        secondaryAnimation,
-                                                        child,
-                                                      ) {
-                                                        final slide =
-                                                            Tween<Offset>(
-                                                              begin: Offset(
-                                                                0,
-                                                                1,
-                                                              ),
-                                                              end: Offset.zero,
-                                                            ).animate(
-                                                              animation,
-                                                            );
-
-                                                        final fade =
-                                                            Tween<double>(
-                                                              begin: 0,
-                                                              end: 1,
-                                                            ).animate(
-                                                              animation,
-                                                            );
-
-                                                        return FadeTransition(
-                                                          opacity: fade,
-                                                          child:
-                                                              SlideTransition(
-                                                                position: slide,
-                                                                child: child,
-                                                              ),
-                                                        );
-                                                      },
-                                                ),
+                                              context.pushNamed(
+                                                RouteName.studentFilterScreen,
+                                                extra: widget.params,
                                               );
                                             },
                                           ),
@@ -646,65 +434,9 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
 
                                               FocusScope.of(context).unfocus();
 
-                                              Navigator.push(
-                                                context,
-                                                PageRouteBuilder(
-                                                  transitionDuration: Duration(
-                                                    milliseconds: 300,
-                                                  ),
-                                                  reverseTransitionDuration:
-                                                      Duration(
-                                                        milliseconds: 300,
-                                                      ),
-
-                                                  pageBuilder:
-                                                      (
-                                                        context,
-                                                        animation,
-                                                        secondaryAnimation,
-                                                      ) {
-                                                        return StudentFilterScreen(
-                                                          initialParams:
-                                                              widget.params,
-                                                        );
-                                                      },
-
-                                                  transitionsBuilder:
-                                                      (
-                                                        context,
-                                                        animation,
-                                                        secondaryAnimation,
-                                                        child,
-                                                      ) {
-                                                        final slide =
-                                                            Tween<Offset>(
-                                                              begin: Offset(
-                                                                0,
-                                                                1,
-                                                              ),
-                                                              end: Offset.zero,
-                                                            ).animate(
-                                                              animation,
-                                                            );
-
-                                                        final fade =
-                                                            Tween<double>(
-                                                              begin: 0,
-                                                              end: 1,
-                                                            ).animate(
-                                                              animation,
-                                                            );
-
-                                                        return FadeTransition(
-                                                          opacity: fade,
-                                                          child:
-                                                              SlideTransition(
-                                                                position: slide,
-                                                                child: child,
-                                                              ),
-                                                        );
-                                                      },
-                                                ),
+                                              context.pushNamed(
+                                                RouteName.studentFilterScreen,
+                                                extra: widget.params,
                                               );
                                             },
                                           ),
@@ -971,51 +703,6 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                         }
                       },
                     ),
-                    BottomNavigationBar(
-                      onTap: (index) async {
-                        context.read<SelectionCubit>().clearSelection();
-                        if (index == 0) {
-                          /* Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClassesOverviewScreen(),
-                            ),
-                          );*/
-                        } else if (index == 1) {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => StudentsOverviewScreen(),
-                          //   ),
-                          // );
-                        } else if (index == 2) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ClassesOverviewScreen(),
-                            ),
-                          );
-                        }
-                      },
-                      currentIndex: 1, // "الطلاب" active
-                      items: [
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.dashboard_outlined, size: 24.sp),
-                          activeIcon: Icon(Icons.dashboard, size: 24.sp),
-                          label: S.of(context).dashboard,
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.group_outlined, size: 24.sp),
-                          activeIcon: Icon(Icons.group, size: 24.sp),
-                          label: S.of(context).theStudents,
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.class_outlined, size: 24.sp),
-                          activeIcon: Icon(Icons.class_, size: 24.sp),
-                          label: S.of(context).classes,
-                        ),
-                      ],
-                    ),
                   ],
                 ),
 
@@ -1025,7 +712,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                     final isSelectedMode = state.isSelectionMode;
                     return AnimatedPositionedDirectional(
                       duration: Duration(milliseconds: 300),
-                      bottom: isSelectedMode ? 100 : 50,
+                      bottom: isSelectedMode ? 50 : 5,
                       end: 20,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
@@ -1033,50 +720,8 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                           onPressed: () {
                             context.read<SelectionCubit>().clearSelection();
                             searchFocusNode.unfocus();
-
                             FocusScope.of(context).unfocus();
-                            print('dddddd${searchFocusNode.hasFocus}');
-
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                transitionDuration: Duration(milliseconds: 300),
-                                reverseTransitionDuration: Duration(
-                                  milliseconds: 300,
-                                ),
-
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) {
-                                      return AddStudentScreen();
-                                    },
-
-                                transitionsBuilder:
-                                    (
-                                      context,
-                                      animation,
-                                      secondaryAnimation,
-                                      child,
-                                    ) {
-                                      final slide = Tween<Offset>(
-                                        begin: Offset(0, 1),
-                                        end: Offset.zero,
-                                      ).animate(animation);
-
-                                      final fade = Tween<double>(
-                                        begin: 0,
-                                        end: 1,
-                                      ).animate(animation);
-
-                                      return FadeTransition(
-                                        opacity: fade,
-                                        child: SlideTransition(
-                                          position: slide,
-                                          child: child,
-                                        ),
-                                      );
-                                    },
-                              ),
-                            );
+                            context.pushNamed(RouteName.addStudent);
                           },
                           backgroundColor: AppTheme.primary,
                           child: Icon(Icons.person_add, size: 24.sp),

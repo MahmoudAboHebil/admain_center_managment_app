@@ -9,4 +9,5 @@ class RoutePath {
   static String get studentsSearch => '/students_search';
   static String get studentProfile => '/student_profile';
   static String get updateStudent => '/update_student';
+  static String get studentFilterScreen => '/students_filter_search';
 }

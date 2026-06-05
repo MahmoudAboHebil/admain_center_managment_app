@@ -1,8 +1,9 @@
-import 'package:admain_center_managment_app/contexts/center_management_context/presentation/screens/mobile_app_screens/classes_screens/class_profile_screen.dart';
+import 'package:admain_center_managment_app/config/route/route.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_entity.dart';
 import 'package:admain_center_managment_app/sync_engine/domain/entities/class_section_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../config/theme/app_theme.dart';
 import '../../../../injection_container.dart';
@@ -80,15 +81,13 @@ class _ClassCardState extends State<ClassCard> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ClassProfileScreen(
-                  entity: widget.entity,
-                  sections: sectionsList ?? [],
-                  studyLevel: widget.studyLevel,
-                ),
-              ),
+            context.pushNamed(
+              RouteName.classProfile,
+              extra: {
+                'entity': widget.entity,
+                'sections': sectionsList ?? [],
+                'studyLevel': widget.studyLevel,
+              },
             );
           },
           borderRadius: BorderRadius.circular(16),
