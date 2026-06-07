@@ -319,6 +319,9 @@ class _CreateClassStepOneScreenState
     return TextField(
       controller: controller,
       onChanged: onChange,
+      minLines: 1,
+      maxLines: 4,
+      keyboardType: TextInputType.multiline,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(color: AppTheme.outline.withOpacity(0.6)),

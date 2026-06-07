@@ -143,13 +143,15 @@ class _HeroClassCardState extends State<_HeroClassCard> {
                         size: 16,
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        widget.entity.room,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: AppTheme.onPrimary,
+                      Expanded(
+                        child: Text(
+                          widget.entity.room,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            color: AppTheme.onPrimary,
+                          ),
                         ),
                       ),
                     ],

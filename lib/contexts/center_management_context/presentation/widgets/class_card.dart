@@ -100,7 +100,7 @@ class _ClassCardState extends State<ClassCard> {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,8 +154,11 @@ class _ClassCardState extends State<ClassCard> {
                       const SizedBox(height: 16),
                       Text(
                         widget.title,
+                        maxLines: 2,
                         style: TextStyle(
                           fontSize: 18.sp,
+                          overflow: TextOverflow.ellipsis,
+
                           fontWeight: FontWeight.bold,
                           color: AppTheme.onSurface,
                           height: 1.2,
@@ -181,7 +184,7 @@ class _ClassCardState extends State<ClassCard> {
                             iconColor: widget.iconColor,
                             label: "الجدول الأسبوعي",
                             value:
-                                (" ${sectionsList?.length ?? '?'} " +
+                                (" ${sectionsList?.length ?? '0'} " +
                                         "جلسات أسبوعياً")
                                     .trim(),
                           ),
@@ -237,26 +240,30 @@ class _ClassCardState extends State<ClassCard> {
             child: Icon(icon, color: iconColor, size: 20),
           ),
           const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.onSurfaceVariant,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppTheme.onSurfaceVariant,
+                  ),
                 ),
-              ),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.onSurface,
+                Text(
+                  value,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.onSurface,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
