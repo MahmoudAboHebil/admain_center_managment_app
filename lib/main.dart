@@ -27,7 +27,7 @@ void main() async {
   await initializeDependencies();
   runApp(
     DevicePreview(
-      enabled: false,
+      enabled: true,
       builder: (context) {
         return ScreenUtilInit(
           builder: (context, child) => ProviderScope(child: MyApp()),

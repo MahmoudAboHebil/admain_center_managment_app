@@ -69,15 +69,13 @@ class _ShellScreenState extends ConsumerState<ShellScreen> {
         return true;
       },
       child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(child: widget.navigationShell),
-              BottomNavBar(navigationShell: widget.navigationShell),
-            ],
-          ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(child: widget.navigationShell),
+            BottomNavBar(navigationShell: widget.navigationShell),
+          ],
         ),
       ),
     );

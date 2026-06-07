@@ -20,6 +20,7 @@ import '../../../../../../generated/l10n.dart';
 import '../../../../../../injection_container.dart';
 import '../../../../../../sync_engine/domain/entities/student_entity.dart';
 import '../../../../domain/entities/filter_params.dart';
+import '../../../../domain/repository/class_repository.dart';
 import '../../../../domain/repository/student_repository.dart';
 import '../../../bloc/selection_cubit/selection_cubit.dart';
 import '../../../bloc/selection_cubit/selection_state.dart';
@@ -46,17 +47,19 @@ class StudentsOverviewScreen extends ConsumerStatefulWidget {
 
 class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
   final FocusNode searchFocusNode = FocusNode();
-
+  late StreamSubscription classSubscription;
   late StreamSubscription subscription;
   late List<StudentEntity>? filterDataList;
   bool isFilterLoading = false;
   bool isLoading = false;
-
+  final BehaviorSubject<int> classCountSubject = BehaviorSubject<int>();
   final BehaviorSubject<int> studentCountSubject = BehaviorSubject<int>();
   @override
   void dispose() {
     subscription.cancel();
     studentCountSubject.close();
+    classSubscription.cancel();
+    classCountSubject.close();
     super.dispose();
   }
 
@@ -71,6 +74,12 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
 
     subscription = stream.listen((value) {
       studentCountSubject.add(value);
+    });
+    final classStream = sl<ClassRepository>().watchClassesCount().getOrElse(
+      () => const Stream.empty(),
+    );
+    classSubscription = classStream.listen((value) {
+      classCountSubject.add(value);
     });
   }
 
@@ -186,15 +195,26 @@ class _StudentsListScreenState extends ConsumerState<StudentsOverviewScreen> {
                             },
                           ),
                           SizedBox(width: 16),
+                          StreamBuilder<int>(
+                            stream: classCountSubject,
+                            builder: (context, snapshot) {
+                              final isLoading =
+                                  snapshot.connectionState ==
+                                  ConnectionState.waiting;
 
-                          Expanded(
-                            child: StatCard(
-                              lineColor: AppTheme.tertiary,
-                              isDesktop: false,
-                              label: S.of(context).totalClasses,
-                              value: Helper.formatNumber(20000),
-                              valueColor: AppTheme.tertiary,
-                            ),
+                              final count = snapshot.data ?? 0;
+                              return Expanded(
+                                child: StatCard(
+                                  lineColor: AppTheme.tertiary,
+                                  isDesktop: false,
+                                  label: S.of(context).totalClasses,
+                                  value: isLoading
+                                      ? '...'
+                                      : Helper.formatNumber(count),
+                                  valueColor: AppTheme.tertiary,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
