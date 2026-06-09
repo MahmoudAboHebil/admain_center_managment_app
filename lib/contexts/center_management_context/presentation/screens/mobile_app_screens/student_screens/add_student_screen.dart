@@ -280,7 +280,7 @@ class _AddStudentScreenState extends ConsumerState<AddStudentScreen> {
                     const SizedBox(height: 16),
                     LabelAndInput(
                       label: S.of(context).group,
-                      child: CustomTextFiled(hint: 'اسم أو كود المجموعة'),
+                      child: CustomTextFiled(hint: S.of(context).codeOfGroup),
                     ),
                   ],
                 ),

@@ -79,15 +79,15 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
   String? isValidClassTimes() {
     final data = ref.read(createClassDataProvider).selectedDaysData;
     if (data == null || data.isEmpty) {
-      return "يرجى تحديد حصة واحدة على الأقل.";
+      return S.of(context).classError;
     }
     for (var item in data.entries) {
       DateTime? startData = item.value["start"];
       DateTime? endData = item.value["end"];
       if (startData == null || endData == null) {
-        return "من فضلك قم بتحديد وقت البداية ووقت النهاية لجميع الأيام التي تم اختيارها.";
+        return S.of(context).classError2;
       } else if (isEqual(startData, endData)) {
-        return "وقت البداية ووقت الانتهاء لا يمكن أن يكونا متساويين.";
+        return S.of(context).classError3;
       }
     }
     return null;
@@ -110,7 +110,7 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
           resizeToAvoidBottomInset: true,
           backgroundColor: AppTheme.surface,
           appBar: CustomAppBar(
-            label: "تعديل بيانات الفصل",
+            label: S.of(context).editeClass,
             leavingCallback: () {
               // ref.read(createClassDataProvider.notifier).clearData();
             },
@@ -131,7 +131,7 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'الخطوة 1 من 2',
+                            S.of(context).stepOne,
                             style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.bold,
@@ -150,7 +150,7 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
                                   ? AppTheme.primary
                                   : AppTheme.onSurfaceVariant,
                             ),
-                            child: Text('تحديد الأوقات'),
+                            child: Text(S.of(context).selectDates),
                           ),
                         ],
                       ),
@@ -254,7 +254,7 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
                               content: AwesomeSnackbarContent(
                                 inMaterialBanner: true,
                                 title: S.of(context).unCompleteDetails,
-                                message: "اسم الفصل مطلوب.",
+                                message: S.of(context).classNameReq,
                                 contentType: ContentType.failure,
                               ),
 
@@ -274,7 +274,7 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
                               content: AwesomeSnackbarContent(
                                 inMaterialBanner: true,
                                 title: S.of(context).unCompleteDetails,
-                                message: "مكان الفصل مطلوب.",
+                                message: S.of(context).classPlaceReq,
                                 contentType: ContentType.failure,
                               ),
 
@@ -409,7 +409,7 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
               RouteName.classesOverview,
               extra: {'refreshId': DateTime.now().millisecondsSinceEpoch},
             );
-            _showSuccess("Class is updated");
+            _showSuccess(S.of(context).classEdited);
           } else {
             _showError(
               S.of(context).wrongHappened,
@@ -482,11 +482,11 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
 
   String? _validateInputs() {
     if (_nameController.text.trim().isEmpty) {
-      return "اسم الفصل مطلوب.";
+      return S.of(context).classNameReq;
     }
 
     if (_placeController.text.trim().isEmpty) {
-      return "مكان الفصل مطلوب.";
+      return S.of(context).classPlaceReq;
     }
 
     final timeError = isValidClassTimes();
@@ -518,7 +518,7 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'التالي: تعديل المواعيد',
+                S.of(context).nextEditeSectionsDate,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
               ),
               SizedBox(width: 8),
@@ -529,7 +529,7 @@ class _CreateClassScreenState extends ConsumerState<UpdateClassScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "تحديث الجدول الدراسي",
+                S.of(context).updateSchedule,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
               ),
               SizedBox(width: 8),

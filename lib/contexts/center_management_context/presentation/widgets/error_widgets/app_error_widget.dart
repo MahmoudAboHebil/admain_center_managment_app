@@ -26,7 +26,7 @@ class AppErrorWidget extends StatelessWidget {
             ),
             SizedBox(height: 40),
             Text(
-              'Opps!',
+              S.of(context).error,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
             ),
             SizedBox(height: 25),

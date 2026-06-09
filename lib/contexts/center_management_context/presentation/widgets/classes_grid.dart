@@ -13,6 +13,7 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/enums/division_enum.dart';
 import '../../../../core/isar_local_database/isar/isar_service.dart';
 import '../../../../core/providers/language_provider.dart';
+import '../../../../generated/l10n.dart';
 import 'add_class_cart_button.dart';
 import 'loading_widgets/student_grid_skeleton.dart';
 
@@ -128,7 +129,7 @@ class _StudentsGridState extends ConsumerState<ClassesGrid> {
       final divString = isArabic ? div?.arabic : div?.english;
       Widget myWidget = ClassCard(
         title: e.name,
-        studentsCount: 'X طالب',
+        studentsCount: 'X ${S.of(context).student}',
         icon: Icons.school,
         iconColor: AppTheme.primary,
         iconBgColor: AppTheme.secondaryContainer.withOpacity(0.3),
@@ -138,8 +139,8 @@ class _StudentsGridState extends ConsumerState<ClassesGrid> {
                       .trim() +
                   " • " +
                   ((e.semester == 0)
-                      ? 'الفصل الدراسى الاول'
-                      : 'الفصل الدراسى الثانى'),
+                      ? S.of(context).firstTerm
+                      : S.of(context).secondTerm),
         location: e.room,
         entity: ClassModel.fromCollection(e).toEntity(),
       );

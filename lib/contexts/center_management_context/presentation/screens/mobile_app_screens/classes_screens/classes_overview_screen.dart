@@ -104,7 +104,7 @@ class _StudentsListScreenState extends ConsumerState<ClassesOverviewScreen> {
                               final count = snapshot.data ?? 0;
                               return Expanded(
                                 child: _StatCard(
-                                  title: 'عدد الفصول',
+                                  title: S.of(context).totalClasses,
                                   value: isLoading
                                       ? '...'
                                       : Helper.formatNumber(count),
@@ -165,7 +165,7 @@ class _SectionHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'نظرة عامة',
+              S.of(context).generalLook,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14.sp,
@@ -174,7 +174,7 @@ class _SectionHeader extends StatelessWidget {
             ),
             SizedBox(height: 4),
             Text(
-              'إدارة الفصول',
+              S.of(context).classSettings,
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,

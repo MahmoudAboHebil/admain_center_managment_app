@@ -47,7 +47,6 @@ class _StudentSearchTextFieldState extends ConsumerState<StudentSearchTextField>
 
   @override
   void initState() {
-    print('ddddddddddddddaaaaaaaaaaa');
     super.initState();
     searchFocusNode = widget.searchFocusNode;
     searchFocusNode.addListener(() {

@@ -31,7 +31,7 @@ class ClassProfileScreen extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: AppTheme.surface,
-          appBar: CustomAppBar(label: "تفاصيل الفصل الدراسى"),
+          appBar: CustomAppBar(label: S.of(context).classDetails),
 
           body: SingleChildScrollView(
             padding: const EdgeInsets.only(
@@ -189,7 +189,7 @@ class _HeroClassCardState extends State<_HeroClassCard> {
                           ),
                           icon: const Icon(Icons.edit, size: 18),
                           label: Text(
-                            'تعديل التفاصيل',
+                            S.of(context).editeDetails,
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
@@ -285,7 +285,7 @@ class _HeroClassCardState extends State<_HeroClassCard> {
               content: AwesomeSnackbarContent(
                 inMaterialBanner: true,
                 title: S.of(context).success,
-                message: "Class is deleted",
+                message: S.of(context).classDeleted,
                 contentType: ContentType.success,
               ),
               backgroundColor: Colors.transparent,
@@ -322,7 +322,7 @@ class _QuickActions extends StatelessWidget {
             ),
             icon: const Icon(Icons.person_add, size: 20),
             label: Text(
-              'إضافة طالب',
+              S.of(context).addStudent,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.bold,
@@ -347,7 +347,7 @@ class _QuickActions extends StatelessWidget {
             ),
             icon: const Icon(Icons.how_to_reg, size: 20),
             label: Text(
-              'تسجيل الحضور',
+              S.of(context).registerAttendance,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.bold,
@@ -364,34 +364,40 @@ class _QuickActions extends StatelessWidget {
 class _ScheduleSection extends StatelessWidget {
   const _ScheduleSection({required this.sections});
   final List<ClassSectionEntity> sections;
-  final List<String> days = const [
-    'الاثنين',
-    'الثلاثاء',
-    'الأربعاء',
-    'الخميس',
-    'الجمعة',
-    'السبت',
-    'الأحد',
-  ];
+  List<String> days(BuildContext context) {
+    return [
+      S.of(context).monday,
+      S.of(context).tuesday,
+      S.of(context).wednesday,
+      S.of(context).thursday,
+      S.of(context).friday,
+      S.of(context).saturday,
+      S.of(context).sunday,
+    ];
+  }
 
-  String getDay(ClassSectionEntity entity) {
+  String getDay(ClassSectionEntity entity, BuildContext context) {
     bool isSameDay = entity.startOn.toLocal().day == entity.endOn.toLocal().day;
     if (isSameDay) {
-      return days[entity.day];
+      return days(context)[entity.day];
     } else {
       var day = entity.day;
-      return "${days[day]} - ${days[(day + 1 >= days.length) ? 0 : (day + 1)]}";
+      return "${days(context)[day]} - ${days(context)[(day + 1 >= days(context).length) ? 0 : (day + 1)]}";
     }
   }
 
-  String formatDateTimeRange({required DateTime start, required DateTime end}) {
+  String formatDateTimeRange({
+    required DateTime start,
+    required DateTime end,
+    required BuildContext context,
+  }) {
     StringBuffer buffer = StringBuffer();
     String twoDigits(int n) => n.toString().padLeft(2, '0');
 
     String format(DateTime date) {
       final hour = date.hour % 12 == 0 ? 12 : date.hour % 12;
       final minute = twoDigits(date.minute);
-      final period = date.hour >= 12 ? "م" : "ص";
+      final period = date.hour >= 12 ? S.of(context).bm : S.of(context).am;
       return "$hour:$minute $period";
     }
 
@@ -410,7 +416,7 @@ class _ScheduleSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'الجدول الزمني',
+              S.of(context).timeSchedule,
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
@@ -425,7 +431,7 @@ class _ScheduleSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
-                '${sections.length} جلسات أسبوعياً',
+                '${sections.length} ${S.of(context).weeklySections}ً',
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12.sp,
@@ -446,10 +452,11 @@ class _ScheduleSection extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: _ScheduleCard(
-                  day: getDay(currentItem),
+                  day: getDay(currentItem, context),
                   time: formatDateTimeRange(
                     start: currentItem.startOn.toLocal(),
                     end: currentItem.endOn.toLocal(),
+                    context: context,
                   ),
                 ),
               );
@@ -518,7 +525,7 @@ class _StudentsListSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'الطلاب المسجلون',
+              S.of(context).registeredStudents,
               style: TextStyle(
                 fontFamily: 'Manrope',
                 fontWeight: FontWeight.bold,
@@ -527,7 +534,7 @@ class _StudentsListSection extends StatelessWidget {
               ),
             ),
             Text(
-              '24 طالب',
+              '24 ${S.of(context).student}',
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w600,
@@ -664,7 +671,7 @@ class _StudentItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'رقم أكاديمي: $id',
+                        '${S.of(context).academicNumber}: $id',
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12.sp,
@@ -687,7 +694,7 @@ class _StudentItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  isActive ? 'نشط' : 'غائب',
+                  isActive ? S.of(context).active : S.of(context).missing,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.bold,

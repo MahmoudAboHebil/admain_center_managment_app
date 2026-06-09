@@ -4,8 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../config/theme/app_theme.dart';
-import '../../sync_engine/domain/entities/standard_table_record.dart';
-import '../enums/DB_Table.dart';
+import '../../generated/l10n.dart';
 import '../error/netwrok_response.dart';
 
 class ParsedPhone {
@@ -66,7 +65,7 @@ class Helper {
                 controller: controller,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: "الوظيفة",
+                  hintText: S.of(context).job,
                   border: OutlineInputBorder(),
                   filled: true,
                   fillColor: AppTheme.surfaceContainerLowest,
@@ -74,7 +73,7 @@ class Helper {
               ),
             ),
             actions: [
-              TextButton(onPressed: () {}, child: Text("الغاء")),
+              TextButton(onPressed: () {}, child: Text(S.of(context).cancel)),
 
               ElevatedButton(
                 onPressed: () {
@@ -85,7 +84,7 @@ class Helper {
                         : null,
                   );
                 },
-                child: Text("تأكيد"),
+                child: Text(S.of(context).confirm),
               ),
             ],
           ),
@@ -137,7 +136,7 @@ class Helper {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Email is required";
+                    return S.of(context).emailReq;
                   }
 
                   // Regex for email validation
@@ -146,7 +145,7 @@ class Helper {
                   );
 
                   if (!emailRegex.hasMatch(value)) {
-                    return "Enter a valid email";
+                    return S.of(context).emailNotValid;
                   }
 
                   return null;
@@ -154,7 +153,7 @@ class Helper {
               ),
             ),
             actions: [
-              TextButton(onPressed: () {}, child: Text("الغاء")),
+              TextButton(onPressed: () {}, child: Text(S.of(context).cancel)),
 
               ElevatedButton(
                 onPressed: () {
@@ -169,7 +168,7 @@ class Helper {
                     );
                   }
                 },
-                child: Text("تأكيد"),
+                child: Text(S.of(context).confirm),
               ),
             ],
           ),
@@ -244,7 +243,7 @@ class Helper {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text("الغاء"),
+                      child: Text(S.of(context).cancel),
                     ),
                     SizedBox(width: 12),
                     ElevatedButton(
@@ -256,7 +255,7 @@ class Helper {
                           phoneController.text.isNotEmpty ? finalPhone : null,
                         );
                       },
-                      child: Text("تأكيد"),
+                      child: Text(S.of(context).confirm),
                     ),
                   ],
                 ),
@@ -300,198 +299,6 @@ class Helper {
     } else {
       return NumberFormat('#,###').format(number);
     }
-  }
-
-  static Future<StandardTableRecord?> getParentId(
-    BuildContext context,
-    List<StandardTableRecord> data,
-  ) async {
-    final formKey = GlobalKey<FormState>();
-
-    StandardTableRecord? tableEntity;
-
-    final result = await showDialog<StandardTableRecord?>(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text(" Get parent"),
-              content: SizedBox(
-                width: 400,
-                child: Form(
-                  key: formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        /// المرحلة التعليمية
-                        DropdownButtonFormField<StandardTableRecord>(
-                          decoration: const InputDecoration(
-                            labelText: "المرحلة التعليمية",
-                          ),
-                          items: data
-                              .map<DropdownMenuItem<StandardTableRecord>>((
-                                entity,
-                              ) {
-                                return DropdownMenuItem(
-                                  value: entity,
-                                  child: Column(
-                                    children: [Text(entity.entityId)],
-                                  ),
-                                );
-                              })
-                              .toList(),
-                          onChanged: (value) {
-                            tableEntity = value;
-                          },
-                          validator: (value) =>
-                              value == null ? "Chose one" : null,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("إلغاء"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
-                      Navigator.pop(context, tableEntity);
-                    }
-                  },
-                  child: const Text("حفظ"),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-    return result;
-  }
-
-  static Future<String?> showAddRecordDialog(BuildContext context) async {
-    final formKey = GlobalKey<FormState>();
-    String name = '';
-
-    final result = await showDialog<String?>(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text("إضافة record"),
-              content: SizedBox(
-                width: 400,
-                child: Form(
-                  key: formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        /// الاسم
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: "Message",
-                          ),
-                          validator: (value) => value == null || value.isEmpty
-                              ? "ادخل Message"
-                              : null,
-                          onSaved: (value) => name = value!,
-                        ),
-
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text("إلغاء"),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
-
-                      Navigator.pop(context, name);
-                    }
-                  },
-                  child: const Text("حفظ"),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-    return result;
-  }
-
-  static Future<bool?> confDeletion(
-    BuildContext context,
-    DBTable startTable,
-    String startEntity,
-    Map<DBTable, List<String>> deletedEntities,
-  ) async {
-    List<Widget> relationDeletedWidgets() {
-      List<Text> list = [];
-      for (var item in deletedEntities.entries) {
-        list.add(Text('${item.key.name} -=> ${item.value}'));
-      }
-      return list;
-    }
-
-    final formKey = GlobalKey<FormState>();
-
-    final result = await showDialog<bool?>(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text("Delete a record"),
-              content: SizedBox(
-                width: 400,
-                child: Form(
-                  key: formKey,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Text('delete $startEntity in ${startTable.name}'),
-                        Text('and those will be deleted'),
-                        Column(children: relationDeletedWidgets()),
-
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text("Cancel"),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    Navigator.pop(context, true);
-                  },
-                  child: const Text("Ok"),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-    return result;
   }
 
   static Map<String, List<String>> cleanParentIds(

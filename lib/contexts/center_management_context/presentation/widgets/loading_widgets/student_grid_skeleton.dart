@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../config/theme/app_theme.dart';
 import '../../../../../config/theme/typography.dart';
+import '../../../../../generated/l10n.dart';
 
 class StudentGridSkeleton extends StatelessWidget {
   const StudentGridSkeleton();
@@ -36,7 +37,7 @@ class StudentGridSkeleton extends StatelessWidget {
           itemCount: 6,
           itemBuilder: (context, index) {
             if (index == 5) {
-              return _buildAddStudentPlaceholder();
+              return _buildAddStudentPlaceholder(context);
             }
             return _buildStudentCardSkeleton(index);
           },
@@ -112,7 +113,7 @@ class StudentGridSkeleton extends StatelessWidget {
     );
   }
 
-  Widget _buildAddStudentPlaceholder() {
+  Widget _buildAddStudentPlaceholder(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.surfaceContainerLow.withOpacity(0.3),
@@ -136,7 +137,7 @@ class StudentGridSkeleton extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'إضافة طالب جديد',
+            S.of(context).addNewStudent,
             style: AppTypography.textTheme.bodyMedium?.copyWith(
               color: AppTheme.outlineVariant,
               fontWeight: FontWeight.bold,

@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../config/theme/app_theme.dart';
 import '../../../../../../core/providers/create_class_data_provider.dart';
+import '../../../../../../generated/l10n.dart';
 
 class UpdateClassStepTwoScreen extends ConsumerStatefulWidget {
   const UpdateClassStepTwoScreen({required this.entities, super.key});
@@ -20,15 +21,18 @@ class UpdateClassStepTwoScreen extends ConsumerStatefulWidget {
 class _CreateClassStepTwoScreenState
     extends ConsumerState<UpdateClassStepTwoScreen>
     with AutomaticKeepAliveClientMixin {
-  final List<String> days = [
-    'الاثنين',
-    'الثلاثاء',
-    'الأربعاء',
-    'الخميس',
-    'الجمعة',
-    'السبت',
-    'الأحد',
-  ];
+  List<String> days(BuildContext context) {
+    return [
+      S.of(context).monday,
+      S.of(context).tuesday,
+      S.of(context).wednesday,
+      S.of(context).thursday,
+      S.of(context).friday,
+      S.of(context).saturday,
+      S.of(context).sunday,
+    ];
+  }
+
   Set<int> selectedDays = {};
   Map<int, Map<String, DateTime>> selectedDaysData = {};
 
@@ -81,7 +85,7 @@ class _CreateClassStepTwoScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'المرحلة الثانية',
+                    S.of(context).secondStep,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
@@ -90,7 +94,7 @@ class _CreateClassStepTwoScreenState
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'تحديد الأوقات',
+                    S.of(context).selectDates,
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w800,
@@ -127,7 +131,7 @@ class _CreateClassStepTwoScreenState
 
               // Day Selection Section
               Text(
-                'اختر أيام الأسبوع',
+                S.of(context).selectWeekDays,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
@@ -138,8 +142,8 @@ class _CreateClassStepTwoScreenState
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: days.map((day) {
-                    int dayIndex = days.indexOf(day);
+                  children: days(context).map((day) {
+                    int dayIndex = days(context).indexOf(day);
                     print(dayIndex);
                     final isSelected = selectedDays.contains(dayIndex);
                     return Padding(
@@ -202,7 +206,7 @@ class _CreateClassStepTwoScreenState
 
               // Time Slots Grid
               Text(
-                'تفاصيل الحصص',
+                S.of(context).sectionsDetails,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
@@ -224,8 +228,8 @@ class _CreateClassStepTwoScreenState
                             selectedDaysData[day]?["start"],
                             selectedDaysData[day]?["end"],
                           )
-                          ? "${days[day]} - ${days[(day + 1 >= days.length) ? 0 : (day + 1)]}"
-                          : days[day],
+                          ? "${days(context)[day]} - ${days(context)[(day + 1 >= days(context).length) ? 0 : (day + 1)]}"
+                          : days(context)[day],
                       onTapEnd: (timeOfDay) {
                         setState(() {
                           final dayData = selectedDaysData[day] ?? {};
@@ -285,7 +289,7 @@ class _CreateClassStepTwoScreenState
                   padding: const EdgeInsets.all(16),
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    'تأكد من مراجعة تفاصيل القاعة والجداول الزمنية قبل الحفظ لتجنب التضارب الدراسي.',
+                    S.of(context).classHint,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 12.sp,
@@ -370,7 +374,7 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
     } else {
       if (!isValidTimeRange(start: startTime!, end: endTime!)) {
         endError = true;
-        error = "وقت البداية ووقت الانتهاء لا يمكن أن يكونا متساويين.";
+        error = S.of(context).sectionHint2;
         isOk = false;
       } else {
         endError = false;
@@ -395,7 +399,7 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
     } else {
       if (!isValidTimeRange(start: startTime!, end: endTime!)) {
         endError = true;
-        error = "وقت البداية ووقت الانتهاء لا يمكن أن يكونا متساويين.";
+        error = S.of(context).sectionHint2;
         isOk = false;
       } else {
         endError = false;
@@ -430,12 +434,12 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
     final buffer = StringBuffer();
 
     if (hours > 0) {
-      buffer.write('${hours}h');
+      buffer.write('${hours}${S.of(context).hour}');
     }
 
     if (minutes > 0) {
       if (hours > 0) buffer.write(' ');
-      buffer.write('${minutes}m');
+      buffer.write('${minutes}${S.of(context).minute}');
     }
 
     return buffer.toString();
@@ -496,7 +500,7 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                 Expanded(
                   child: TimePickerField(
                     // key: UniqueKey(),
-                    label: 'وقت البدء',
+                    label: S.of(context).startTime,
                     day: widget.dayIndex,
                     isError: startError,
                     value: startTime != null
@@ -521,8 +525,6 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                           endTime!,
                         );
                         endTime = newDate;
-                        print('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-                        print(endTime);
                         widget.onTapEnd(newDate);
                         setState(() {});
                       }
@@ -533,7 +535,7 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                 Expanded(
                   child: TimePickerField(
                     // key: UniqueKey(),
-                    label: 'وقت الانتهاء',
+                    label: S.of(context).endTime,
                     day: widget.dayIndex,
                     isError: endError,
                     value: endTime != null
@@ -557,8 +559,6 @@ class _TimeSlotCardState extends State<TimeSlotCard> {
                           startTime!,
                           combine(DateTime.now(), end),
                         );
-                        print('dddddddddddddd');
-                        print(newDate);
                       }
                       endTime = newDate;
                       validationEnd();
@@ -631,8 +631,6 @@ class _TimePickerFieldState extends State<TimePickerField> {
             if (selectedTime == null || !mounted) return;
 
             setState(() => myValue = selectedTime);
-            print('dddddddddddd& $myValue');
-
             await widget.onTap(selectedTime);
           },
           child: Container(

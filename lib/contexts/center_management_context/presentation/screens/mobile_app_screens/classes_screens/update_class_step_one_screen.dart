@@ -10,6 +10,7 @@ import '../../../../../../core/enums/division_enum.dart';
 import '../../../../../../core/enums/languages.dart';
 import '../../../../../../core/providers/create_class_data_provider.dart';
 import '../../../../../../core/providers/language_provider.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../domain/entities/study_level_entity.dart';
 
 class UpdateClassStepOneScreen extends ConsumerStatefulWidget {
@@ -94,7 +95,7 @@ class _CreateClassStepOneScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'المرحلة الاولى',
+                S.of(context).firstStep,
                 style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
@@ -103,7 +104,7 @@ class _CreateClassStepOneScreenState
               ),
               const SizedBox(height: 4),
               Text(
-                "تعديل بيانات الفصل",
+                S.of(context).editeClass,
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w800,
@@ -114,27 +115,27 @@ class _CreateClassStepOneScreenState
           ),
           const SizedBox(height: 8),
           Text(
-            "قم بتحديث المعلومات الأساسية للفصل الدراسي.",
+            S.of(context).updateClassHint,
             style: TextStyle(fontSize: 14.sp, color: AppTheme.onSurfaceVariant),
           ),
           const SizedBox(height: 32),
 
           // Class Name
-          _buildLabel('اسم الفصل'),
+          _buildLabel(S.of(context).className2),
           const SizedBox(height: 8),
           _buildTextField(
             controller: widget._nameController,
-            hint: 'مثال: رياضيات متقدمة - المجموعة أ',
+            hint: S.of(context).classNameExample,
           ),
           const SizedBox(height: 24),
 
           // Level Grid
-          _buildLabel('الصف الدراسى'),
+          _buildLabel(S.of(context).classGrade),
           const SizedBox(height: 8),
           StudyLevelDropDown(language == Language.ar),
           const SizedBox(height: 24),
           // Department Segmented Control
-          _buildLabel('الفصل الدراسى'),
+          _buildLabel(S.of(context).classTitle),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(4),
@@ -173,7 +174,7 @@ class _CreateClassStepOneScreenState
                       ),
                       child: Center(
                         child: Text(
-                          'الاول',
+                          S.of(context).first,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
@@ -215,7 +216,7 @@ class _CreateClassStepOneScreenState
                       ),
                       child: Center(
                         child: Text(
-                          'الثانى',
+                          S.of(context).second,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
@@ -232,16 +233,16 @@ class _CreateClassStepOneScreenState
             ),
           ),
           const SizedBox(height: 24),
-          _buildLabel('الشعبه'),
+          _buildLabel(S.of(context).division),
           const SizedBox(height: 8),
           DivisionDropDown(language == Language.ar),
           // Room Number
           const SizedBox(height: 24),
-          _buildLabel('المكان'),
+          _buildLabel(S.of(context).place),
           const SizedBox(height: 8),
           _buildTextField(
             controller: widget._placeController,
-            hint: 'مثال: قاعه 104 ',
+            hint: S.of(context).placeExample,
             icon: Icons.meeting_room_outlined,
           ),
           const SizedBox(height: 32),
@@ -260,7 +261,7 @@ class _CreateClassStepOneScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'الهوية الأساسية',
+                        S.of(context).identity,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
@@ -269,7 +270,7 @@ class _CreateClassStepOneScreenState
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'تأكد من دقة البيانات الأساسية قبل الانتقال لجدولة المواعيد.',
+                        S.of(context).informationHint2,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: AppTheme.onPrimaryContainer.withOpacity(0.8),

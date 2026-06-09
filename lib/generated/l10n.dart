@@ -284,11 +284,6 @@ class S {
     return Intl.message('Class', name: 'studyClass', desc: '', args: []);
   }
 
-  /// `Section`
-  String get division {
-    return Intl.message('Section', name: 'division', desc: '', args: []);
-  }
-
   /// `Group`
   String get group {
     return Intl.message('Group', name: 'group', desc: '', args: []);
@@ -639,6 +634,561 @@ class S {
     return Intl.message(
       'Search Students',
       name: 'studentSearch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Details`
+  String get editeDetails {
+    return Intl.message(
+      'Edit Details',
+      name: 'editeDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Class has been deleted`
+  String get classDeleted {
+    return Intl.message(
+      'Class has been deleted',
+      name: 'classDeleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register Attendance`
+  String get registerAttendance {
+    return Intl.message(
+      'Register Attendance',
+      name: 'registerAttendance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monday`
+  String get monday {
+    return Intl.message('Monday', name: 'monday', desc: '', args: []);
+  }
+
+  /// `Tuesday`
+  String get tuesday {
+    return Intl.message('Tuesday', name: 'tuesday', desc: '', args: []);
+  }
+
+  /// `Wednesday`
+  String get wednesday {
+    return Intl.message('Wednesday', name: 'wednesday', desc: '', args: []);
+  }
+
+  /// `Thursday`
+  String get thursday {
+    return Intl.message('Thursday', name: 'thursday', desc: '', args: []);
+  }
+
+  /// `Friday`
+  String get friday {
+    return Intl.message('Friday', name: 'friday', desc: '', args: []);
+  }
+
+  /// `Saturday`
+  String get saturday {
+    return Intl.message('Saturday', name: 'saturday', desc: '', args: []);
+  }
+
+  /// `Sunday`
+  String get sunday {
+    return Intl.message('Sunday', name: 'sunday', desc: '', args: []);
+  }
+
+  /// `AM`
+  String get am {
+    return Intl.message('AM', name: 'am', desc: '', args: []);
+  }
+
+  /// `PM`
+  String get bm {
+    return Intl.message('PM', name: 'bm', desc: '', args: []);
+  }
+
+  /// `Schedule`
+  String get timeSchedule {
+    return Intl.message('Schedule', name: 'timeSchedule', desc: '', args: []);
+  }
+
+  /// `Weekly Sessions`
+  String get weeklySections {
+    return Intl.message(
+      'Weekly Sessions',
+      name: 'weeklySections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registered Students`
+  String get registeredStudents {
+    return Intl.message(
+      'Registered Students',
+      name: 'registeredStudents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Student`
+  String get student {
+    return Intl.message('Student', name: 'student', desc: '', args: []);
+  }
+
+  /// `Academic Number`
+  String get academicNumber {
+    return Intl.message(
+      'Academic Number',
+      name: 'academicNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Absent`
+  String get missing {
+    return Intl.message('Absent', name: 'missing', desc: '', args: []);
+  }
+
+  /// `Class Details`
+  String get classDetails {
+    return Intl.message(
+      'Class Details',
+      name: 'classDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number of Classes`
+  String get classNumber {
+    return Intl.message(
+      'Number of Classes',
+      name: 'classNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Overview`
+  String get generalLook {
+    return Intl.message('Overview', name: 'generalLook', desc: '', args: []);
+  }
+
+  /// `Class Management`
+  String get classSettings {
+    return Intl.message(
+      'Class Management',
+      name: 'classSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select at least one session.`
+  String get classError {
+    return Intl.message(
+      'Please select at least one session.',
+      name: 'classError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please set the start time and end time for all selected days.`
+  String get classError2 {
+    return Intl.message(
+      'Please set the start time and end time for all selected days.',
+      name: 'classError2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start time and end time cannot be the same.`
+  String get classError3 {
+    return Intl.message(
+      'Start time and end time cannot be the same.',
+      name: 'classError3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Class`
+  String get addClass {
+    return Intl.message('Add Class', name: 'addClass', desc: '', args: []);
+  }
+
+  /// `Step 1 of 2`
+  String get stepOne {
+    return Intl.message('Step 1 of 2', name: 'stepOne', desc: '', args: []);
+  }
+
+  /// `Class name is required.`
+  String get classNameReq {
+    return Intl.message(
+      'Class name is required.',
+      name: 'classNameReq',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Class location is required.`
+  String get classPlaceReq {
+    return Intl.message(
+      'Class location is required.',
+      name: 'classPlaceReq',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Class has been created`
+  String get classCreated {
+    return Intl.message(
+      'Class has been created',
+      name: 'classCreated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next: Set Schedule`
+  String get nextStep {
+    return Intl.message(
+      'Next: Set Schedule',
+      name: 'nextStep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Session`
+  String get addSection {
+    return Intl.message('Add Session', name: 'addSection', desc: '', args: []);
+  }
+
+  /// `First Step`
+  String get firstStep {
+    return Intl.message('First Step', name: 'firstStep', desc: '', args: []);
+  }
+
+  /// `Create New Class`
+  String get createNewClass {
+    return Intl.message(
+      'Create New Class',
+      name: 'createNewClass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add the basic information to define the new class.`
+  String get informationHint {
+    return Intl.message(
+      'Add the basic information to define the new class.',
+      name: 'informationHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Class Name`
+  String get className2 {
+    return Intl.message('Class Name', name: 'className2', desc: '', args: []);
+  }
+
+  /// `Example: Advanced Mathematics - Group A`
+  String get classNameExample {
+    return Intl.message(
+      'Example: Advanced Mathematics - Group A',
+      name: 'classNameExample',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Grade Level`
+  String get classGrade {
+    return Intl.message('Grade Level', name: 'classGrade', desc: '', args: []);
+  }
+
+  /// `Class`
+  String get classTitle {
+    return Intl.message('Class', name: 'classTitle', desc: '', args: []);
+  }
+
+  /// `First`
+  String get first {
+    return Intl.message('First', name: 'first', desc: '', args: []);
+  }
+
+  /// `Second`
+  String get second {
+    return Intl.message('Second', name: 'second', desc: '', args: []);
+  }
+
+  /// `Section`
+  String get division {
+    return Intl.message('Section', name: 'division', desc: '', args: []);
+  }
+
+  /// `Location`
+  String get place {
+    return Intl.message('Location', name: 'place', desc: '', args: []);
+  }
+
+  /// `Example: Room 104`
+  String get placeExample {
+    return Intl.message(
+      'Example: Room 104',
+      name: 'placeExample',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Basic Identity`
+  String get identity {
+    return Intl.message('Basic Identity', name: 'identity', desc: '', args: []);
+  }
+
+  /// `Make sure the basic data is accurate before moving to scheduling.`
+  String get informationHint2 {
+    return Intl.message(
+      'Make sure the basic data is accurate before moving to scheduling.',
+      name: 'informationHint2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Second Step`
+  String get secondStep {
+    return Intl.message('Second Step', name: 'secondStep', desc: '', args: []);
+  }
+
+  /// `Select Times`
+  String get selectDates {
+    return Intl.message(
+      'Select Times',
+      name: 'selectDates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Weekdays`
+  String get selectWeekDays {
+    return Intl.message(
+      'Select Weekdays',
+      name: 'selectWeekDays',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Session Details`
+  String get sectionsDetails {
+    return Intl.message(
+      'Session Details',
+      name: 'sectionsDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If the end time is earlier than the start time, the session will automatically be considered to continue into the next day.`
+  String get sectionHint {
+    return Intl.message(
+      'If the end time is earlier than the start time, the session will automatically be considered to continue into the next day.',
+      name: 'sectionHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start time and end time cannot be the same.`
+  String get sectionHint2 {
+    return Intl.message(
+      'Start time and end time cannot be the same.',
+      name: 'sectionHint2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `h`
+  String get hour {
+    return Intl.message('h', name: 'hour', desc: '', args: []);
+  }
+
+  /// `m`
+  String get minute {
+    return Intl.message('m', name: 'minute', desc: '', args: []);
+  }
+
+  /// `Start Time`
+  String get startTime {
+    return Intl.message('Start Time', name: 'startTime', desc: '', args: []);
+  }
+
+  /// `End Time`
+  String get endTime {
+    return Intl.message('End Time', name: 'endTime', desc: '', args: []);
+  }
+
+  /// `Edit Class Information`
+  String get editeClass {
+    return Intl.message(
+      'Edit Class Information',
+      name: 'editeClass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Class has been updated`
+  String get classEdited {
+    return Intl.message(
+      'Class has been updated',
+      name: 'classEdited',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next: Edit Schedule`
+  String get nextEditeSectionsDate {
+    return Intl.message(
+      'Next: Edit Schedule',
+      name: 'nextEditeSectionsDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Schedule`
+  String get updateSchedule {
+    return Intl.message(
+      'Update Schedule',
+      name: 'updateSchedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update the basic information for the class.`
+  String get updateClassHint {
+    return Intl.message(
+      'Update the basic information for the class.',
+      name: 'updateClassHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Make sure to review the classroom details and schedules before saving to avoid scheduling conflicts.`
+  String get classHint {
+    return Intl.message(
+      'Make sure to review the classroom details and schedules before saving to avoid scheduling conflicts.',
+      name: 'classHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oops!`
+  String get error {
+    return Intl.message('Oops!', name: 'error', desc: '', args: []);
+  }
+
+  /// `Would you like to create a new class?`
+  String get addClassQus {
+    return Intl.message(
+      'Would you like to create a new class?',
+      name: 'addClassQus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add your classes and assign students with ease.`
+  String get classInformation {
+    return Intl.message(
+      'Add your classes and assign students with ease.',
+      name: 'classInformation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Class Now`
+  String get addClassNow {
+    return Intl.message(
+      'Add Class Now',
+      name: 'addClassNow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weekly Schedule`
+  String get weekSchedule {
+    return Intl.message(
+      'Weekly Schedule',
+      name: 'weekSchedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location`
+  String get location {
+    return Intl.message('Location', name: 'location', desc: '', args: []);
+  }
+
+  /// `First Term`
+  String get firstTerm {
+    return Intl.message('First Term', name: 'firstTerm', desc: '', args: []);
+  }
+
+  /// `Second Term`
+  String get secondTerm {
+    return Intl.message('Second Term', name: 'secondTerm', desc: '', args: []);
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
+  }
+
+  /// `Email is required`
+  String get emailReq {
+    return Intl.message(
+      'Email is required',
+      name: 'emailReq',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Group name or code`
+  String get codeOfGroup {
+    return Intl.message(
+      'Group name or code',
+      name: 'codeOfGroup',
       desc: '',
       args: [],
     );

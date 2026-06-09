@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../config/theme/app_theme.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../injection_container.dart';
 import '../../domain/repository/class_section_repository.dart';
 
@@ -44,8 +45,6 @@ class _ClassCardState extends State<ClassCard> {
       result.fold(
         ifLeft: (e) {},
         ifRight: (data) {
-          print('qqqqqqqqqqqqqqqqq');
-          print(data);
           setState(() {
             sectionsList = data;
           });
@@ -182,17 +181,17 @@ class _ClassCardState extends State<ClassCard> {
                           _buildMetadataItem(
                             icon: Icons.calendar_today,
                             iconColor: widget.iconColor,
-                            label: "الجدول الأسبوعي",
+                            label: S.of(context).weekSchedule,
                             value:
                                 (" ${sectionsList?.length ?? '0'} " +
-                                        "جلسات أسبوعياً")
+                                        S.of(context).weeklySections)
                                     .trim(),
                           ),
                           const SizedBox(height: 12),
                           _buildMetadataItem(
                             icon: Icons.location_on,
                             iconColor: widget.iconColor,
-                            label: 'الموقع',
+                            label: S.of(context).location,
                             value: widget.location,
                           ),
                         ],

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../config/route/route_name.dart';
 import '../../../../config/theme/app_theme.dart';
+import '../../../../generated/l10n.dart';
 
 class AddClassCartButton extends StatelessWidget {
   const AddClassCartButton({super.key});
@@ -51,7 +52,7 @@ class AddClassCartButton extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'هل ترغب في تنظيم فصل جديد؟',
+              S.of(context).addClassQus,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Manrope',
@@ -62,7 +63,7 @@ class AddClassCartButton extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'قم بإضافة فصولك الدراسية وتعيين الطلاب بسهولة',
+              S.of(context).classInformation,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Inter',
@@ -88,7 +89,7 @@ class AddClassCartButton extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'إضافة فصل الآن',
+                S.of(context).addClassNow,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold,
