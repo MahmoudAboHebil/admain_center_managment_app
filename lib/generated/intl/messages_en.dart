@@ -237,7 +237,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "updateSchedule": MessageLookupByLibrary.simpleMessage("Update Schedule"),
     "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
     "weekSchedule": MessageLookupByLibrary.simpleMessage("Weekly Schedule"),
-    "weeklySections": MessageLookupByLibrary.simpleMessage("Weekly Sessions"),
+    "weeklySections": MessageLookupByLibrary.simpleMessage("Classes per Week"),
     "wrongHappened": MessageLookupByLibrary.simpleMessage(
       "Something went wrong",
     ),

@@ -244,6 +244,7 @@ class _CreateClassStepTwoScreenState
                             .updateSelectedDaysData(selectedDaysData);
 
                         print(selectedDaysData);
+                        FocusScope.of(context).unfocus();
                       },
                       onTapStart: (timeOfDay) {
                         setState(() {
@@ -258,6 +259,7 @@ class _CreateClassStepTwoScreenState
                         ref
                             .read(createClassDataProvider.notifier)
                             .updateSelectedDaysData(selectedDaysData);
+                        FocusScope.of(context).unfocus();
                       },
                     ),
                   )

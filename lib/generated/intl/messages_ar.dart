@@ -219,7 +219,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "wednesday": MessageLookupByLibrary.simpleMessage("الأربعاء"),
     "weekSchedule": MessageLookupByLibrary.simpleMessage("الجدول الأسبوعي"),
-    "weeklySections": MessageLookupByLibrary.simpleMessage("جلسات أسبوعيا"),
+    "weeklySections": MessageLookupByLibrary.simpleMessage("جلسات أسبوعية"),
     "wrongHappened": MessageLookupByLibrary.simpleMessage("حدث خطأ"),
   };
 }

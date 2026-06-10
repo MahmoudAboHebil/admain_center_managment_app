@@ -95,7 +95,7 @@ class _StudentsGridState extends ConsumerState<ClassesGrid> {
             crossAxisSpacing: 24,
             mainAxisSpacing: 12,
             childAspectRatio: 1.6,
-            mainAxisExtent: 305,
+            mainAxisExtent: 310,
           ),
           itemBuilder: (context, index) {
             if (index == children.length) {

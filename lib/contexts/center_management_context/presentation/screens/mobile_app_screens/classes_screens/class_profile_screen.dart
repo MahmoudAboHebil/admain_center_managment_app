@@ -26,36 +26,33 @@ class ClassProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: AppTheme.surface,
-          appBar: CustomAppBar(label: S.of(context).classDetails),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppTheme.surface,
+        appBar: CustomAppBar(label: S.of(context).classDetails),
 
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              top: 10,
-              bottom: 30,
-              left: 16,
-              right: 16,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _HeroClassCard(
-                  entity: entity,
-                  studyLevel: studyLevel,
-                  sections: sections,
-                ),
-                SizedBox(height: 24),
-                _QuickActions(),
-                SizedBox(height: 24),
-                _ScheduleSection(sections: sections),
-                SizedBox(height: 24),
-                _StudentsListSection(),
-              ],
-            ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+            top: 10,
+            bottom: 30,
+            left: 16,
+            right: 16,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _HeroClassCard(
+                entity: entity,
+                studyLevel: studyLevel,
+                sections: sections,
+              ),
+              SizedBox(height: 24),
+              _QuickActions(),
+              SizedBox(height: 24),
+              _ScheduleSection(sections: sections),
+              SizedBox(height: 24),
+              _StudentsListSection(),
+            ],
           ),
         ),
       ),
@@ -431,7 +428,7 @@ class _ScheduleSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
-                '${sections.length} ${S.of(context).weeklySections}ً',
+                "${sections.length} ${S.of(context).weeklySections}",
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 12.sp,
@@ -478,7 +475,7 @@ class _ScheduleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return PressableButton(
       child: Container(
-        width: 158,
+        width: 163,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: AppTheme.surfaceContainerLowest,

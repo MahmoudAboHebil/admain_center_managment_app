@@ -320,6 +320,7 @@ class _CreateClassStepOneScreenState
     return TextField(
       controller: controller,
       onChanged: onChange,
+      style: TextStyle(fontSize: 15.sp),
       minLines: 1,
       maxLines: 4,
       keyboardType: TextInputType.multiline,

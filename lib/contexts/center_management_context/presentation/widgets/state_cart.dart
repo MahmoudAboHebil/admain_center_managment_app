@@ -66,7 +66,7 @@ class StatCard extends StatelessWidget {
                       label,
                       style: TextStyle(
                         color: AppTheme.onSurfaceVariant,
-                        fontSize: 12.sp,
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -75,7 +75,7 @@ class StatCard extends StatelessWidget {
                       value,
                       style: AppTypography.textTheme.headlineMedium?.copyWith(
                         color: valueColor,
-                        fontSize: 17.sp,
+                        fontSize: 24.sp,
                       ),
                     ),
                   ],

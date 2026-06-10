@@ -205,6 +205,7 @@ class _CreateClassStepTwoScreenState
                         ref
                             .read(createClassDataProvider.notifier)
                             .updateSelectedDaysData(selectedDaysData);
+                        FocusScope.of(context).unfocus();
 
                         print(selectedDaysData);
                       },
@@ -221,6 +222,7 @@ class _CreateClassStepTwoScreenState
                         ref
                             .read(createClassDataProvider.notifier)
                             .updateSelectedDaysData(selectedDaysData);
+                        FocusScope.of(context).unfocus();
                       },
                     ),
                   )

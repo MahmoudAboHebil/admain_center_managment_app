@@ -155,7 +155,7 @@ class _ClassCardState extends State<ClassCard> {
                         widget.title,
                         maxLines: 2,
                         style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 16.sp,
                           overflow: TextOverflow.ellipsis,
 
                           fontWeight: FontWeight.bold,

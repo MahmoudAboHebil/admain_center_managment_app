@@ -719,10 +719,10 @@ class S {
     return Intl.message('Schedule', name: 'timeSchedule', desc: '', args: []);
   }
 
-  /// `Weekly Sessions`
+  /// `Classes per Week`
   String get weeklySections {
     return Intl.message(
-      'Weekly Sessions',
+      'Classes per Week',
       name: 'weeklySections',
       desc: '',
       args: [],

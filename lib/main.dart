@@ -21,20 +21,17 @@ import 'injection_container.dart';
 
 void main() async {
   Bloc.observer = MyBlocObserver();
+
   WidgetsFlutterBinding.ensureInitialized();
+
   await Supabase.initialize(url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY);
+
   await IsarService.getInstance();
   await initializeDependencies();
+
   runApp(
-    DevicePreview(
-      enabled: true,
-      builder: (context) {
-        return ScreenUtilInit(
-          builder: (context, child) => ProviderScope(child: MyApp()),
-          designSize: Size(400, 857),
-          // designSize: Size(1920 ,1080),
-        );
-      }, // Wrap your app
+    ProviderScope(
+      child: DevicePreview(enabled: true, builder: (context) => const MyApp()),
     ),
   );
 }
@@ -43,35 +40,51 @@ class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final languageState = ref.watch(languageProvider);
     final appRouteProv = ref.watch(appRouteProvider);
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<SyncBloc>(
-          create: (BuildContext context) => sl<SyncBloc>(),
-        ),
-        BlocProvider<InternetBloc>(
-          create: (BuildContext context) => sl<InternetBloc>(),
-        ),
-        BlocProvider<SelectionCubit>(
-          create: (BuildContext context) => sl<SelectionCubit>(),
-        ),
-      ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        locale: Locale(languageState.value?.name ?? Language.en.name),
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        routerConfig: appRouteProv,
-      ),
+    return ScreenUtilInit(
+      designSize: Size(languageState.value == Language.ar ? 400 : 430, 857),
+
+      minTextAdapt: true,
+      splitScreenMode: true,
+
+      builder: (context, child) {
+        final shortestSide = MediaQuery.of(context).size.shortestSide;
+
+        final isTablet = shortestSide >= 600;
+
+        return MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(isTablet ? 1.2 : 1.0)),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<SyncBloc>(create: (_) => sl<SyncBloc>()),
+              BlocProvider<InternetBloc>(create: (_) => sl<InternetBloc>()),
+              BlocProvider<SelectionCubit>(create: (_) => sl<SelectionCubit>()),
+            ],
+            child: MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.lightTheme,
+
+              locale: Locale(languageState.value?.name ?? Language.en.name),
+
+              localizationsDelegates: const [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+
+              supportedLocales: S.delegate.supportedLocales,
+
+              routerConfig: appRouteProv,
+            ),
+          ),
+        );
+      },
     );
   }
 }
